@@ -1,6 +1,10 @@
 # MC426 👩‍⚕️ 
 ##### An Open-Source, Smart and Friendly Medical Report Generator
 
+Names:
+Guilherme Ramirez RA217295
+
+
 ```Code for our tutorial```
 
 Ideas:
