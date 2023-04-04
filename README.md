@@ -3,7 +3,7 @@
 
 Names:
 Guilherme Ramirez RA217295
-Gustavo Purcena RA198594
+
 
 ```Code for our tutorial```
 
