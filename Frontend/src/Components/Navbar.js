@@ -26,7 +26,7 @@ export default function TitleToolbar(props) {
     const [menuAnchor, setMenuAnchor] = React.useState(null);
     const openMenu=(event)=>{setMenuAnchor(event.currentTarget)}
     const closeMenu=()=>{setMenuAnchor(null)}
-    const goProfile=()=>{props.setControl({...props.control, view:'user', formID: null, tempData: {}})}
+    const goProfile=()=>{props.setControl({...props.control, view:'profile', formID: null, tempData: {}})}
     const logout=()=>{props.setControl({view: 'landing', formID: null, tempData: {}, user: null})}
     function loginButton(){
         if(!props.control.user)
@@ -44,7 +44,7 @@ export default function TitleToolbar(props) {
     }
     function formButton(){
         if(props.control.user)
-            return <Button variant="outlined" onClick={()=>props.setView('user')}>Forms</Button>
+            return <Button variant="outlined" onClick={()=>props.setView('profile')}>Forms</Button>
     }
     return(
         <Toolbar sx={{borderBottom: '1px solid', borderColor:'theme.palette.divider'}}>
