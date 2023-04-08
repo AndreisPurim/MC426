@@ -14,7 +14,7 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 
-export default function Signup(props){
+export default function SignupCard(props){
     const [user, setUser] = React.useState({
         username: '',
         email: '',
