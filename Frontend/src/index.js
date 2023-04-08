@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom/client';
 
 import { ThemeProvider, useTheme, createTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
 import './Source/index.css';
 
 import Landing from './Pages/Landing/Landing.js';
 import Login from './Pages/Login/Login.js';
 import Profile from './Pages/Profile/Profile.js';
+import Navbar from './Components/Navbar.js';
 
 const getComplementaryColor = (color = '') => {
   const colorPart = color.slice(1);
@@ -51,7 +53,8 @@ function Control(){
   const sendControl = {control, setControl, setView}
   return(
     <ThemeProvider theme={theme}>
-      {control.view}
+      <CssBaseline />
+      <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === 'light'? 'dark': 'light')}/>
       {returnView()}
     </ThemeProvider>
   )
