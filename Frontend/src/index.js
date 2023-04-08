@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import Alert from '@mui/material/Alert';
+import Container from '@mui/material/Container';
 import { ThemeProvider, useTheme, createTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -63,13 +64,15 @@ function Control(){
   return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === 'light'? 'dark': 'light')}/>
-      {returnView()}
-      <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
-        <Alert elevation={6} variant="filled" severity={alert.severity}>
-          {alert.text}
-        </Alert>
-      </Snackbar>
+      <Container maxWidth="md">
+        <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === 'light'? 'dark': 'light')}/>
+        {returnView()}
+        <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
+          <Alert elevation={6} variant="filled" severity={alert.severity}>
+            {alert.text}
+          </Alert>
+        </Snackbar>
+      </Container>
     </ThemeProvider>
   )
 }
