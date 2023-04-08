@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+import Alert from '@mui/material/Alert';
 import { ThemeProvider, useTheme, createTheme } from "@mui/material/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
+import Snackbar from '@mui/material/Snackbar';
 import './Source/index.css';
 
 import Landing from './Pages/Landing/Landing.js';
 import Login from './Pages/Login/Login.js';
 import Profile from './Pages/Profile/Profile.js';
 import Navbar from './Components/Navbar.js';
+
+import { dbExample } from './Source/example.js';
 
 const getComplementaryColor = (color = '') => {
   const colorPart = color.slice(1);
@@ -24,8 +28,10 @@ const getComplementaryColor = (color = '') => {
 const color = '#6096B4';
 
 function Control(){
+  const [alert, setAlert] = React.useState({open: false, text: "", severity: "success"});
   const [lightMode, setLightMode] = React.useState(useMediaQuery('(prefers-color-scheme: dark)')?'dark':'light');
-  const [control, setControl] = React.useState({view: 'landing', user: null});
+  const [control, setControl] = React.useState({view: 'landing', formID: null, tempData: {}, user: null});
+  const [example, setExample] = React.useState(dbExample());
   const theme = React.useMemo(
     () =>
       createTheme({
@@ -50,12 +56,20 @@ function Control(){
       default: return <Landing {...sendControl}/>
     }
   }
-  const sendControl = {control, setControl, setView}
+  const closeAlert = () => {
+    setAlert({...alert, open: false});
+  }
+  const sendControl = {control, setControl, setView, example, setExample, setAlert}
   return(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === 'light'? 'dark': 'light')}/>
       {returnView()}
+      <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
+        <Alert elevation={6} variant="filled" severity={alert.severity}>
+          {alert.text}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   )
 }
