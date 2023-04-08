@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-export default function Login(props){
+export default function LoginCard(props){
   const [user, setUser] = React.useState({
     show: false,
     username: '',
