@@ -1,7 +1,5 @@
-import React from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
-import ButtonBase from '@mui/material/ButtonBase';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -9,6 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
@@ -20,6 +20,8 @@ import Select from '@mui/material/Select';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
 
+import Divider from '@mui/material/Divider';
+
 
 export default function TitleToolbar(props) {
     const [openHelp, setOpenHelp] = React.useState(false);
@@ -30,11 +32,11 @@ export default function TitleToolbar(props) {
     const logout=()=>{props.setControl({view: 'landing', formID: null, tempData: {}, user: null})}
     function loginButton(){
         if(!props.control.user)
-            return <Button variant="outlined" onClick={()=>props.setView('login')}>Login</Button>
+            return <Button size="small" variant="outlined" onClick={()=>props.setView('login')}>Login</Button>
         else
             return (
                 <React.Fragment>
-                    <Button variant="outlined" startIcon={<AccountCircleIcon />} onClick={openMenu}>{props.control.user.username}</Button>
+                    <Button size="small" variant="outlined" startIcon={<AccountCircleIcon />} onClick={openMenu}>{props.control.user.username}</Button>
                     <Menu open={Boolean(menuAnchor)} onClose={closeMenu} anchorEl={menuAnchor} anchorOrigin={{vertical: 'top', horizontal: 'right'}} keepMounted transformOrigin={{vertical: 'top', horizontal: 'right'}}>
                         <MenuItem onClick={goProfile}>Profile</MenuItem>
                         <MenuItem onClick={logout}>Logout</MenuItem>
@@ -44,10 +46,10 @@ export default function TitleToolbar(props) {
     }
     function formButton(){
         if(props.control.user)
-            return <Button variant="outlined" onClick={()=>props.setView('profile')}>Forms</Button>
+            return <Button size="small" variant="outlined" startIcon={<PostAddIcon />} onClick={()=>props.setView('profile')}>Forms</Button>
     }
     return(
-        <Toolbar sx={{borderBottom: '1px solid', borderColor:'theme.palette.divider'}}>
+        <Toolbar >
             <Dialog open={openHelp} onClose={() => {setOpenHelp(false)}}>
                 <DialogTitle>{"About"}</DialogTitle>
                 <DialogContent>
@@ -58,27 +60,32 @@ export default function TitleToolbar(props) {
             </Dialog>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
                 <Grid item xs={6} container  direction="row" justifyContent="flex-start" alignItems="center">
-                    <Button size="small" onClick={() => {setOpenHelp(true)}}>Ajuda</Button>
+
+                    <IconButton size="small" onClick={props.changeLightMode}>
+                        {props.theme==='light'?<Brightness2Icon />:<WbSunnyIcon />}
+                    </IconButton>
+                    <Select disableUnderline size="small" variant="standard" value="pt">
+                        <MenuItem value="pt">🇧🇷</MenuItem>
+                    </Select>
                 </Grid>
+            
                 <Grid item xs={2} container direction="row" justifyContent="center" alignItems="center" style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
                     <Typography component="h2" variant="h5" color="inherit" align="center" noWrap >
                         MC426
                     </Typography>
                 </Grid>
-                <Grid item xs={6} container  direction="row" justifyContent="flex-end" alignItems="center">
-                    <IconButton onClick={props.changeLightMode}>
-                        {props.theme==='light'?<Brightness2Icon />:<WbSunnyIcon />}
-                    </IconButton>
-                    <IconButton href="" target="_blank" rel="noopener noreferrer">
-                        <GitHubIcon />
-                    </IconButton>
-                    <Select size="small" value="pt">
-                        <MenuItem value="pt">PT</MenuItem>
-                    </Select>
-                    {formButton()}
-                    {' '}
-                    {loginButton()}
-                </Grid>
+                <Grid item xs={6} spacing={1} container direction="row" justifyContent="flex-end" alignItems="center">
+                    <Grid item>
+                        {formButton()}
+                    </Grid>
+                    <Grid item>
+                        {loginButton()}
+                    </Grid>
+                    <Grid item>
+                        <Button size="small" onClick={() => {setOpenHelp(true)}}>Ajuda</Button>
+                    </Grid>
+                </Grid >
+                <Divider style={{width:'100%', marginTop:'0.5rem'}} />
             </Grid>
         </Toolbar>
     )
