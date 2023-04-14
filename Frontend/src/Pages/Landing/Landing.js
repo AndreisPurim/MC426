@@ -134,9 +134,6 @@ export default function LandingPage(props){
           </Button>
       </Grid>
       <Divider style={{width:'100%'}} />
-      <Grid item><Typography variant='h4'>It's simple!</Typography></Grid>
-      <Tutorial />
-      <Divider style={{width:'100%'}} />
       <Testimonial 
         name={"Some famous person"}
         image={"https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600"}
@@ -147,6 +144,8 @@ export default function LandingPage(props){
         image={"https://images.pexels.com/photos/2726111/pexels-photo-2726111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}
         text={"The customizable dashboards and real-time notifications in the medical reports facilitation system have made managing our patient information a breeze. With the advanced analytics tools, we can identify areas for improvement and make data-driven decisions to improve patient outcomes. This system has truly transformed the way we work."}
         />
+      <Grid item><Typography variant='h4'>It's simple!</Typography></Grid>
+      <Tutorial />
       <Divider style={{width:'100%'}} />
       <SmallerCard />
       <SmallerCard />

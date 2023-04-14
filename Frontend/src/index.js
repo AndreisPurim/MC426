@@ -14,6 +14,7 @@ import Login from './Pages/Login/Login.js';
 import Profile from './Pages/Profile/Profile.js';
 import ReadQRCode from './Pages/Profile/ReadQRCode.js';
 import Navbar from './Components/Navbar.js';
+import Footer from './Components/Footer.js';
 
 import { dbExample } from './Source/example.js';
 
@@ -74,6 +75,7 @@ function Control(){
             {alert.text}
           </Alert>
         </Snackbar>
+        <Footer />
       </Container>
     </ThemeProvider>
   )
