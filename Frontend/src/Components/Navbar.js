@@ -22,10 +22,22 @@ import Brightness2Icon from '@mui/icons-material/Brightness2';
 
 import Divider from '@mui/material/Divider';
 
+const languages = [
+    {
+        id: '🇧🇷',
+        name: 'Português'
+    },
+    {
+        id: '🇬🇧',
+        name: 'English'
+    }
+]
 
 export default function TitleToolbar(props) {
     const [openHelp, setOpenHelp] = React.useState(false);
     const [menuAnchor, setMenuAnchor] = React.useState(null);
+    const [lang, setLang] = React.useState('🇧🇷');
+    const [langAnchor, setLangAnchor] = React.useState(null);
     const openMenu=(event)=>{setMenuAnchor(event.currentTarget)}
     const closeMenu=()=>{setMenuAnchor(null)}
     const goProfile=()=>{props.setControl({...props.control, view:'profile', formID: null, tempData: {}})}
@@ -59,18 +71,29 @@ export default function TitleToolbar(props) {
                 </DialogContent>
             </Dialog>
             <Grid container direction="row" justifyContent="space-between" alignItems="center">
-                <Grid item xs={6} container  direction="row" justifyContent="flex-start" alignItems="center">
-
-                    <IconButton size="small" onClick={props.changeLightMode}>
-                        {props.theme==='light'?<Brightness2Icon />:<WbSunnyIcon />}
-                    </IconButton>
-                    <Select disableUnderline size="small" variant="standard" value="pt">
-                        <MenuItem value="pt">🇧🇷</MenuItem>
-                    </Select>
+                <Grid item xs={6} container spacing={1} direction="row" justifyContent="flex-start" alignItems="center">
+                    <Grid item>
+                        <IconButton size="small" style={{borderRadius: '10px'}} onClick={event => setLangAnchor(event.currentTarget)}>
+                            {lang}
+                        </IconButton>
+                    </Grid>
+                    <Menu
+                        anchorEl={langAnchor}
+                        open={Boolean(langAnchor)}
+                        onClose={()=>setLangAnchor(null)}
+                    >
+                        {languages.map(l => (
+                            <MenuItem value={l.id} onClick={()=>{setLang(l.id); props.setAlert({open:true, text:"Still not implemented, sorry :(", severity:"warning"})}}>{l.id} {l.name}</MenuItem>
+                        ))}
+                    </Menu>
+                    <Grid item>
+                        <IconButton size="small" style={{borderRadius: '10px'}} onClick={props.changeLightMode}>
+                            {props.theme==='light'?<Brightness2Icon />:<WbSunnyIcon />}
+                        </IconButton>
+                    </Grid>
                 </Grid>
-            
                 <Grid item xs={2} container direction="row" justifyContent="center" alignItems="center" style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
-                    <Typography component="h2" variant="h5" color="inherit" align="center" noWrap >
+                    <Typography component="h2" variant="h5" color="inherit" align="center" >
                         MC426
                     </Typography>
                 </Grid>
