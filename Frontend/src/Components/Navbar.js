@@ -1,26 +1,22 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
+import ButtonBase from '@mui/material/ButtonBase';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PostAddIcon from '@mui/icons-material/PostAdd';
 import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import Avatar from '@mui/material/Avatar';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import IconButton from '@mui/material/IconButton';
-import { ThemeProvider, createTheme } from '@mui/system';
-import Select from '@mui/material/Select';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Brightness2Icon from '@mui/icons-material/Brightness2';
-
-import Divider from '@mui/material/Divider';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
 const languages = [
     {
@@ -93,9 +89,11 @@ export default function TitleToolbar(props) {
                     </Grid>
                 </Grid>
                 <Grid item xs={2} container direction="row" justifyContent="center" alignItems="center" style={{position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'}}>
-                    <Typography component="h2" variant="h5" color="inherit" align="center" >
-                        MC426
-                    </Typography>
+                    <ButtonBase disableRipple>
+                        <Typography component="h2" variant="h5" color="inherit" align="center" onClick={()=>props.setView('landing')} >
+                            MC426
+                        </Typography>
+                    </ButtonBase>
                 </Grid>
                 <Grid item xs={6} spacing={1} container direction="row" justifyContent="flex-end" alignItems="center">
                     <Grid item>
