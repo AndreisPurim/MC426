@@ -1,4 +1,4 @@
-export function dbExample(){
+export function dbExample(): any {
    return {
       "qforms": 2,
       "rows": [

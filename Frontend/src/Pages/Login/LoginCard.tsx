@@ -13,27 +13,27 @@ import TextField from '@mui/material/TextField';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-export default function LoginCard(props){
+export default function LoginCard(props: any) {
   const [user, setUser] = React.useState({
     show: false,
     username: '',
     password: '',
   })
-  const changeUsername = (event) => {
-    setUser({...user, username: event.target.value});
+  const changeUsername = (event: { target: { value: any; }; }) => {
+    setUser({ ...user, username: event.target.value });
   };
-  const changePassword = (event) => {
-    setUser({...user, password: event.target.value});
+  const changePassword = (event: { target: { value: any; }; }) => {
+    setUser({ ...user, password: event.target.value });
   };
   const connect = () => {
-    if(user.username in props.example.users && props.example.users[user.username].password === user.password){
-      props.setControl({...props.control, user: props.example.users[user.username], view: 'profile'})
-      props.setAlert({open: true, text: "Connected", severity: "success"})
+    if (user.username in props.example.users && props.example.users[user.username].password === user.password) {
+      props.setControl({ ...props.control, user: props.example.users[user.username], view: 'profile' })
+      props.setAlert({ open: true, text: "Connected", severity: "success" })
     }
-    else{
-      props.setAlert({open: true, text: "Login failed", severity: "error"})
-    }  
-}
+    else {
+      props.setAlert({ open: true, text: "Login failed", severity: "error" })
+    }
+  }
 
   return (
     <Card>
@@ -47,7 +47,7 @@ export default function LoginCard(props){
           <Input type={user.show ? 'text' : 'password'} value={user.password} onChange={changePassword}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton onClick={() => setUser({...user, show: true})} onMouseDown={() => setUser({...user, show: false})}>
+                <IconButton onClick={() => setUser({ ...user, show: true })} onMouseDown={() => setUser({ ...user, show: false })}>
                   {user.show ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
@@ -56,9 +56,9 @@ export default function LoginCard(props){
         </FormControl>
       </CardContent>
       <CardActions>
-          <Button disabled={user.username === '' || user.password === ''} size="small" color="primary" onClick={connect}>
-            Login
-          </Button>
+        <Button disabled={user.username === '' || user.password === ''} size="small" color="primary" onClick={connect}>
+          Login
+        </Button>
       </CardActions>
     </Card>
   )

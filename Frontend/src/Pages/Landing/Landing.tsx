@@ -106,10 +106,10 @@ function Tutorial(){
 }
 
 
-function Testimonial({ image, name, text}){
+function Testimonial({ image, name, text}: {image: string, name: string, text: string}){
   return(
     <Grid item xs={5}>
-      <img src={image} align="left" style={{borderRadius:20, paddingRight:'0.5rem', objectFit:'cover', width:100, height:100}}/>
+      <img src={image} data-align="left" style={{borderRadius:20, paddingRight:'0.5rem', objectFit:'cover', width:100, height:100}}/>
       <Typography variant="h6">{name}</Typography>
       <Typography variant="caption" color="text.secondary">
       {text}
@@ -118,7 +118,7 @@ function Testimonial({ image, name, text}){
   )
 }
 
-export default function LandingPage(props){
+export default function LandingPage(props: any){
 
   return (
     <Grid container style={{ gap: 15 }} direction="row" justifyContent="center" alignItems="stretch">
