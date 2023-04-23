@@ -38,9 +38,9 @@ export default function SignupCard(props: { example: { users: any; }; setAlert: 
     };
     function changeVisibility(state: boolean) {
         setUser({ ...user, showPassword: state });
-    };
+    }
     const connect = () => {
-        let newUsers = props.example.users;
+        const newUsers = props.example.users;
         if (user.username in newUsers) {
             props.setAlert({ open: true, text: "Username already in use", severity: "error" })
         }

@@ -47,12 +47,12 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
   const closeSelect = () => { setTable({ ...table, anchorSelect: null }) }
   const resetColumns = () => { setTable({ ...table, selectedColumns: table.defaultColumns }) }
   function changeSelectedColumns(i: number) {
-    let newSelected: any = table.selectedColumns
+    const newSelected: any = table.selectedColumns
     newSelected[i] = !newSelected[i]
     setTable({ ...table, selectedColumns: newSelected })
   }
   const showResetButton = () => {
-    for (var i = 0; i < table.selectedColumns.length; ++i) {
+    for (let i = 0; i < table.selectedColumns.length; ++i) {
       if (table.selectedColumns[i] !== table.defaultColumns[i]) {
         // console.log(table.selectedColumns[i],table.defaultColumns[i])
         // return false
@@ -66,15 +66,15 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
   }
   React.useEffect(() => {
     const fetchData = async () => {
-      let rows = props.example.rows;
-      let columns = props.example.columns;
+      const rows = props.example.rows;
+      const columns = props.example.columns;
       let favs = 0;
       for (let i = 0; i < rows.length; i++) {
         if (rows[i].favorite) {
           favs++
         }
       }
-      let defaultColumns = columns.filter(function (row: { default: any; }) { return row.default })
+      const defaultColumns = columns.filter(function (row: { default: any; }) { return row.default })
       setTable({ ...table, columns: columns, selectedColumns: defaultColumns, defaultColumns: defaultColumns, rows: rows, favorites: favs })
       // props.setAlert({open: true, text: "Error in fetching rows", severity: "error"})
 
@@ -87,15 +87,15 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
   }, [props.example]);
   function handleFavorite(row: any) {
     // Make que API here
-    let userFavorites: any = props.control.user.favorites;
-    let index = userFavorites.indexOf(row.id);
+    const userFavorites: any = props.control.user.favorites;
+    const index = userFavorites.indexOf(row.id);
     if (index === -1) {
       userFavorites.push(row.id)
     }
     else {
       userFavorites.splice(index, 1)
     }
-    let newUsers = props.example.users;
+    const newUsers = props.example.users;
     newUsers[props.control.user.username].favorites = userFavorites;
     props.setExample({ ...props.example, users: newUsers })
   }

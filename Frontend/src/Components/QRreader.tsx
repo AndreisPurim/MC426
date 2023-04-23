@@ -6,7 +6,7 @@ const qrcodeRegionId = "html5qr-code-full-region";
 
 // Creates the configuration object for Html5QrcodeScanner.
 const createConfig = (props: { verbose?: any; qrCodeSuccessCallback?: any; qrCodeErrorCallback?: any; fps?: any; qrbox?: any; aspectRatio?: any; disableFlip?: any; }) => {
-    let config: { fps: any; qrbox: any; aspectRatio: any; disableFlip: any; } = {
+    const config: { fps: any; qrbox: any; aspectRatio: any; disableFlip: any; } = {
         fps: undefined,
         qrbox: undefined,
         aspectRatio: undefined,
