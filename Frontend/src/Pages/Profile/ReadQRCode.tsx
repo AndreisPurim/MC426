@@ -6,7 +6,7 @@ import React from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import QRreader from '../../Components/QRreader.tsx';
+import { QrReader } from 'react-qr-reader';
 
 export default function ReadQRCode(props: { setView: (arg0: string) => void; }){
     const [data,setData] = React.useState(null);
@@ -17,33 +17,31 @@ export default function ReadQRCode(props: { setView: (arg0: string) => void; }){
   const retry=()=>{setData(null)};
   const back=()=>{props.setView('user')};
   return (
-    <Grid container xs={12} spacing={1} direction="column" justifyContent="center" alignItems="center" style={{marginTop: '2rem' }}>
-      <Grid item xs={12}>
-        <Button variant="outlined" color="primary" onClick={back} startIcon={<ChevronLeftIcon />}>
+    <Grid container xs={12} spacing={1} style={{textAlign:'center'}}>
+      <Grid item xs={12} style={{margin:"auto"}}>
+        <Button style={{margin:"auto"}} variant="outlined" color="primary" onClick={back} startIcon={<ChevronLeftIcon />}>
           Return
         </Button>
-      </Grid> 
-      <Grid item xs={12}>
-        <Paper elevation={3}>
-          <Grid xs={12} container direction="column" justifyContent="center" alignItems="center" style={{paddingBottom:'1rem'}}>
-            <Grid item xs={12}>
-                <QRreader
-                    fps={10}
-                    qrbox={250}
-                    disableFlip={false}
-                    qrCodeSuccessCallback={onNewScanResult}
-                />
-            </Grid>
+      </Grid>
+      <Grid item xs={10} style={{margin:"auto"}}>
+        <Paper elevation={12}>
+          <Grid container xs={12} direction="column" justifyContent="center" alignItems="stretch">
+            <Typography variant="overline" display="block">
+              {data?'Detected':'Not Detected'}. {data?<Link component="button" variant="overline" onClick={retry}>Retry?</Link>:null}
+            </Typography>
+            <QrReader
+              onResult={(result:any, error:any) => {
+                if(result) {
+                  setData(result.text);
+                }
+              }}
+              containerStyle={{width:'50%', margin:'auto'}}
+            />
             <Grid item xs={12}>
               <Typography variant="overline" display="block">
-                {data?'Detected':'Not Detected'}. {data?<Link component="button" variant="overline" onClick={retry}>Retry?</Link>:null}
+                {data?data:null}
               </Typography>
             </Grid>
-            {!data?null:
-              <React.Fragment>
-                {data}
-              </React.Fragment>
-            }
           </Grid>
         </Paper>
       </Grid>
