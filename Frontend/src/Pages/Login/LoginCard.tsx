@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -26,13 +27,32 @@ export default function LoginCard(props: any) {
     setUser({ ...user, password: event.target.value });
   };
   const connect = () => {
-    if (user.username in props.example.users && props.example.users[user.username].password === user.password) {
-      props.setControl({ ...props.control, user: props.example.users[user.username], view: 'profile' })
+    if(user.username=='noback'){
+      props.setControl({ ...props.control, user: props.example.users['andreis'], view: 'profile' })
       props.setAlert({ open: true, text: "Connected", severity: "success" })
+      return
     }
-    else {
-      props.setAlert({ open: true, text: "Login failed", severity: "error" })
-    }
+    axios({
+        method: 'get',
+        url: 'http://localhost:8000/users',
+    })
+    .then(function (response){
+      const userInfo = response.data.filter(function (e:any){return e.nome === user.username})[0]
+      if(userInfo && userInfo.senha == user.password){
+        props.setAlert({ open: true, text: "Connected", severity: "success" })
+        // Uses Andreis' profile as a mock example of the profile page.
+        props.setControl({ ...props.control, user: props.example.users['andreis'], view: 'profile' })
+      }
+      else if(userInfo){
+        props.setAlert({ open: true, text: "Wrong Password", severity: "error" })
+      }
+      else{
+        props.setAlert({ open: true, text: "User not found", severity: "error" })
+      }
+    })
+    .catch(function (error){
+      props.setAlert({ open: true, text: "Login failed ("+error.name+")", severity: "error" })
+    });
   }
 
   return (

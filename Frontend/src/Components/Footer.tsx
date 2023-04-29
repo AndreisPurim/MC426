@@ -1,12 +1,10 @@
 import React from 'react';
 
-
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 
-
-export default function Login(){
+export default function Footer(){
   return (
     <Grid container direction="row" justifyContent="center" sx={{ pt: '3rem' }}>
       <Divider style={{ width: '100%', marginTop: '0.5rem' }} />
