@@ -14,8 +14,8 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import SchoolIcon from '@mui/icons-material/School';
 
 
-export default function UserCard(props){
-  function getChipIcon(chip){
+export default function UserCard(props: { control: { user: { favorites: { length: string; }; created: { length: string; }; avatar: string | undefined; username: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; description: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; admin: any; joined: string; last_seen: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | null | undefined; chips: any[]; }; }; }){
+  function getChipIcon(chip: { type: any; }){
     switch(chip.type){
       case 'work': return <WorkOutlineIcon /> 
       case 'study': return <SchoolIcon /> 
@@ -24,14 +24,14 @@ export default function UserCard(props){
       default: return <HelpOutlineIcon /> 
     }
   }
-  function getChipLabel(chip){
+  function getChipLabel(chip: { type: any; label: any; }){
     switch(chip.type){
       case 'favorites': return props.control.user.favorites.length + ' Favorites'
       case 'created': return props.control.user.created.length + ' Created'
       default: return chip.label
     }
   }
-  function getChipColor(chip){
+  function getChipColor(chip: { type: string; }){
     if(chip.type==='created')
       return 'secondary'
     return 'primary'
