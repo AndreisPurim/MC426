@@ -6,11 +6,11 @@ import React from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import QRreader from '../../Components/QRreader.js';
+import QRreader from '../../Components/QRreader.tsx';
 
-export default function ReadQRCode(props){
+export default function ReadQRCode(props: { setView: (arg0: string) => void; }){
     const [data,setData] = React.useState(null);
-    const onNewScanResult = (decodedText, decodedResult) => {
+    const onNewScanResult = (decodedText: React.SetStateAction<null>, decodedResult: any) => {
         //let qrdata = yaml.load(result.getText());
         setData(decodedText);
     };

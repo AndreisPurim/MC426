@@ -3,10 +3,10 @@ import CropFreeIcon from '@mui/icons-material/CropFree';
 import Grid from '@mui/material/Grid';
 import React from 'react';
 
-import UserCard from './UserCard.js';
-import UserTable from './UserTable.js';
+import UserCard from './UserCard.tsx';
+import UserTable from './UserTable.tsx';
 
-export default function Profile(props){
+export default function Profile(props: any){
   const goCreate=()=>{
     props.setControl({...props.control, tempData: {}, formID: null, view:'creator'})
   }
