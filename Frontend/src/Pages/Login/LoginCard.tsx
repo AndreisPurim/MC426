@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import FormControl from '@mui/material/FormControl';
-import Input from '@mui/material/Input';
+import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
@@ -41,10 +41,10 @@ export default function LoginCard(props: any) {
         <Typography gutterBottom variant="h5" component="h2">
           Login
         </Typography>
-        <TextField fullWidth label="Username" value={user.username} onChange={changeUsername} />
-        <FormControl fullWidth>
+        <TextField fullWidth variant="outlined" sx={{pb:'1rem'}} label="Username" value={user.username} onChange={changeUsername} />
+        <FormControl fullWidth variant="outlined">
           <InputLabel>Password</InputLabel>
-          <Input type={user.show ? 'text' : 'password'} value={user.password} onChange={changePassword}
+          <OutlinedInput label="Password" type={user.show ? 'text' : 'password'} value={user.password} onChange={changePassword}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton onClick={() => setUser({ ...user, show: true })} onMouseDown={() => setUser({ ...user, show: false })}>
