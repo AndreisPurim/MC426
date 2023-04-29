@@ -1,11 +1,6 @@
-
 import { dbExample } from './example';
 
-test('teste', () => {
-
+test('db example', () => {
     const res = dbExample();
-
-    expect(typeof res).toBe("objet");
-  });
-  
-  
+    expect(typeof res).toBe("object");
+});
