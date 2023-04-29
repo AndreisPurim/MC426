@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from controllers import papeis_controller as papeis
+from controllers import users_controller as users
 
 router = APIRouter()
 
-router.include_router(papeis.router, prefix='/papeis')
+router.include_router(users.router, prefix='/users')

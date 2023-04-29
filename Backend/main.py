@@ -6,6 +6,6 @@ app = FastAPI()
 
 @app.get("/")
 def get_root():
-    return {"mensagem": "api de papeis"}
+    return {"mensagem": "api do balacobaco"}
 
 app.include_router(router, prefix="")
