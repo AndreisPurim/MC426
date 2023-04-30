@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import Button from '@mui/material/Button';
 import CardActions from '@mui/material/CardActions';
@@ -40,6 +41,23 @@ export default function SignupCard(props: { example: { users: any; }; setAlert: 
         setUser({ ...user, showPassword: state });
     }
     const connect = () => {
+        axios({
+            method: 'post',
+            url: 'http://localhost:8000/users',
+            data: {
+                id: 0,
+                nome: user.username,
+                email: user.email,
+                senha: user.password
+            }
+        })
+        .then(function(response){
+            props.setAlert({ open: true, text: "Signup Sucessful (ID "+response.data.id+")", severity: "success" })
+        })
+        .catch(function (error){
+          props.setAlert({ open: true, text: "Signup failed (Server Error)", severity: "error" })
+        });
+        /*
         const newUsers = props.example.users;
         if (user.username in newUsers) {
             props.setAlert({ open: true, text: "Username already in use", severity: "error" })
@@ -54,7 +72,7 @@ export default function SignupCard(props: { example: { users: any; }; setAlert: 
             };
             props.setExample({ ...props.example, user: newUsers })
             props.setAlert({ open: true, text: "Created!", severity: "success" })
-        }
+        } */
     }
     return (
         <Card>
@@ -62,9 +80,9 @@ export default function SignupCard(props: { example: { users: any; }; setAlert: 
                 <Typography gutterBottom variant="h5" component="h2">
                     Create Account
                 </Typography>
-                <TextField fullWidth label="Username" value={user.username} onChange={changeUsername} />
-                <TextField fullWidth label="Mail" value={user.email} onChange={changeEmail} />
-                <FormControl fullWidth>
+                <TextField sx={{pb:'1rem'}} fullWidth label="Username" value={user.username} onChange={changeUsername} />
+                <TextField sx={{pb:'1rem'}} fullWidth label="Mail" value={user.email} onChange={changeEmail} />
+                <FormControl fullWidth sx={{pb:'1rem'}}>
                     <InputLabel>Password</InputLabel>
                     <Input
                         type={user.showPassword ? 'text' : 'password'}
@@ -92,7 +110,7 @@ export default function SignupCard(props: { example: { users: any; }; setAlert: 
                 </FormControl>
             </CardContent>
             <CardActions>
-                <Button disabled={user.firstname === '' || user.lastname === '' || user.username === '' || user.email === '' || user.password === '' || user.password !== user.checkPassword} size="small" color="primary" onClick={connect}>
+                <Button disabled={ user.username === '' || user.email === '' || user.password === '' || user.password !== user.checkPassword} size="small" color="primary" onClick={connect}>
                     Create
                 </Button>
             </CardActions>
