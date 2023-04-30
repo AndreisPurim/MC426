@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders Footer component 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-container css-cwirq8-MuiGrid-root"
+>
+  <hr
+    className="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
+    style={
+      {
+        "marginTop": "0.5rem",
+        "width": "100%",
+      }
+    }
+  />
+  <div
+    className="MuiGrid-root MuiGrid-item css-19lyo2m-MuiGrid-root"
+  >
+    Check our code at 
+    <a
+      className="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-1bhi0za-MuiTypography-root-MuiLink-root"
+      href="https://github.com/AndreisPurim/MC426"
+      onBlur={[Function]}
+      onFocus={[Function]}
+    >
+      Github
+    </a>
+  </div>
+</div>
+`;

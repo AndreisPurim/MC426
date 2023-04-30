@@ -29,7 +29,7 @@ const languages = [
     }
 ]
 
-export default function TitleToolbar(props: { setControl: (arg0: { view: string; formID: null; tempData: object; user: any; }) => void; control: { user: { username: any }; }; setView: (arg0: string) => void; setAlert: (arg0: { open: boolean; text: string; severity: string; }) => void; changeLightMode: React.MouseEventHandler<HTMLButtonElement> | undefined; theme: string; }) {
+export default function TitleToolbar(props: { setControl: (arg0: { view: string; formID: null; tempData: object; user: any; }) => void; control: { user: { username: any }|null; }; setView: (arg0: string) => void; setAlert: (arg0: { open: boolean; text: string; severity: string; }) => void; changeLightMode: React.MouseEventHandler<HTMLButtonElement> | undefined; theme: string; }) {
     const [openHelp, setOpenHelp] = React.useState(false);
     const [menuAnchor, setMenuAnchor] = React.useState(null);
     const [lang, setLang] = React.useState('🇧🇷');

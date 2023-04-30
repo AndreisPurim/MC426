@@ -1,3 +1,5 @@
+import type { Config } from '@jest/types';
+
 module.exports = {
     roots: ['<rootDir>/src'],
     transform: {
