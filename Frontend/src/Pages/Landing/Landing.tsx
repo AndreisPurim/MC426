@@ -38,7 +38,7 @@ const tutorialSteps = [
 
 function HeaderCard(){
   return(
-    <Grid md={11}>
+    <Grid item md={11}>
       <Paper style={{padding:'2rem'}} elevation={8}>
         <div style={{textAlign:'center'}}>
           <LocalHospitalIcon color="secondary" style={{fontSize:'10rem'}}/>
@@ -56,7 +56,7 @@ function HeaderCard(){
 
 function SmallerCard(){
   return(
-    <Grid md={5}>
+    <Grid item md={5}>
       <Paper style={{padding:'2rem'}} elevation={8}>
         <Typography gutterBottom variant="h5" component="div">
           News 1
