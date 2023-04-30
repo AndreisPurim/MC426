@@ -45,7 +45,7 @@ jobs:
         yarn run deploy
       env:
         CI: ""
-        user_name: 'github-actions[bot]'
+        user_name: 'mc426_cicd_bot'
         user_email: 'github-actions[bot]@users.noreply.github.com'
         github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
         repository: ${{ github.repository }}
