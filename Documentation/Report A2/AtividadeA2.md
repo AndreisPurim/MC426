@@ -18,7 +18,7 @@ Como somos 4 pessoas no grupo, escolhemos 2 funcionalidades para estarem complet
 	- Link da [Issue #17](https://github.com/AndreisPurim/MC426/issues/28) e [Pull Request #28](https://github.com/AndreisPurim/MC426/pull/27)
 	-  Componente no [Frontend](https://github.com/AndreisPurim/MC426/blob/main/Frontend/src/Pages/Login/LoginCard.tsx)
 - **Signup:**
-	- Link da [Issue #27](https://github.com/AndreisPurim/MC426/issues/27) e [Pull Request #30](https://github.com/AndreisPurim/MC426/pull/32)
+	- Link da [Issue #27](https://github.com/AndreisPurim/MC426/issues/27) e [Pull Request #30](https://github.com/AndreisPurim/MC426/pull/31)
 	-  Componente no [Frontend](https://github.com/AndreisPurim/MC426/blob/main/Frontend/src/Pages/Login/SignupCard.tsx)
 
 Temos algumas outras funcionalidades semi-prontas, como por exemplo o a página do profile com a tabela de prontuários e o leitor de QR Code, ambas funcionando no frontend e podem ser usadas após login no sistema.
