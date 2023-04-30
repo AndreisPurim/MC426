@@ -39,7 +39,7 @@ export default function UserCard(props: { control: { user: { favorites: { length
   return (
     <Grid item xs={7} style={{width: '100%'}}>
       <Paper elevation={3} style={{padding:'1rem'}}>
-        <Grid xs={12} container direction="column" justifyContent="flex-start" alignItems="stretch">
+        <Grid container direction="column" justifyContent="flex-start" alignItems="stretch">
           <Grid xs={12} spacing={2} item container direction="row" justifyContent="flex-start" alignItems="stretch">
             <Grid item xs={2}>
               <Avatar variant="rounded" alt="Avatar" src={props.control.user.avatar} style={{width:'100%',height:'100%'}}/>

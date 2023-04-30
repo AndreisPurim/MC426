@@ -30,6 +30,7 @@ export default function ReadQRCode(props: { setView: (arg0: string) => void; }){
               {data?'Detected':'Not Detected'}. {data?<Link component="button" variant="overline" onClick={retry}>Retry?</Link>:null}
             </Typography>
             <QrReader
+              constraints={{facingMode: 'user'}}
               onResult={(result:any, error:any) => {
                 if(result) {
                   setData(result.text);

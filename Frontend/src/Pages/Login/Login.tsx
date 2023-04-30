@@ -8,7 +8,7 @@ import LoginCard from './LoginCard.tsx';
 import SignupCard from './SignupCard.tsx';
 
 
-export default function Login(props: JSX.IntrinsicAttributes & { example: { users: { [x: string]: any; }; }; setControl: (arg0: any) => void; control: any; setAlert: (arg0: { open: boolean; text: string; severity: string; }) => void; }) {
+export default function Login(props: JSX.IntrinsicAttributes & { example: { users: { [x: string]: any; }; }; setExample: (arg0: any) => void; setControl: (arg0: any) => void; control: any; setAlert: (arg0: { open: boolean; text: string; severity: string; }) => void; }) {
   const [card, setCard] = React.useState(0);
   const change = (event: any, newValue: React.SetStateAction<number>) => {
     setCard(newValue)
@@ -23,9 +23,7 @@ export default function Login(props: JSX.IntrinsicAttributes & { example: { user
           </Tabs>
         </Grid>
         <Grid item xs={3} style={{ width: '100%' }}>
-          {!card ? <LoginCard {...props} /> : <SignupCard setExample={function (arg0: any): void {
-            throw new Error('Function not implemented.');
-          } } {...props} />}
+          {!card ? <LoginCard {...props} /> : <SignupCard {...props} />}
         </Grid>
       </Grid>
     </Container>

@@ -110,22 +110,7 @@ function Control() {
             {alert.text}
           </Alert>
         </Snackbar>
-        <Footer
-          example={{
-            users: {},
-          }}
-          setControl={function (arg0: any): void {
-            throw new Error("Function not implemented.");
-          }}
-          control={undefined}
-          setAlert={function (arg0: {
-            open: boolean;
-            text: string;
-            severity: string;
-          }): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <Footer />
       </Container>
     </ThemeProvider>
   );

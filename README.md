@@ -2,9 +2,12 @@
 # MC426 👩‍⚕️ 
 ##### An Open-Source, Smart and Friendly Medical Report Generator
 
+![CI/CD](https://github.com/AndreisPurim/MC426/workflows/CI/CD/badge.svg) [![codecov](https://codecov.io/gh/AndreisPurim/MC426/branch/workflows/graph/badge.svg)](https://codecov.io/gh/AndreisPurim/MC426)
+
 
 ## Technical Details
 ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+
 This project is separated into two modules: **Backend** and **Frontend**.
 The Frontend is a static page hosted on [Github Pages](https://pages.github.com/) with the deploy being stored on the ```gh-deploy``` branch. Meanwhile, the Backend is deployed on a different AWS server and both communicate via APIs.
 
@@ -34,4 +37,6 @@ Patient  ->>  Doctor 2: Consults (with report)
 Doctor 2 ->>  Program: Reads report QR Code
 Program  -->>  Doctor 2: Returns patient data
 ```
+
+
 
