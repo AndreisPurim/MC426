@@ -27,7 +27,7 @@ export default function LoginCard(props: any) {
     setUser({ ...user, password: event.target.value });
   };
   const connect = () => {
-    if(user.username=='noback'){
+    if(user.username=='andreis' && user.password=='noback'){
       props.setControl({ ...props.control, user: props.example.users['andreis'], view: 'profile' })
       props.setAlert({ open: true, text: "Connected", severity: "success" })
       return
