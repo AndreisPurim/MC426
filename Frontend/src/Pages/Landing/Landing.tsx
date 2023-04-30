@@ -124,12 +124,12 @@ export default function LandingPage(props: any){
     <Grid container style={{ gap: 15 }} direction="row" justifyContent="center" alignItems="stretch">
       <HeaderCard />
       <Grid item xs={3}>
-      <Button fullWidth variant="contained" size="large" endIcon={<PersonAddAltIcon />}>
+      <Button onClick={()=>props.setView('login')} fullWidth variant="contained" size="large" endIcon={<PersonAddAltIcon />}>
             Create account
           </Button>
         </Grid>
         <Grid item xs={3}>
-          <Button fullWidth variant="contained" size="large" startIcon={<PersonOutlineIcon />}>
+          <Button onClick={()=>props.setView('login')} fullWidth variant="contained" size="large" startIcon={<PersonOutlineIcon />}>
             Login
           </Button>
       </Grid>
