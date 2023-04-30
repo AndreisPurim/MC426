@@ -1,4 +1,4 @@
-import { dbExample } from './example';
+import { dbExample } from '../Source/example';
 
 test('db example', () => {
     const res = dbExample();
