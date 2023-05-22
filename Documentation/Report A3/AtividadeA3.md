@@ -139,8 +139,6 @@ A estrutura das entrevistas foram feitas de uma forma de indução: primeiro com
 
 ## 2. Requisitos e Histórias
 
-## 2. Requisitos e Histórias
-
 Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionais e não-funcionais. Os requisitos marcados com *x* em "planejados" são aqueles que consideramos dentro do escopo do projeto da matéria e que serão abordados nos épicos e nas histórias, enquanto aqueles marcados como *~* são aqueles que consideramos úteis para um sistema real mas não são prioridades, enquanto os vazios são aqueles que consideramos que não adicionam valor ao projeto no momento.
 
 | Tipo | Requisito | Planejado | Motivador |
@@ -160,19 +158,17 @@ Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionai
 | NF Externo | O sistema não pode salvar informações de um paciente em sua base de dados. | x | Razões éticas / Artigo base |
 | NF Externo | O sistema deve ser compatível com protocolos HL7 e OpenEHR | ~ | Entrevista com o Santanché / Artigo base |
 
+
 Dada a elicitação de requisitos, imaginamos as seguintes histórias e épicos de usuários e suas seguintes histórias:
--  **EPIC 1: As a doctor, I want to access de web app so that I can input all my infos**
-	-   As a radiologist, I want to input my medical information during my initial use of the web app, so my credentials and relevant details are stored for future logins and identification purposes.
-	-   As a radiologist, I want to visualize my medical information, so I can check and edit those informations
--  **EPIC 2: As a radiologist, I want to create a forms, so I can use personalized forms for CR**
-	-   As a radiologist, I want to input my patients' information in online formularies, including specific details for different computer radiography (CR) exams, so I can generate accurate and tailored QR Codes representing computer radiography for each patient.
-	-   As a radiologist, I want the ability to edit any necessary information in my patients' forms within the web app, ensuring that I can update and maintain accurate medical records as needed.
-	-   As a radiologist, I want a dedicated page in the web app where I can easily access and view the patient forms, providing a centralized location for managing and reviewing the required information.
--  **EPIC 3: As an admin medical professional, I want to create and administer online formularies within the web app, allowing me to efficiently manage the collection and organization of patient records for radiologists.**
-	- Browse existing forms for me to reuse or learn what forms exist
-	- Access form responses so I can view responses and compare
--  **EPIC 4: As an admin medical professional, I want to create customizable models for different CR exams within the web app, enabling radiologists to select the appropriate formulary based on the specific exam requirements and ensure standardized data collection.**
-	-  As an admin i want to send the forms, so the doctor can use it
-	- As an admin i want to have predefined fields models, so the doctor can I can standardize data
+-  **EPIC 1:** As a doctor, I want to access de web app so that I can input all my infos [#41](https://github.com/AndreisPurim/MC426/issues/41)
+	-   As a doctor, I want to input my medical information during my initial use of the web app, so my credentials and relevant details are stored for future logins and identification purposes.[#42](https://github.com/AndreisPurim/MC426/issues/42)
+	-   As a doctor, I want to visualize my medical information, so I can check and edit those informations [#43](https://github.com/AndreisPurim/MC426/issues/43)
+-  **EPIC 2:** As a doctor, I want to create a forms, so I can send them to my patients  [#38](https://github.com/AndreisPurim/MC426/issues/38):
+	-   As a doctor, I want to input my patients' information in online formularies, including specific details for different computer radiography (CR) exams, so I can generate accurate and tailored QR Codes representing computer radiography for each patient. [#44](https://github.com/AndreisPurim/MC426/issues/44)
+	-   As an admin medical professional, I want to acess the forms answers to compare them [#40](https://github.com/AndreisPurim/MC426/issues/40)
+	-  As a medical admin professional I want to browse existent forms to reuse them or to know which forms are there [#39](https://github.com/AndreisPurim/MC426/issues/39)
 
-
+-  **EPIC 3:** As an admin medical professional, I want to create customizable models for different CR exams within the web app, enabling radiologists to select the appropriate formulary based on the specific exam requirements and ensure standardized data collection. [#32](https://github.com/AndreisPurim/MC426/issues/32)
+	- As an admin i want to send the forms, so the doctor can use it [#35](https://github.com/AndreisPurim/MC426/issues/35)
+	- As an admin i want to have predefined fields models, so the doctor can use standardize data [#36](https://github.com/AndreisPurim/MC426/issues/36)
+	- As a radiologist, I want a dedicated page in the web app where I can easily access and view the patient forms, providing a centralized location for managing and reviewing the required information. [#45](https://github.com/AndreisPurim/MC426/issues/45)
