@@ -158,10 +158,7 @@ Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionai
 | NF Externo | O sistema não pode salvar informações de um paciente em sua base de dados. | x | Razões éticas / Artigo base |
 | NF Externo | O sistema deve ser compatível com protocolos HL7 e OpenEHR | ~ | Entrevista com o Santanché / Artigo base |
 
-## Histórias
-
-
-
+## 2. Histórias
 
 Dada a elicitação de requisitos, imaginamos as seguintes histórias e épicos de usuários e suas seguintes histórias:
 -  **EPIC 1:** As a doctor, I want to access de web app so that I can input all my infos [#41](https://github.com/AndreisPurim/MC426/issues/41)
