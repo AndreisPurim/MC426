@@ -5,7 +5,8 @@
 	 1. [Brainstorming](#11-brainstorming-e-cen%C3%A1rios-de-uso)
 	 2. [Benchmarking](#12-benchmarking)
 	 3. [Entrevistas (método principal)](#13-entrevistas)
- 2. [Requisitos e Histórias]([#2-requisitos-e-hist%C3%B3rias)
+	 4. [Requisitos](#14-requisitos)
+ 2. [Histórias](#2-hist%C3%B3rias)
 
 ## 1. Elicitação de Requisitos
 
@@ -137,8 +138,7 @@ A estrutura das entrevistas foram feitas de uma forma de indução: primeiro com
 | Conclusão | Objetiva | Há outras pessoas que você recomendaria que fossem entrevistadas? |
 | Conclusão | Subjetiva | Na sua opinião, quais os passos seguintes no projeto? |
 
-## 2. Requisitos e Histórias
-
+### 1.4 Requisitos
 Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionais e não-funcionais. Os requisitos marcados com *x* em "planejados" são aqueles que consideramos dentro do escopo do projeto da matéria e que serão abordados nos épicos e nas histórias, enquanto aqueles marcados como *~* são aqueles que consideramos úteis para um sistema real mas não são prioridades, enquanto os vazios são aqueles que consideramos que não adicionam valor ao projeto no momento.
 
 | Tipo | Requisito | Planejado | Motivador |
@@ -157,6 +157,10 @@ Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionai
 | NF Produto | O sistema pode ser capaz de utilizar IA para a geração de textos médicos |  | Extraido a partir dos artigos |
 | NF Externo | O sistema não pode salvar informações de um paciente em sua base de dados. | x | Razões éticas / Artigo base |
 | NF Externo | O sistema deve ser compatível com protocolos HL7 e OpenEHR | ~ | Entrevista com o Santanché / Artigo base |
+
+## Histórias
+
+
 
 
 Dada a elicitação de requisitos, imaginamos as seguintes histórias e épicos de usuários e suas seguintes histórias:
