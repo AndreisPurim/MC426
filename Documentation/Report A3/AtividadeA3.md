@@ -5,7 +5,7 @@
 	 1. [Brainstorming](#11-brainstorming-e-cen%C3%A1rios-de-uso)
 	 2. [Benchmarking](#12-benchmarking)
 	 3. [Entrevistas (método principal)](#13-entrevistas)
- 2. [Histórias](#2-hist%C3%B3rias)
+ 2. [Requisitos e Histórias]([#2-requisitos-e-hist%C3%B3rias)
 
 ## 1. Elicitação de Requisitos
 
@@ -106,6 +106,8 @@ Para este projeto, usamos entrevistas como uma técnica de listagem de requisito
 
 A estrutura das entrevistas foram feitas de uma forma de indução: primeiro começamos abordando o que de fato para contextualização e perguntamos de forma bem geral sobre o campo de automação de prontuários médicos, para depois voltar à especializar as perguntas para o projeto.
 
+*OBS: Só lembramos de gravar o áudio após um tempo de entrevista, então algumas informações iniciais foram perdidas.
+
 **Tabela 1.** Perguntas planejadas para as entrevistas. Devido ao tempo, nem todas as perguntas foram feitas nas entrevistas.
 | **Fase** | **Tipo** | **Pergunta** |
 |---|---|---|
@@ -135,6 +137,42 @@ A estrutura das entrevistas foram feitas de uma forma de indução: primeiro com
 | Conclusão | Objetiva | Há outras pessoas que você recomendaria que fossem entrevistadas? |
 | Conclusão | Subjetiva | Na sua opinião, quais os passos seguintes no projeto? |
 
-*OBS: Só lembramos de gravar o áudio após um tempo de entrevista, então algumas informações iniciais foram perdidas.
+## 2. Requisitos e Histórias
 
-## 2. Histórias
+## 2. Requisitos e Histórias
+
+Após as entrevistas, fizemos a seguinte lista exaustida de requisitos funcionais e não-funcionais. Os requisitos marcados com *x* em "planejados" são aqueles que consideramos dentro do escopo do projeto da matéria e que serão abordados nos épicos e nas histórias, enquanto aqueles marcados como *~* são aqueles que consideramos úteis para um sistema real mas não são prioridades, enquanto os vazios são aqueles que consideramos que não adicionam valor ao projeto no momento.
+
+| Tipo | Requisito | Planejado | Motivador |
+|---|---|:---:|---|
+| Funcional | Um usuário pode criar e logar em sua conta, configurar informações básicas (que serão usadas para preencher os dados do médico no prontuário) | x | - |
+| Funcional | Um usuário pode criar, alterar e deletar um formulário médico para ser preenchido com as informações de um paciente. | x | - |
+| Funcional | Um formulário preenchido deve ser capaz de gerar um relatório editável com um texto sobre as informações dadas e um QR Code com as informações preenchidas | x | - |
+| Funcional | Um médico pode ler qualquer QR Code e reconstruir as informações do paciente e do formulário que foi preenchido. | x | - |
+| Funcional | O sistema deve criar imagens em SVG do sistema analisado, dada às informações preenchidas no formulário. |  | O artigo inicial prevê a criação de imagens em SVG. |
+| Funcional | Ao invés de entrar com os dados da consulta, o médico poderia usar apenas a imagem da radiografia como input |  | Extraido a partir dos artigos com IA. Não acatado ainda devido à complexidade do problema. |
+| Funcional | O sistema deve permitir "loop" de perguntas dado uma informação prévia (explicação: Repetir um set de perguntas sobre um hematona N vezes, se N foi o número de hematomas informados anteriormente no formulário)  | ~ | Email do Dr. Prevost |
+| Não-Funcional Produto | O sistema deve ser open-source e livre para facilitar a auditoria. | x | Email do Dr. Prevost |
+| NF Produto | O sistema deve possuir um deploy "único", de modo que o usuário não precise instalar nada em seu computador nem em seu consultório. | x | Email do Dr. Prevost |
+| NF Produto | O sistema deve ser facilmente portável se o usuário decidir fazer deploy (por quaisquer razões) | x | Email do Dr. Prevost |
+| NF Produto | O sistema deve ser capaz de possuir como entrada um schema JSON das perguntas. | x | Email do Dr. Prevost / Artigo base |
+| NF Produto | O sistema pode ser capaz de utilizar IA para a geração de textos médicos |  | Extraido a partir dos artigos |
+| NF Externo | O sistema não pode salvar informações de um paciente em sua base de dados. | x | Razões éticas / Artigo base |
+| NF Externo | O sistema deve ser compatível com protocolos HL7 e OpenEHR | ~ | Entrevista com o Santanché / Artigo base |
+
+Dada a elicitação de requisitos, imaginamos as seguintes histórias e épicos de usuários e suas seguintes histórias:
+-  **EPIC 1: As a doctor, I want to access de web app so that I can input all my infos**
+	-   As a radiologist, I want to input my medical information during my initial use of the web app, so my credentials and relevant details are stored for future logins and identification purposes.
+	-   As a radiologist, I want to visualize my medical information, so I can check and edit those informations
+-  **EPIC 2: As a radiologist, I want to create a forms, so I can use personalized forms for CR**
+	-   As a radiologist, I want to input my patients' information in online formularies, including specific details for different computer radiography (CR) exams, so I can generate accurate and tailored QR Codes representing computer radiography for each patient.
+	-   As a radiologist, I want the ability to edit any necessary information in my patients' forms within the web app, ensuring that I can update and maintain accurate medical records as needed.
+	-   As a radiologist, I want a dedicated page in the web app where I can easily access and view the patient forms, providing a centralized location for managing and reviewing the required information.
+-  **EPIC 3: As an admin medical professional, I want to create and administer online formularies within the web app, allowing me to efficiently manage the collection and organization of patient records for radiologists.**
+	- Browse existing forms for me to reuse or learn what forms exist
+	- Access form responses so I can view responses and compare
+-  **EPIC 4: As an admin medical professional, I want to create customizable models for different CR exams within the web app, enabling radiologists to select the appropriate formulary based on the specific exam requirements and ensure standardized data collection.**
+	-  As an admin i want to send the forms, so the doctor can use it
+	- As an admin i want to have predefined fields models, so the doctor can I can standardize data
+
+
