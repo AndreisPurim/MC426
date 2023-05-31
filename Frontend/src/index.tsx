@@ -10,7 +10,7 @@ import Snackbar from "@mui/material/Snackbar";
 import "./Source/index.css";
 
 import Landing from "./Pages/Landing/Landing.tsx";
-import Authentication from "./Pages/Authentication/Authentication.tsx";
+import Authentication from "./Pages/Login/Login.tsx";
 import Profile from "./Pages/Profile/Profile.tsx";
 import ReadQRCode from "./Pages/Profile/ReadQRCode.tsx";
 import Navbar from "./Components/Navbar.tsx";
