@@ -38,5 +38,9 @@ Doctor 2 ->>  Program: Reads report QR Code
 Program  -->>  Doctor 2: Returns patient data
 ```
 
-
-
+## Architecture
+### Architecture Style:
+Single Page Application - The choice for SPA is based on the intent to make the user experience simple, considering the application will need to be loaded only once, making the navigation easier and dynamic. In addition to that, SPA sinergyzes with React Virtual DOM, making the app rendering efficient and fluid.
+ 
+### Design Pattern:
+Observer - The choice for the Observer design is based on its sinergy with SPA and the way React native behaviors with hooks and states, making the application dependencies/components easier to manipulate and control.
