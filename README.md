@@ -39,7 +39,7 @@ Program  -->>  Doctor 2: Returns patient data
 ```
 
 ## Architecture
->Insert images here
+![Architecture diagram](./Documentation/Report%20A4/C4_diagram.svg)
 ### Architecture Style:
 > **Single Page Application** - The choice for SPA is based on the intent to make the user experience simple, considering the application will need to be loaded only once, making the navigation easier and dynamic. In addition to that, SPA sinergyzes with React Virtual DOM, making the app rendering efficient and fluid.
 
