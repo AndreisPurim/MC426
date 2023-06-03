@@ -26,6 +26,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import FormCard from './FormCard';
+
 export default function UserTable(props: { example: any; setControl: (arg0: any) => void; control: { user: { username: string | number; favorites: { indexOf: (arg0: any) => number; length: string; }; recents: any; created: { indexOf: (arg0: any) => number; length: string; }; admin: any; }; }; setExample: (arg0: any) => void; }) {
   const [table, setTable] = React.useState({
     tab: 0,
@@ -232,6 +234,7 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
                         }
                         else return null
                       })}
+                      <FormCard {...props} row={row}/>
                     </TableRow>
                   )
                 })}

@@ -9,12 +9,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Snackbar from "@mui/material/Snackbar";
 import "./Source/index.css";
 
-import Landing from "./Pages/Landing/Landing.tsx";
-import Authentication from "./Pages/Login/Login.tsx";
-import Profile from "./Pages/Profile/Profile.tsx";
-import ReadQRCode from "./Pages/Profile/ReadQRCode.tsx";
-import Navbar from "./Components/Navbar.tsx";
-import Footer from "./Components/Footer.tsx";
+import Landing from "./Pages/Landing/Landing";
+import Authentication from "./Pages/Login/Login";
+import Profile from "./Pages/Profile/Profile";
+import ReadQRCode from "./Pages/Profile/ReadQRCode";
+import Form from "./Pages/Form/Form";
+import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 
 import {dbExample} from "./Source/example.ts";
 import {Theme} from "@emotion/react";
@@ -72,6 +73,8 @@ function Control() {
                 return <Profile {...sendControl} />;
             case "readqr":
                 return <ReadQRCode {...sendControl} />;
+            case "form":
+                return <Form {...sendControl} />;
             default:
                 return <Landing {...sendControl} />;
         }
