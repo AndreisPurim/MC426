@@ -13,6 +13,7 @@ import Landing from "./Pages/Landing/Landing";
 import Authentication from "./Pages/Login/Login";
 import Profile from "./Pages/Profile/Profile";
 import ReadQRCode from "./Pages/Profile/ReadQRCode";
+import Creator from "./Pages/Creator/Creator";
 import Form from "./Pages/Form/Form";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -75,6 +76,8 @@ function Control() {
                 return <ReadQRCode {...sendControl} />;
             case "form":
                 return <Form {...sendControl} />;
+            case "creator":
+                return <Creator {...sendControl} />;
             default:
                 return <Landing {...sendControl} />;
         }
