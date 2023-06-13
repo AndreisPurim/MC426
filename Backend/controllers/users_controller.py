@@ -6,9 +6,16 @@ from models.user import User
 
 router = APIRouter()
 
+banco_dados = []
+
 @router.post("/")
 async def add_item(user: User):
     await user.save()
+    return user
+
+@router.post("/usuario")
+def add_item(user: User):
+    banco_dados.append(user)
     return user
 
 @router.get("/")
@@ -25,9 +32,10 @@ async def get_user(user_id: int, response: Response):
         return {"mensagem": "Entidade não encontrada"}
 
 @router.patch("/{user_id}")
-async def patch_user(propriedade_atualizacao: UserUpdate, papel_id: int, response: Response):
+async def patch_user(nome: str, email: str, senha: str, papel_id: int, response: Response):
     try:
         user_salvo = await User.objects.get(id=papel_id)
+        propriedade_atualizacao = {'nome': nome, 'email': email, 'senha': senha}
         propriedades_atualizadas = propriedade_atualizacao.dict(exclude_unset=True)
         await user_salvo.update(**propriedades_atualizadas)
         return user_salvo
