@@ -34,7 +34,6 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 import ExposureIcon from '@mui/icons-material/Exposure';
-import EventIcon from '@mui/icons-material/Event';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
@@ -64,54 +63,6 @@ function checkOther(type: any){
 }
 
 function Question(props: any) {
-  const deleteQuestion=(event: any)=>{
-    event.preventDefault();
-    const newQuestions = props.creator.questions
-    newQuestions.splice(props.creator.questions.indexOf(props.question), 1)
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const changeQuestion=(event: any)=>{
-    const newQuestions = props.creator.questions
-    const newVariable = event.target.value.toLowerCase().replace(/\s/g, '_').replace(/[^a-z0-9_]/gi,'');
-    newQuestions[props.creator.questions.indexOf(props.question)].questionLabel = event.target.value
-    newQuestions[props.creator.questions.indexOf(props.question)].variable = newVariable
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const changeVariable=(event: any)=>{
-    const treatedText = event.target.value.replace(/[^a-z0-9_]/gi,'');
-    const newQuestions = props.creator.questions
-    newQuestions[props.creator.questions.indexOf(props.question)].variable = treatedText
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const changeType=(event: any)=>{
-    const newQuestions = props.creator.questions
-    // Resets information except if its choice <-> multiple choice, then conserves choice vector.
-    let newChoices = []
-    let newQChoices = 0;
-    let varName = props.question.variable
-    if(props.question.type==='Choice'||props.question.type==='Multiple Choice'){
-      newChoices = newQuestions[props.creator.questions.indexOf(props.question)].choices
-      newQChoices = newQuestions[props.creator.questions.indexOf(props.question)].qchoices
-    }
-    if(event.target.value==='Loop'){
-      varName = 'loopID_'+props.question.questionID
-    }
-    else if(event.target.value==='Page'){
-      varName = 'pageID_'+props.question.questionID
-    }
-    newQuestions[props.creator.questions.indexOf(props.question)] = {...newQuestions[props.creator.questions.indexOf(props.question)], type:event.target.value, variable: varName, loopvar: false,  default: null, min: null, max: null, others: false, qchoices: newQChoices, choices: newChoices};
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const changeRequired=(event: any)=>{
-    const newQuestions = props.creator.questions
-    newQuestions[props.creator.questions.indexOf(props.question)].required = event.target.checked
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const addOthers=()=>{
-    const newQuestions = props.creator.questions
-    newQuestions[props.creator.questions.indexOf(props.question)].others = true
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
   const changeDefault=(event: any,type: any,choiceID: any)=>{
     const newQuestions = props.creator.questions
     if(event.target.value!==''){
@@ -148,11 +99,6 @@ function Question(props: any) {
     }
     props.setCreator({...props.creator, questions: newQuestions})
   }
-  const removeOthers=()=>{
-    const newQuestions = props.creator.questions
-    newQuestions[props.creator.questions.indexOf(props.question)].others = false
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
   const changeLoopvar=(event: any)=>{
     const newQuestions = props.creator.questions
     newQuestions[props.creator.questions.indexOf(props.question)].loopvar = event.target.value;
@@ -168,41 +114,6 @@ function Question(props: any) {
     }
     props.setCreator({...props.creator, questions: newQuestions})
   }
-  const addChoice=()=>{
-    const newQuestions = props.creator.questions;
-    const index = newQuestions.indexOf(props.question);
-    const newChoice = {choiceID: newQuestions[index].qchoices, dragID: newQuestions[index].qchoices.toString(), text:'Option '+newQuestions[index].qchoices};
-    newQuestions[index].choices.push(newChoice);
-    newQuestions[index].qchoices = newQuestions[index].qchoices+1;
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  function deleteChoice(choice: any,event: any){
-    const newQuestions = props.creator.questions
-    const index = props.creator.questions.indexOf(props.question)
-    newQuestions[index].choices.splice(newQuestions[index].choices.indexOf(choice), 1)
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  function changeChoice(choice: any,event: any){
-    const newQuestions = props.creator.questions
-    const questionIndex = newQuestions.indexOf(props.question)
-    const choiceIndex = newQuestions[questionIndex].choices.indexOf(choice)
-    newQuestions[questionIndex].choices[choiceIndex].text = event.target.value
-    props.setCreator({...props.creator, questions: newQuestions})
-  }
-  const reorder = (list: any, startIndex: any, endIndex: any) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  };
-  function onDragEnd(result: any) {
-    if(!result.destination){return}
-    if(result.destination.index === result.source.index){return}
-    const newQuestions = props.creator.questions;
-    const index = newQuestions.indexOf(props.question);
-    newQuestions[index].choices = reorder(newQuestions[index].choices,result.source.index,result.destination.index);
-    props.setCreator({...props.creator, questions: newQuestions});
-  }
   return (
     <Draggable draggableId={props.question.dragID} index={props.index}>
       {provided => (
@@ -212,44 +123,12 @@ function Question(props: any) {
               <Grid item {...provided.dragHandleProps} style={{marginLeft:'auto',marginRight:'auto',minHeight:'2rem'}}>
                 <DragHandleIcon />
               </Grid>
-              <Grid item xs={12} container direction="row" justifyContent="space-between" alignItems="center">
-                <Grid item xs={9} style={{paddingRight:'3rem'}}>
-                  <TextField fullWidth placeholder={props.question.type==="Page"?"Page Title":props.question.type==="Loop"?"Loop Title":"Question"} value={props.question.questionLabel} onChange={changeQuestion} variant="outlined" />
-                </Grid>
-                <Grid item xs={3}>
-                  <FormControl variant="outlined" fullWidth>
-                    <Select value={props.question.type} onChange={changeType} renderValue={(selected)=>selected}>
-                      <MenuItem value="" disabled>
-                        Input
-                      </MenuItem>
-                      {typeOptions.map(type=>
-                        <MenuItem key={type.label} value={type.label}>
-                          <ListItemIcon>
-                            {type.icon}
-                          </ListItemIcon>
-                          <ListItemText primary={type.label}/>
-                        </MenuItem>
-                      )}
-                      <MenuItem value="others" disabled>
-                        Others
-                      </MenuItem>
-                      {otherOptions.map(type=>
-                        <MenuItem key={type.label} value={type.label}>
-                          <ListItemIcon>
-                            {type.icon}
-                          </ListItemIcon>
-                          <ListItemText primary={type.label}/>
-                        </MenuItem>
-                      )}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
+              <QuestionHead {...props} />
               <Grid item xs={12} spacing={1} container direction="row" justifyContent="flex-start" alignItems="center" style={{padding:'1rem 0 1rem 0'}}>
                 {props.question.type==='Loop'?
                   <React.Fragment>
                     <Grid item xs={3}>
-                      <FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} onChange={changeRequired} />} label={props.question.required?"Variable":"Range"} labelPlacement="end"/>
+                      <FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} />} label={props.question.required?"Variable":"Range"} labelPlacement="end"/>
                     </Grid>
                     <Grid item xs={3}>
                       {props.question.required?
@@ -284,83 +163,221 @@ function Question(props: any) {
                     <TextField fullWidth value={props.question.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} placeholder="Default"/>
                   </Grid>
                 :props.question.type==='Choice'||props.question.type==='Multiple Choice'?
-                  <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId={"choices_0"}>
-                      {(provided) => (
-                        <List dense ref={provided.innerRef}>
-                          {props.question.choices.map((choice: any,index: any)=>
-                            <Draggable draggableId={choice.dragID} index={index} key={choice.choiceID}>
-                              {provided => (
-                                <ListItem ref={provided.innerRef} {...provided.draggableProps}>
-                                  <ListItemIcon>
-                                    <IconButton size="small" {...provided.dragHandleProps}>
-                                      <DragIndicatorIcon />
-                                    </IconButton>
-                                    <IconButton size="small" onClick={(event)=>deleteChoice(event,choice)}>
-                                      <ClearIcon />
-                                    </IconButton>
-                                    {props.question.type==='Choice'?
-                                      <IconButton size="small" onClick={(event)=>changeDefault(event,props.question.type,choice.choiceID)}>
-                                        {props.question.default===choice.choiceID?<RadioButtonCheckedIcon/>:<RadioButtonUncheckedIcon/>}  
-                                      </IconButton>
-                                    :
-                                      <IconButton size="small" onClick={(event)=>changeDefault(event,props.question.type,choice.choiceID)}>
-                                        {props.question.default&&props.question.default.has(choice.choiceID)?<CheckBoxIcon />:<CheckBoxOutlineBlankIcon/>}
-                                      </IconButton>
-                                    }
-                                  </ListItemIcon>
-                                  <ListItemText primary={<TextField value={choice.text} onChange={event=>changeChoice(choice,event)} />} />
-                                </ListItem>
-                              )}
-                            </Draggable>
-                          )}
-                          {provided.placeholder}
-                          {!props.question.others? null:
-                            <ListItem >
-                              <ListItemIcon>
-                                  <IconButton size="small" disabled>
-                                    <DragIndicatorIcon />
-                                  </IconButton>
-                                  <IconButton size="small" onClick={removeOthers}>
-                                    <ClearIcon />
-                                  </IconButton>
-                                  <IconButton size="small" disabled>
-                                    {props.question.type==='Choice'?<RadioButtonUncheckedIcon/>:<CheckBoxOutlineBlankIcon/>}
-                                  </IconButton>
-                              </ListItemIcon>
-                              <ListItemText primary={<TextField value="Others" disabled />}/>
-                            </ListItem>
-                          }
-                          <ListItem>
-                            <ListItemText primary={<span><Link component="button" onClick={addChoice}>Add Option</Link> or <Link component="button" onClick={addOthers}>Add &apos;Others&apos;</Link></span>} />
-                          </ListItem>
-                        </List>
-                      )}
-                    </Droppable>
-                  </DragDropContext>
+                  <QuestionChoices {...props} changeDefault={changeDefault}/>
                 :null
                 }
               </Grid>
             </Grid>
             <Divider />
-            <Grid item xs={12} container direction="row" justifyContent="flex-start" alignItems="center" style={{paddingLeft:'2rem'}}>
-              <Grid item xs={checkOther(props.question.type)?2:4}>
-                {checkOther(props.question.type)?<TextField fullWidth disabled value={props.question.variable}/>:<TextField fullWidth value={props.question.variable} onChange={changeVariable} placeholder="Variable Name" helperText="Variable Name" />}
-              </Grid>
-              <FormGroup row style={{marginLeft:'auto',padding:'0.3rem'}}>
-                {checkOther(props.question.type)?null:<FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} onChange={changeRequired} />} label={(props.question.required?"":"Not ")+ "Required"} labelPlacement="start"/>}
-                <Tooltip title="Delete Question">
-                  <IconButton onClick={deleteQuestion}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </FormGroup>
-            </Grid>
+            <QuestionFooter {...props}/>
           </Paper>
         </Grid>
       )}
     </Draggable>
   );
+}
+
+function QuestionChoices(props: any){
+  const addChoice=()=>{
+    const newQuestions = props.creator.questions;
+    const index = newQuestions.indexOf(props.question);
+    const newChoice = {choiceID: newQuestions[index].qchoices, dragID: newQuestions[index].qchoices.toString(), text:'Option '+newQuestions[index].qchoices};
+    newQuestions[index].choices.push(newChoice);
+    newQuestions[index].qchoices = newQuestions[index].qchoices+1;
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  function deleteChoice(choice: any,event: any){
+    const newQuestions = props.creator.questions
+    const index = props.creator.questions.indexOf(props.question)
+    newQuestions[index].choices.splice(newQuestions[index].choices.indexOf(choice), 1)
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  function changeChoice(choice: any,event: any){
+    const newQuestions = props.creator.questions
+    const questionIndex = newQuestions.indexOf(props.question)
+    const choiceIndex = newQuestions[questionIndex].choices.indexOf(choice)
+    newQuestions[questionIndex].choices[choiceIndex].text = event.target.value
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  const addOthers=()=>{
+    const newQuestions = props.creator.questions
+    newQuestions[props.creator.questions.indexOf(props.question)].others = true
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  const removeOthers=()=>{
+    const newQuestions = props.creator.questions
+    newQuestions[props.creator.questions.indexOf(props.question)].others = false
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  function onDragEnd(result: any) {
+    if(!result.destination){return}
+    if(result.destination.index === result.source.index){return}
+    const newQuestions = props.creator.questions;
+    const index = newQuestions.indexOf(props.question);
+    newQuestions[index].choices = reorder(newQuestions[index].choices,result.source.index,result.destination.index);
+    props.setCreator({...props.creator, questions: newQuestions});
+  }
+  const reorder = (list: any, startIndex: any, endIndex: any) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+  return(
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId={"choices_0"}>
+        {(provided) => (
+          <List dense ref={provided.innerRef}>
+            {props.question.choices.map((choice: any,index: any)=>
+              <Draggable draggableId={choice.dragID} index={index} key={choice.choiceID}>
+                {provided => (
+                  <ListItem ref={provided.innerRef} {...provided.draggableProps}>
+                    <ListItemIcon>
+                      <IconButton size="small" {...provided.dragHandleProps}>
+                        <DragIndicatorIcon />
+                      </IconButton>
+                      <IconButton size="small" onClick={(event)=>deleteChoice(event,choice)}>
+                        <ClearIcon />
+                      </IconButton>
+                      {props.question.type==='Choice'?
+                        <IconButton size="small" onClick={(event)=>props.changeDefault(event,props.question.type,choice.choiceID)}>
+                          {props.question.default===choice.choiceID?<RadioButtonCheckedIcon/>:<RadioButtonUncheckedIcon/>}  
+                        </IconButton>
+                      :
+                        <IconButton size="small" onClick={(event)=>props.changeDefault(event,props.question.type,choice.choiceID)}>
+                          {props.question.default&&props.question.default.has(choice.choiceID)?<CheckBoxIcon />:<CheckBoxOutlineBlankIcon/>}
+                        </IconButton>
+                      }
+                    </ListItemIcon>
+                    <ListItemText primary={<TextField value={choice.text} onChange={event=>changeChoice(choice,event)} />} />
+                  </ListItem>
+                )}
+              </Draggable>
+            )}
+            {provided.placeholder}
+            {!props.question.others? null:
+              <ListItem >
+                <ListItemIcon>
+                    <IconButton size="small" disabled>
+                      <DragIndicatorIcon />
+                    </IconButton>
+                    <IconButton size="small" onClick={removeOthers}>
+                      <ClearIcon />
+                    </IconButton>
+                    <IconButton size="small" disabled>
+                      {props.question.type==='Choice'?<RadioButtonUncheckedIcon/>:<CheckBoxOutlineBlankIcon/>}
+                    </IconButton>
+                </ListItemIcon>
+                <ListItemText primary={<TextField value="Others" disabled />}/>
+              </ListItem>
+            }
+            <ListItem>
+              <ListItemText primary={<span><Link component="button" onClick={addChoice}>Add Option</Link> or <Link component="button" onClick={addOthers}>Add &apos;Others&apos;</Link></span>} />
+            </ListItem>
+          </List>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
+}
+
+function QuestionHead(props: any){
+  const changeQuestion=(event: any)=>{
+    const newQuestions = props.creator.questions
+    const newVariable = event.target.value.toLowerCase().replace(/\s/g, '_').replace(/[^a-z0-9_]/gi,'');
+    newQuestions[props.creator.questions.indexOf(props.question)].questionLabel = event.target.value
+    newQuestions[props.creator.questions.indexOf(props.question)].variable = newVariable
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  const changeType=(event: any)=>{
+    const newQuestions = props.creator.questions
+    // Resets information except if its choice <-> multiple choice, then conserves choice vector.
+    let newChoices = []
+    let newQChoices = 0;
+    let varName = props.question.variable
+    if(props.question.type==='Choice'||props.question.type==='Multiple Choice'){
+      newChoices = newQuestions[props.creator.questions.indexOf(props.question)].choices
+      newQChoices = newQuestions[props.creator.questions.indexOf(props.question)].qchoices
+    }
+    if(event.target.value==='Loop'){
+      varName = 'loopID_'+props.question.questionID
+    }
+    else if(event.target.value==='Page'){
+      varName = 'pageID_'+props.question.questionID
+    }
+    newQuestions[props.creator.questions.indexOf(props.question)] = {...newQuestions[props.creator.questions.indexOf(props.question)], type:event.target.value, variable: varName, loopvar: false,  default: null, min: null, max: null, others: false, qchoices: newQChoices, choices: newChoices};
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  return(
+    <Grid item xs={12} container direction="row" justifyContent="space-between" alignItems="center">
+      <Grid item xs={9} style={{paddingRight:'3rem'}}>
+        <TextField fullWidth placeholder={props.question.type==="Page"?"Page Title":props.question.type==="Loop"?"Loop Title":"Question"} value={props.question.questionLabel} onChange={changeQuestion} variant="outlined" />
+      </Grid>
+      <Grid item xs={3}>
+        <FormControl variant="outlined" fullWidth>
+          <Select value={props.question.type} onChange={changeType} renderValue={(selected)=>selected}>
+            <MenuItem value="" disabled>
+              Input
+            </MenuItem>
+            {typeOptions.map(type=>
+              <MenuItem key={type.label} value={type.label}>
+                <ListItemIcon>
+                  {type.icon}
+                </ListItemIcon>
+                <ListItemText primary={type.label}/>
+              </MenuItem>
+            )}
+            <MenuItem value="others" disabled>
+              Others
+            </MenuItem>
+            {otherOptions.map(type=>
+              <MenuItem key={type.label} value={type.label}>
+                <ListItemIcon>
+                  {type.icon}
+                </ListItemIcon>
+                <ListItemText primary={type.label}/>
+              </MenuItem>
+            )}
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
+  )
+}
+
+function QuestionFooter(props: any){
+  const deleteQuestion=(event: any)=>{
+    event.preventDefault();
+    const newQuestions = props.creator.questions
+    newQuestions.splice(props.creator.questions.indexOf(props.question), 1)
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  const changeVariable=(event: any)=>{
+    const treatedText = event.target.value.replace(/[^a-z0-9_]/gi,'');
+    const newQuestions = props.creator.questions
+    newQuestions[props.creator.questions.indexOf(props.question)].variable = treatedText
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  const changeRequired=(event: any)=>{
+    const newQuestions = props.creator.questions
+    newQuestions[props.creator.questions.indexOf(props.question)].required = event.target.checked
+    props.setCreator({...props.creator, questions: newQuestions})
+  }
+  return(
+    <Grid item xs={12} container direction="row" justifyContent="flex-start" alignItems="center" style={{paddingLeft:'2rem'}}>
+      <Grid item xs={checkOther(props.question.type)?2:4}>
+        {checkOther(props.question.type)?<TextField fullWidth disabled value={props.question.variable}/>:<TextField fullWidth value={props.question.variable} onChange={changeVariable} placeholder="Variable Name" helperText="Variable Name" />}
+      </Grid>
+      <FormGroup row style={{marginLeft:'auto',padding:'0.3rem'}}>
+        {checkOther(props.question.type)?null:<FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} onChange={changeRequired} />} label={(props.question.required?"":"Not ")+ "Required"} labelPlacement="start"/>}
+        <Tooltip title="Delete Question">
+          <IconButton onClick={deleteQuestion}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </FormGroup>
+    </Grid>
+  )
 }
 
 export default function Questions(props: any){
