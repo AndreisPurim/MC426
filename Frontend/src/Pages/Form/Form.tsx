@@ -24,6 +24,7 @@ export default function Form(props: any){
         props.setControl({...props.control, view: 'user'})
       }
     }
+    console.log(answers.questions)
     const sendExtraProps = {...props, answers, setAnswers}
     return (
       <Grid container direction="column" justifyContent="center" alignItems="stretch" xs={12} spacing={2} style={{marginTop: '2rem', }}>
@@ -38,12 +39,14 @@ export default function Form(props: any){
         </Grid>
         {answers.step?
           <Download {...sendExtraProps} />
-        :
+        :answers.questions.questions.length?
           <Grid item xs={12} style={{minWidth: '50rem', marginLeft:'auto',marginRight:'auto'}}>
-            Testing
+            {answers.questions.questions.map((question: any) =>
+              <p key={question.name}>{JSON.stringify(question)}</p>
+            )}
             {/* <Survey form={answers.questions} defaultAnswers={answers.answers} autocompleteRequest={function noRefCheck() {}} onFinish={saveAnswers}/> */}
           </Grid>
-        }
+        : null}
       </Grid>
     )
   } 
