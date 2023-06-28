@@ -13,6 +13,7 @@ export default function Form(props: any){
       answers: {...props.control.tempData},
       questions: props.example.forms[props.control.formID].formatted,
     });
+    // Aqui se estivessemos usando o Material survey
     const saveAnswers=(newAnswers: any)=>{
       setAnswers({...answers, step:1, answers: newAnswers})
     }
