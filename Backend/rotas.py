@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from controllers import users_controller as users
+from controllers import formulario_controller as formulario
 
 router = APIRouter()
 
-router.include_router(users.router, prefix='/users')
+router.include_router(formulario.router, prefix='/formulario')
