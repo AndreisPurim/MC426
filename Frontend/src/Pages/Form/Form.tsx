@@ -14,6 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 
+
 import Download from './Download';
 
 export default function Form(props: any){
@@ -50,12 +51,6 @@ export default function Form(props: any){
             <Step><StepLabel>Answer Forms</StepLabel></Step>
             <Step><StepLabel>Verify and Download</StepLabel></Step>
           </Stepper>
-        </Grid>
-        <Grid item xs={2} style={{marginLeft:'auto',marginRight:'auto'}}>
-          <ButtonGroup variant="contained" color="primary">
-            <Button onClick={back}>{answers.step?'Back':'Cancel'}</Button>
-            <Button onClick={forward} disabled={answers.step===1}>Forward</Button>
-          </ButtonGroup>
         </Grid>
         {answers.step?
           <Download {...sendExtraProps} />
