@@ -69,7 +69,9 @@ function Control() {
     function returnView() {
         switch (control.view) {
             case "login":
-                return <Authentication {...sendControl} />;
+                return <Authentication auth="login" {...sendControl} />;
+            case "signup":
+                return <Authentication auth="signup" {...sendControl} />;
             case "profile":
                 return <Profile {...sendControl} />;
             case "readqr":
