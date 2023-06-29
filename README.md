@@ -19,6 +19,42 @@ Go to the Frontend folder using ```cd Frontend``` and install the packages if yo
 
 You can deploy using ```npm run deploy```, which will automatically commit the build to ```gh-deploy```  and deploy on the website.
  
+Go to Backend forlder using ```cd Backend``` and create an virtual environmet ```python -m venv fastapi-env``` then follow the steps according to your OS
+
+## Activate the virtual environment Windows via Powershell
+fastapi-env\Scripts\Activate.ps1
+
+## Activate the virtual environment Windows via Cmd
+fastapi-env\Scripts\activate.bat
+
+## Activate the virtual environment Linux
+```
+source fastapi-env/bin/activate
+```
+
+## Install the dependencies
+```
+pip install -r requirements.txt
+```
+or
+```
+pip3 install -r requirements.txt
+```
+
+## Create the tables
+```
+python3 cria_tabelas.py    
+```
+
+## Run the project
+```
+uvicorn main:app --reload 
+```
+
+## Run the tests
+```
+python -m pytest tests/
+```
 
 
 ## Diagrams

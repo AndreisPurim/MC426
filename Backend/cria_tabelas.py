@@ -3,7 +3,7 @@ import sqlalchemy
 from sqlalchemy import engine
 
 from config import DATABASE_URL, metadata
-from models.formulario import Formulario
+import models.import_models
 
 def configurar_banco(database_url = DATABASE_URL):
     engine = sqlalchemy.create_engine(database_url)
