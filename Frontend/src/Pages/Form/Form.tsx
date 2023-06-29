@@ -16,6 +16,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 
 import Download from './Download';
+import { getTouchRippleUtilityClass } from '@mui/material';
 
 export default function Form(props: any){
     const [answers, setAnswers] = React.useState({
@@ -23,10 +24,6 @@ export default function Form(props: any){
       answers: {...props.control.tempData},
       questions: props.example.forms[props.control.formID].formatted,
     });
-    // Aqui se estivessemos usando o Material survey
-    const saveAnswers=(newAnswers: any)=>{
-      setAnswers({...answers, step:1, answers: newAnswers})
-    }
     const back=()=>{
       if(answers.step){
         setAnswers({...answers, step: answers.step-1})
@@ -42,6 +39,15 @@ export default function Form(props: any){
       let newAnswers = answers.answers
       newAnswers[id] = event.target.value
       setAnswers({...answers, answers: newAnswers})
+    }
+    console.log(answers)
+    const missingRequired=()=>{
+      for(let q in answers.questions.questions){
+        if(answers.questions.questions[q].isRequired&&!(answers.questions.questions[q].name in answers.answers)){
+          return true
+        }
+      }
+      return false
     }
     const sendExtraProps = {...props, answers, setAnswers}
     return (
@@ -88,7 +94,7 @@ export default function Form(props: any){
         <Grid item xs={2} style={{marginLeft:'auto',marginRight:'auto'}}>
           <ButtonGroup variant="contained" color="primary">
             <Button onClick={back}>{answers.step?'Back':'Cancel'}</Button>
-            <Button onClick={forward} disabled={answers.step===1}>Forward</Button>
+            <Button onClick={forward} disabled={answers.step===1||missingRequired()}>Forward</Button>
           </ButtonGroup>
         </Grid>
       </Grid>
