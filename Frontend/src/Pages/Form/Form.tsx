@@ -5,6 +5,15 @@ import Step from '@mui/material/Step';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 
+
+import ButtonGroup from '@mui/material/ButtonGroup';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
+
 import Download from './Download';
 
 export default function Form(props: any){
@@ -22,10 +31,17 @@ export default function Form(props: any){
         setAnswers({...answers, step: answers.step-1})
       }
       else{
-        props.setControl({...props.control, view: 'user'})
+        props.setControl({...props.control, view: 'profile'})
       }
     }
-    console.log(answers.questions)
+    const forward=()=>{
+      setAnswers({...answers, step: answers.step+1})
+    }
+    function handleChange(id: string,event: any){
+      let newAnswers = answers.answers
+      newAnswers[id] = event.target.value
+      setAnswers({...answers, answers: newAnswers})
+    }
     const sendExtraProps = {...props, answers, setAnswers}
     return (
       <Grid container direction="column" justifyContent="center" alignItems="stretch" xs={12} spacing={2} style={{marginTop: '2rem', }}>
@@ -36,18 +52,50 @@ export default function Form(props: any){
           </Stepper>
         </Grid>
         <Grid item xs={2} style={{marginLeft:'auto',marginRight:'auto'}}>
-          <Button variant="contained" color="primary" size="small" onClick={back}>{answers.step?'Back':'Cancel'}</Button>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={back}>{answers.step?'Back':'Cancel'}</Button>
+            <Button onClick={forward} disabled={answers.step===1}>Forward</Button>
+          </ButtonGroup>
         </Grid>
         {answers.step?
           <Download {...sendExtraProps} />
         :answers.questions.questions.length?
-          <Grid item xs={12} style={{minWidth: '50rem', marginLeft:'auto',marginRight:'auto'}}>
+          <Grid
+            item
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="stretch"
+            spacing={1}
+          >
             {answers.questions.questions.map((question: any) =>
-              <p key={question.name}>{JSON.stringify(question)}</p>
+              <Grid item key={question.name}>
+                {question.type==='text'?
+                  <TextField fullWidth 
+                  value={answers.answers[question.name]}
+                  onChange={(event)=>handleChange(question.name,event)}
+                  required={question.isRequired} label={question.title} variant="outlined" />
+                :question.type==='dropdown'?
+                  <FormControl fullWidth>
+                    <InputLabel>{question.title}</InputLabel>
+                    <Select label={question.title}
+                      value={answers.answers[question.name]}
+                      onChange={(event)=>handleChange(question.name,event)}
+                    >
+                      {question.choices.map((choice: any) => <MenuItem key={choice} value={choice}>{choice}</MenuItem>)}
+                    </Select>
+                </FormControl>
+                :JSON.stringify(question)}
+              </Grid>
             )}
-            {/* <Survey form={answers.questions} defaultAnswers={answers.answers} autocompleteRequest={function noRefCheck() {}} onFinish={saveAnswers}/> */}
           </Grid>
         : null}
+        <Grid item xs={2} style={{marginLeft:'auto',marginRight:'auto'}}>
+          <ButtonGroup variant="contained" color="primary">
+            <Button onClick={back}>{answers.step?'Back':'Cancel'}</Button>
+            <Button onClick={forward} disabled={answers.step===1}>Forward</Button>
+          </ButtonGroup>
+        </Grid>
       </Grid>
     )
   } 
