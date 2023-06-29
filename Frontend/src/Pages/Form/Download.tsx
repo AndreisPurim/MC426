@@ -119,7 +119,7 @@ export default function Download(props: any){
                 <QRCode value={generateQRCode()} size={750}/>
             :
                 <Paper elevation={3} style={{width: '210mm', height: '100vh'}}>
-                    <JoditEditor ref={editor} value={editResult} config={config} tabIndex={1} onBlur={(newContent: any) => setEditResult(newContent)}/>
+                    <JoditEditor ref={editor} value={editResult} config={config} onBlur={(newContent: any) => setEditResult(newContent)}/>
                 </Paper>
             }
             </Grid>
