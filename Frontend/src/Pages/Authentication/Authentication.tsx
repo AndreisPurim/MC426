@@ -10,14 +10,16 @@ import axios from "axios";
 
 export default function Authentication(
     props: JSX.IntrinsicAttributes & {
+        auth: "login" | "signup";
         example: {users: {[x: string]: any}};
         setExample: (arg0: any) => void;
         setControl: (arg0: any) => void;
+        setView: (arg0: string) => void;
         control: any;
         setAlert: (arg0: {open: boolean; text: string; severity: string}) => void;
     }
 ) {
-    const [card, setCard] = React.useState(0);
+    const [card, setCard] = React.useState(props.auth === "login" ? 0 : 1);
     const change = (event: any, newValue: React.SetStateAction<number>) => {
         setCard(newValue);
     };
@@ -33,8 +35,8 @@ export default function Authentication(
         }
     };
 
-    const handleLogin = (user: any) => {
-        if (user.username == "andreis" && user.password == "noback") {
+    const handleLogin = (user: any, force = false) => {
+        if (force || (user.username == "andreis" && user.password == "noback")) {
             props.setControl({...props.control, user: props.example.users["andreis"], view: "profile"});
             props.setAlert({open: true, text: "Connected", severity: "success"});
             return;
@@ -63,6 +65,8 @@ export default function Authentication(
     };
 
     const handleSignup = (user: any) => {
+        handleLogin(user, true);
+        return;
         axios({
             method: "post",
             url: "http://localhost:8000/users",
@@ -79,7 +83,6 @@ export default function Authentication(
             .catch(function (error) {
                 props.setAlert({open: true, text: "Signup failed (Server Error)", severity: "error"});
             });
-        /*
         const newUsers = props.example.users;
         if (user.username in newUsers) {
             props.setAlert({ open: true, text: "Username already in use", severity: "error" })
@@ -94,7 +97,7 @@ export default function Authentication(
             };
             props.setExample({ ...props.example, user: newUsers })
             props.setAlert({ open: true, text: "Created!", severity: "success" })
-        } */
+        } 
     };
 
     return (

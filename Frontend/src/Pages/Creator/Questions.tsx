@@ -366,7 +366,7 @@ function QuestionFooter(props: any){
   return(
     <Grid item xs={12} container direction="row" justifyContent="flex-start" alignItems="center" style={{paddingLeft:'2rem'}}>
       <Grid item xs={checkOther(props.question.type)?2:4}>
-        {checkOther(props.question.type)?<TextField fullWidth disabled value={props.question.variable}/>:<TextField fullWidth value={props.question.variable} onChange={changeVariable} placeholder="Variable Name" helperText="Variable Name" />}
+        {checkOther(props.question.type)?<TextField variant="standard" fullWidth disabled value={props.question.variable}/>:<TextField variant="standard" fullWidth value={props.question.variable} onChange={changeVariable} placeholder="Variable Name" helperText="Variable Name" />}
       </Grid>
       <FormGroup row style={{marginLeft:'auto',padding:'0.3rem'}}>
         {checkOther(props.question.type)?null:<FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} onChange={changeRequired} />} label={(props.question.required?"":"Not ")+ "Required"} labelPlacement="start"/>}

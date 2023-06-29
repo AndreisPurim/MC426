@@ -7,6 +7,9 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 
 import Questions from './Questions';
+// import Variables from './Variables';
+import SVG from './SVG';
+import Template from './Template';
 import Publish from './Publish';
 
 function ErrorCard(){
@@ -50,7 +53,9 @@ export default function Creator(props: any){
   function renderStep(){
     switch(creator.card){
         case 0: return <Questions {...sendExtraProps}/>
-        case 4: return <Publish {...sendExtraProps}/>
+        case 1: return <SVG {...sendExtraProps}/>
+        case 2: return <Template {...sendExtraProps}/>
+        case 3: return <Publish {...sendExtraProps}/>
         default: return <ErrorCard />
     }
   }
@@ -59,16 +64,15 @@ export default function Creator(props: any){
       <Grid item xs={5} style={{width: '100%'}}>
         <Stepper activeStep={creator.card} alternativeLabel style={{ backgroundColor: "transparent" }}>
           <Step><StepLabel>Create Questions</StepLabel></Step>
-          <Step><StepLabel>Test</StepLabel></Step>
-          <Step><StepLabel>Test</StepLabel></Step>
-          <Step><StepLabel>Test</StepLabel></Step>
+          <Step><StepLabel>Create SVG</StepLabel></Step>
+          <Step><StepLabel>Create Template</StepLabel></Step>
           <Step><StepLabel>Publish</StepLabel></Step>
         </Stepper>
       </Grid>
       <Grid item xs={12}>
           <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
             <Button onClick={back}>{creator.card?'Back':'Cancel'}</Button>
-            <Button onClick={forward} disabled={creator.card>=4}>Continue</Button>
+            <Button onClick={forward} disabled={creator.card>=3}>Continue</Button>
           </ButtonGroup>
       </Grid>
       {renderStep()}

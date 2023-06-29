@@ -1,13 +1,14 @@
 import renderer from "react-test-renderer";
 import React from "react";
-import Login from "../Pages/Login/Login";
-import LoginCard from "../Pages/Login/LoginCard";
-import SignupCard from "../Pages/Login/SignupCard";
+import Login from "../Pages/Authentication/Authentication";
+import LoginCard from "../Pages/Authentication/LoginCard";
+import SignupCard from "../Pages/Authentication/SignupCard";
 import {dbExample} from "../Source/example";
 
 describe("Login", () => {
     it("renders Login Page", () => {
         const baseProps = {
+            auth: "login" as "login" | "signup",
             setControl: jest.fn(() => null),
             setExample: jest.fn(() => null),
             control: {
@@ -29,6 +30,7 @@ describe("Login", () => {
 describe("LoginCard", () => {
     it("renders Login Card", () => {
         const baseProps = {
+            auth: "login",
             setControl: jest.fn(() => null),
             setExample: jest.fn(() => null),
             example: dbExample(),
@@ -50,6 +52,7 @@ describe("LoginCard", () => {
 describe("SignupCard", () => {
     it("renders Signup Card", () => {
         const baseProps = {
+            auth: "signup",
             setControl: jest.fn(() => null),
             setExample: jest.fn(() => null),
             onSignup: jest.fn(() => null),
