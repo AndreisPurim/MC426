@@ -1,8 +1,8 @@
 import renderer from "react-test-renderer";
 import React from "react";
-import Login from "../Pages/Login/Login";
-import LoginCard from "../Pages/Login/LoginCard";
-import SignupCard from "../Pages/Login/SignupCard";
+import Login from "../Pages/Authentication/Authentication";
+import LoginCard from "../Pages/Authentication/LoginCard";
+import SignupCard from "../Pages/Authentication/SignupCard";
 import {dbExample} from "../Source/example";
 
 describe("Login", () => {

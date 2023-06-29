@@ -70,7 +70,11 @@ export default function LoginCard(props: any) {
 					/>
 				</FormControl>
 			</CardContent>
-			<CardActions>
+			<CardActions
+				sx={{
+					justifyContent: "end",
+				}}
+			>
 				<Button
 					size="medium"
 					color="secondary"

@@ -117,7 +117,9 @@ export default function SignupCard(props: {
 					/>
 				</FormControl>
 			</CardContent>
-			<CardActions>
+			<CardActions sx={{
+						justifyContent: "end",
+					}}>
 				<Button
 					size="medium"
 					color="secondary"
