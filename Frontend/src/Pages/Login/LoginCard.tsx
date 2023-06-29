@@ -15,72 +15,88 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export default function LoginCard(props: any) {
-    const [user, setUser] = React.useState({
-        show: false,
-        username: "",
-        password: "",
-    });
+	const [user, setUser] = React.useState({
+		show: false,
+		username: "",
+		password: "",
+	});
 
-    const [isConnecting, setConnection] = React.useState(false);
+	const [isConnecting, setConnection] = React.useState(false);
 
-    useEffect(() => {
-        if (isConnecting) {
-            props.onLogin(user, "login");
-        }
-    }, [isConnecting]);
+	useEffect(() => {
+		if (isConnecting) {
+			props.onLogin(user, "login");
+		}
+	}, [isConnecting]);
 
-    const changeUsername = (event: {target: {value: any}}) => {
-        setUser({...user, username: event.target.value});
-    };
-    const changePassword = (event: {target: {value: any}}) => {
-        setUser({...user, password: event.target.value});
-    };
+	const changeUsername = (event: {target: {value: any}}) => {
+		setUser({...user, username: event.target.value});
+	};
+	const changePassword = (event: {target: {value: any}}) => {
+		setUser({...user, password: event.target.value});
+	};
 
-
-    return (
-        <Card>
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                    Login
-                </Typography>
-                <TextField
-                    fullWidth
-                    variant="outlined"
-                    sx={{pb: "1rem"}}
-                    label="Username"
-                    value={user.username}
-                    onChange={changeUsername}
-                />
-                <FormControl fullWidth variant="outlined">
-                    <InputLabel>Password</InputLabel>
-                    <OutlinedInput
-                        label="Password"
-                        type={user.show ? "text" : "password"}
-                        value={user.password}
-                        onChange={changePassword}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={() => setUser({...user, show: true})}
-                                    onMouseDown={() => setUser({...user, show: false})}
-                                >
-                                    {user.show ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                </FormControl>
-            </CardContent>
-            <CardActions>
-                <Button
-                    disabled={user.username === "" || user.password === ""}
-                    size="small"
-                    color="primary"
-                    onClick={() => setConnection(!isConnecting)}
-                >
-                    Login
-                </Button>
-            </CardActions>
-        </Card>
-    );
+	return (
+		<Card>
+			<CardContent>
+				<Typography gutterBottom variant="h5" component="h2">
+					Login
+				</Typography>
+				<TextField
+					fullWidth
+					variant="outlined"
+					sx={{pb: "1rem"}}
+					label="Username"
+					value={user.username}
+					onChange={changeUsername}
+				/>
+				<FormControl fullWidth variant="outlined">
+					<InputLabel>Password</InputLabel>
+					<OutlinedInput
+						label="Password"
+						type={user.show ? "text" : "password"}
+						value={user.password}
+						onChange={changePassword}
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									onClick={() => setUser({...user, show: true})}
+									onMouseDown={() => setUser({...user, show: false})}
+								>
+									{user.show ? <Visibility /> : <VisibilityOff />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
+				</FormControl>
+			</CardContent>
+			<CardActions>
+				<Button
+					size="medium"
+					color="secondary"
+					variant="outlined"
+					onClick={() => props.setView("landing")}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
+				>
+					Cancel
+				</Button>
+				<Button
+					disabled={user.username === "" || user.password === ""}
+					size="medium"
+					variant="outlined"
+					color="primary"
+					onClick={() => setConnection(!isConnecting)}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
+				>
+					Login
+				</Button>
+			</CardActions>
+		</Card>
+	);
 }

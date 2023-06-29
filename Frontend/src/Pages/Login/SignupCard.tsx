@@ -14,6 +14,7 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
+import {OutlinedInput} from "@mui/material";
 
 type User = {
 	username: string;
@@ -28,6 +29,7 @@ type User = {
 export default function SignupCard(props: {
 	example: {users: any};
 	setAlert: (arg0: {open: boolean; text: string; severity: string}) => void;
+	setView: (arg0: string) => void;
 	setExample: (arg0: any) => void;
 	onSignup: (arg0: any, arg1: "login" | "signup") => void;
 }) {
@@ -79,13 +81,14 @@ export default function SignupCard(props: {
 				/>
 				<FormControl fullWidth sx={{pb: "1rem"}}>
 					<InputLabel>Password</InputLabel>
-					<Input
+					<OutlinedInput
+						label="Password"
 						type={user.showPassword ? "text" : "password"}
 						value={user.password}
 						onChange={(event) => changeProperty(event, "password")}
 						endAdornment={
 							<InputAdornment position="end">
-								<IconButton onClick={() => changeVisibility(true)} onMouseDown={() => changeVisibility(false)}>
+								<IconButton onClick={() => changeVisibility(!user.showPassword)}>
 									{user.showPassword ? <Visibility /> : <VisibilityOff />}
 								</IconButton>
 							</InputAdornment>
@@ -99,15 +102,44 @@ export default function SignupCard(props: {
 					}
 				>
 					<InputLabel>Repeat Password</InputLabel>
-					<Input type={"password"} value={user.checkPassword} onChange={(event) => changeProperty(event, "checkPassword")} />
+					<OutlinedInput
+						label="Repeat Password"
+						type={user.showPassword ? "text" : "password"}
+						value={user.checkPassword}
+						onChange={(event) => changeProperty(event, "checkPassword")}
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton onClick={() => changeVisibility(!user.showPassword)}>
+									{user.showPassword ? <Visibility /> : <VisibilityOff />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
 				</FormControl>
 			</CardContent>
 			<CardActions>
 				<Button
+					size="medium"
+					color="secondary"
+					variant="outlined"
+					onClick={() => props.setView("landing")}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
+				>
+					Cancel
+				</Button>
+				<Button
 					disabled={user.username === "" || user.email === "" || user.password === "" || user.password !== user.checkPassword}
-					size="small"
+					size="medium"
 					color="primary"
+					variant="outlined"
 					onClick={() => setConnection(!isConnecting)}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
 				>
 					Create
 				</Button>
