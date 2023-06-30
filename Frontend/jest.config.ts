@@ -1,7 +1,7 @@
 import type { Config } from '@jest/types';
 
 module.exports = {
-    roots: ['<rootDir>/src'],
+    roots: ['<rootDir>/src/A5tests'],
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },
