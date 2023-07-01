@@ -244,3 +244,131 @@ describe("Signup Decision table", () => {
         })
     });
 })
+
+describe("Login Class Equivalence", () => {
+    const baseProps = {
+        auth: "login",
+        setControl: jest.fn(() => null),
+        setExample: jest.fn(() => null),
+        onSignup: jest.fn(() => null),
+        example: dbExample(), 
+        control: {
+            view: "Login",
+            formID: null,
+            tempData: {},
+            user: null,
+        },
+        setView: jest.fn(),
+        setAlert: jest.fn(() => null),
+        changeLightMode: jest.fn(() => null),
+        theme: "light",
+    };
+    const valid_emails = [
+        "luzia@unicamp.br",
+        "andre123@example.com",
+        "antonio_silva@example.com",
+        "gustavo.21@example.com",
+        "maria-lucia@example.com",
+      ]
+      
+    valid_emails.map((email: string) => {
+        it("Testing valid email: "+email, ()=> {
+            const component = render(<LoginCard {...baseProps} />);
+            const input = component.getByTestId("email") as HTMLInputElement;
+            fireEvent.change(input, { target: { value: email } });
+            expect(component.getByText("Valid Email")).toBeInTheDocument();
+        })
+    })
+    const invalid_emails = [
+        { email: "car!o123los@example.com", reason: "Contains invalid character (only numbers and letters)" },
+        { email: "carlos..almeida@example.com", reason: "Repeated periods (. followed by .)" },
+        { email: ".carlos@example.com", reason: "Name starts with a period" },
+        { email: "carlos.@example.com", reason: "Name ends with a period" },
+        { email: "carlos@example..com", reason: "Domain starts with a period" },
+        { email: "carlos@example.com.", reason: "Domain ends with a period" },
+        { email: "carlos@example.co..uk", reason: "Top level starts with a period" },
+        { email: "carlos@example.co.uk.", reason: "Top level ends with a period" },
+        { email: "ca@example.com", reason: "Name has less than three letters" },
+    ]
+    invalid_emails.map((email: any) => {
+        it("Testing invalid email ("+email.reason+"): "+email.email, ()=> {
+            const component = render(<LoginCard {...baseProps} />);
+            const input = component.getByTestId("email") as HTMLInputElement;
+            fireEvent.change(input, { target: { value: email } });
+            expect(component.getByText("Invalid Email")).toBeInTheDocument();
+        })
+    })
+})
+
+describe("Login Decision table", () => {
+    const baseProps = {
+        auth: "login",
+        setControl: jest.fn(() => null),
+        setExample: jest.fn(() => null),
+        onSignup: jest.fn(() => null),
+        example: dbExample(), 
+        control: {
+            view: "Login",
+            formID: null,
+            tempData: {},
+            user: null,
+        },
+        setView: jest.fn(),
+        setAlert: jest.fn(() => null),
+        changeLightMode: jest.fn(() => null),
+        theme: "light",
+    };
+    const valid_users = [
+        {
+          email: "gustavo@example.com",
+          password: "password123",
+        },
+        {
+          email: "blabla@example.com",
+          password: "pass123",
+        },
+        {
+          email: "nero@example.com",
+          password: "abcd1234",
+        }
+    ];
+    valid_users.map((u: any) => {
+        it("Testing valid user: "+ u.email+" "+u.password, ()=> {
+            const component = render(<LoginCard {...baseProps} />);
+            const mail = component.getByTestId("email") as HTMLInputElement;
+            const password = component.getByTestId("password") as HTMLInputElement;
+            const button = component.getByTestId("login") as HTMLInputElement;
+            fireEvent.change(mail, { target: { value: u.email } });
+            fireEvent.change(password, { target: { value: u.password } });
+            expect(button).not.toHaveClass("Mui-disabled");
+        })
+    });
+    const invalid_users = [
+        {
+          email: "blabla@examplecom",
+          password: "pass123",
+          reason: "Email filled but invalid (R2)",
+          helper: "Invalid Email"
+        },
+        {
+            email: "gustavo.p@example.com",
+            password: "",
+            reason: "Missing password (R3)",
+            helper: "Missing password"
+        },
+    ];
+    invalid_users.map((u: any) => {
+        it("Testing invalid user ("+u.reason+"): "+ u.email+" "+u.password, ()=> {
+            const component = render(<LoginCard {...baseProps} />);
+            const mail = component.getByTestId("email") as HTMLInputElement;
+            const password = component.getByTestId("password") as HTMLInputElement;
+            const button = component.getByTestId("login") as HTMLInputElement;
+            fireEvent.change(mail, { target: { value: u.email } });
+            fireEvent.change(password, { target: { value: u.password } });
+            expect(button).toHaveClass("Mui-disabled");
+            if(u.helper!==""){
+                expect(component.getByText(u.helper)).toBeInTheDocument();
+            }
+        })
+    });
+})

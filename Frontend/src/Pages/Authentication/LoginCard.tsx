@@ -13,11 +13,12 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {FormHelperText} from "@mui/material";
 
 export default function LoginCard(props: any) {
 	const [user, setUser] = React.useState({
 		show: false,
-		username: "",
+		email: "",
 		password: "",
 	});
 
@@ -29,12 +30,18 @@ export default function LoginCard(props: any) {
 		}
 	}, [isConnecting]);
 
-	const changeUsername = (event: {target: {value: any}}) => {
-		setUser({...user, username: event.target.value});
+	const changeEmail = (event: {target: {value: any}}) => {
+		setUser({...user, email: event.target.value});
 	};
 	const changePassword = (event: {target: {value: any}}) => {
 		setUser({...user, password: event.target.value});
 	};
+
+	function invalidEmail() {
+		//eslint-disable-next-line
+		const regex = /^(?![\.\-_])[a-zA-Z0-9\.\-_]{3,}(?<![\.\-_])@[a-zA-Z0-9]+\.[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
+		return user.email.length > 0 && !regex.test(user.email);
+	}
 
 	return (
 		<Card>
@@ -46,17 +53,21 @@ export default function LoginCard(props: any) {
 					fullWidth
 					variant="outlined"
 					sx={{pb: "1rem"}}
-					label="Username"
-					value={user.username}
-					onChange={changeUsername}
+					value={user.email}
+					label="Mail"
+					error={invalidEmail()}
+					helperText={user.email === "" ? null : invalidEmail() ? "Invalid Email" : "Valid Email"}
+					inputProps={{"data-testid": "email"}}
+					onChange={changeEmail}
 				/>
-				<FormControl fullWidth variant="outlined">
+				<FormControl fullWidth variant="outlined" error={user.password === ""}>
 					<InputLabel>Password</InputLabel>
 					<OutlinedInput
 						label="Password"
 						type={user.show ? "text" : "password"}
 						value={user.password}
 						onChange={changePassword}
+						inputProps={{"data-testid": "password"}}
 						endAdornment={
 							<InputAdornment position="end">
 								<IconButton
@@ -68,6 +79,7 @@ export default function LoginCard(props: any) {
 							</InputAdornment>
 						}
 					/>
+					{user.password === "" ? <FormHelperText>Missing password</FormHelperText> : null}
 				</FormControl>
 			</CardContent>
 			<CardActions
@@ -88,11 +100,12 @@ export default function LoginCard(props: any) {
 					Cancel
 				</Button>
 				<Button
-					disabled={user.username === "" || user.password === ""}
+					disabled={user.email === "" || user.password === "" || invalidEmail()}
 					size="medium"
 					variant="outlined"
 					color="primary"
 					onClick={() => setConnection(!isConnecting)}
+					data-testid="login"
 					sx={{
 						margin: "8px",
 						justifyContent: "end",
