@@ -56,6 +56,20 @@ def test_update_formulario_inexistente(client: TestClient) -> None:
     assert response.status_code == 404
     assert content["detail"] == "Entidade não encontrada"
 
+def test_update_formulario_sem_body(client: TestClient) -> None:
+    atributos = create_formulario_valido()
+    formulario = Formulario(**atributos)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(formulario.save())
+
+    atributos_para_atualizar = {}
+
+    response = client.patch(f"/formulario/{formulario.id}", json=atributos_para_atualizar)
+
+    assert response.status_code == 422
+    #assert content["conteudo"] == novo_nome
+    #assert formulario_atualizado.conteudo == novo_nome
+
 def test_delete_formulario_existente(client: TestClient) -> None:
     atributos = create_formulario_valido()
     formulario = Formulario(**atributos)
