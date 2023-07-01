@@ -25,3 +25,5 @@ def test_cria_usuario(client: TestClient) -> None:
     content = response.json()
     assert response.status_code == 200
     assert content["nome"] == body["nome"]
+
+    
