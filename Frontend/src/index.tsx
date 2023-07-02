@@ -10,7 +10,7 @@ import Snackbar from "@mui/material/Snackbar";
 import "./Source/index.css";
 
 import Landing from "./Pages/Landing/Landing";
-import Authentication from "./Pages/Login/Login";
+import Authentication from "./Pages/Authentication/Authentication.tsx";
 import Profile from "./Pages/Profile/Profile";
 import ReadQRCode from "./Pages/Profile/ReadQRCode";
 import Creator from "./Pages/Creator/Creator";
@@ -69,7 +69,9 @@ function Control() {
     function returnView() {
         switch (control.view) {
             case "login":
-                return <Authentication {...sendControl} />;
+                return <Authentication auth="login" {...sendControl} />;
+            case "signup":
+                return <Authentication auth="signup" {...sendControl} />;
             case "profile":
                 return <Profile {...sendControl} />;
             case "readqr":

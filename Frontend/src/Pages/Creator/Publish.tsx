@@ -29,7 +29,7 @@ export default function Publish(props: any) {
 				name: "",
 				last_updated: new Date().toJSON(),
 				field: "",
-				creator: props.control.user.firstname + " " + props.control.user.lastname,
+				creator: props.control.user.username,
 				preview: "",
 				creator_avatar: props.control.user.avatar,
 				dynamic_image: false,
@@ -116,7 +116,7 @@ export default function Publish(props: any) {
 			},
 		};
 		props.setExample({...props.example, qforms: props.example.qforms + 1, forms: newForms, rows: newRows});
-		props.setControl({...props.control, formID: null, setData: {}, view: "user"});
+		props.setControl({...props.control, formID: null, setData: {}, view: "profile"});
 	};
 	return (
 		<Grid item xs={4}>
@@ -138,7 +138,7 @@ export default function Publish(props: any) {
 						<Grid item xs={12}>
 							<TextField
 								value={publish.name}
-								onChange={(event) => changeProperty(event, "title")}
+								onChange={(event) => changeProperty(event, "name")}
 								fullWidth
 								required
 								label="Title"
@@ -161,17 +161,6 @@ export default function Publish(props: any) {
 								fullWidth
 								required
 								label="Description"
-								variant="outlined"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								helperText="Example: https://images.sampletemplates.com/wp-content/uploads/2017/02/Sample-Medical-Reports.jpg"
-								value={publish.preview}
-								onChange={(event) => changeProperty(event, "preview")}
-								fullWidth
-								required
-								label="Background URL"
 								variant="outlined"
 							/>
 						</Grid>
@@ -205,7 +194,7 @@ export default function Publish(props: any) {
 				</CardContent>
 				<DialogActions style={{paddingTop: 0}}>
 					<Button
-						disabled={publish.title === "" || publish.description === "" || publish.preview === "" || publish.keywords === ""}
+						disabled={publish.title === "" || publish.description === "" || publish.keywords === ""}
 						onClick={savePublish}
 						color="primary"
 					>

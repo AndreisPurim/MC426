@@ -11,7 +11,7 @@ export default function Profile(props: any){
     props.setControl({...props.control, tempData: {}, formID: null, view:'creator'})
   }
   return (
-    <Grid container direction="column" justifyContent="center" alignItems="center" xs={12} spacing={2} style={{marginTop: '2rem', }}>
+    <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2} style={{marginTop: '2rem', }}>
       <UserCard {...props}/>
       <UserTable {...props}/>
       <Grid item xs={12}>

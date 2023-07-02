@@ -14,13 +14,15 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
+import FormHelperText from '@mui/material/FormHelperText';
+import {OutlinedInput} from "@mui/material";
 
 type User = {
 	username: string;
-	firstname: string;
-	lastname: string;
+	started_username: boolean;
 	email: string;
 	password: string;
+	started_password: boolean;
 	showPassword: boolean;
 	checkPassword: string;
 };
@@ -28,15 +30,16 @@ type User = {
 export default function SignupCard(props: {
 	example: {users: any};
 	setAlert: (arg0: {open: boolean; text: string; severity: string}) => void;
+	setView: (arg0: string) => void;
 	setExample: (arg0: any) => void;
 	onSignup: (arg0: any, arg1: "login" | "signup") => void;
 }) {
 	const [user, setUser] = React.useState({
 		username: "",
-		firstname: "",
-		lastname: "",
+		started_username: false,
 		email: "",
 		password: "",
+		started_password: false,
 		showPassword: false,
 		checkPassword: "",
 	} as User);
@@ -52,11 +55,15 @@ export default function SignupCard(props: {
 	const changeProperty = (event: {target: {value: any}}, property: keyof User) => {
 		setUser({...user, [property]: event.target.value});
 	};
-
+	
 	function changeVisibility(state: boolean) {
 		setUser({...user, showPassword: state});
 	}
-
+	function invalidEmail(){
+		//eslint-disable-next-line
+		const regex = /^(?![\.\-_])[a-zA-Z0-9\.\-_]{3,}(?<![\.\-_])@[a-zA-Z0-9]+\.[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/
+		return (user.email.length>0)&&!(regex.test(user.email))
+	}
 	return (
 		<Card>
 			<CardContent>
@@ -68,24 +75,30 @@ export default function SignupCard(props: {
 					fullWidth
 					label="Username"
 					value={user.username}
+					inputProps={{ "data-testid": "username" }}
 					onChange={(event) => changeProperty(event, "username")}
 				/>
 				<TextField
 					sx={{pb: "1rem"}}
 					fullWidth
 					label="Mail"
+					error={invalidEmail()}
+					helperText={user.email===""?null:invalidEmail()?"Invalid Email":"Valid Email"}
 					value={user.email}
+					inputProps={{ "data-testid": "email" }}
 					onChange={(event) => changeProperty(event, "email")}
 				/>
 				<FormControl fullWidth sx={{pb: "1rem"}}>
 					<InputLabel>Password</InputLabel>
-					<Input
+					<OutlinedInput
+						label="Password"
+						inputProps={{ "data-testid": "password1" }}
 						type={user.showPassword ? "text" : "password"}
 						value={user.password}
 						onChange={(event) => changeProperty(event, "password")}
 						endAdornment={
 							<InputAdornment position="end">
-								<IconButton onClick={() => changeVisibility(true)} onMouseDown={() => changeVisibility(false)}>
+								<IconButton onClick={() => changeVisibility(!user.showPassword)}>
 									{user.showPassword ? <Visibility /> : <VisibilityOff />}
 								</IconButton>
 							</InputAdornment>
@@ -94,20 +107,56 @@ export default function SignupCard(props: {
 				</FormControl>
 				<FormControl
 					fullWidth
-					/*style={{color:user.checkPassword===user.password&user.checkPassword!==''? "green":null}}*/ error={
-						user.checkPassword !== user.password && user.checkPassword !== ""
+					error={
+						user.password !== "" && user.checkPassword !== user.password && user.checkPassword !== ""
 					}
 				>
 					<InputLabel>Repeat Password</InputLabel>
-					<Input type={"password"} value={user.checkPassword} onChange={(event) => changeProperty(event, "checkPassword")} />
+					<OutlinedInput
+						label="Repeat Password"
+						type={user.showPassword ? "text" : "password"}
+						value={user.checkPassword}
+						inputProps={{ "data-testid": "password2" }}
+						onChange={(event) => changeProperty(event, "checkPassword")}
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton onClick={() => changeVisibility(!user.showPassword)}>
+									{user.showPassword ? <Visibility /> : <VisibilityOff />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
+					{user.password === ""?<FormHelperText>Missing password</FormHelperText>:user.checkPassword !== user.password && user.checkPassword !== ""?<FormHelperText error>Password doesnt match</FormHelperText>:null}
 				</FormControl>
+				
 			</CardContent>
-			<CardActions>
+			<CardActions sx={{
+						justifyContent: "end",
+					}}>
+
 				<Button
-					disabled={user.username === "" || user.email === "" || user.password === "" || user.password !== user.checkPassword}
-					size="small"
+					size="medium"
+					color="secondary"
+					variant="outlined"
+					onClick={() => props.setView("landing")}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
+				>
+					Cancel
+				</Button>
+				<Button
+					disabled={user.username === "" || user.email === "" || invalidEmail() || user.password === "" || user.password !== user.checkPassword}
+					size="medium"
 					color="primary"
+					variant="outlined"
+					data-testid="create"
 					onClick={() => setConnection(!isConnecting)}
+					sx={{
+						margin: "8px",
+						justifyContent: "end",
+					}}
 				>
 					Create
 				</Button>
