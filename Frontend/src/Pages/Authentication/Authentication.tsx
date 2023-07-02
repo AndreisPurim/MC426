@@ -43,9 +43,14 @@ export default function Authentication(
 				{headers: {"Content-Type": "application/x-www-form-urlencoded", "Access-Control-Allow-Origin": "*"}}
 			)
 			.then(function (response) {
-				console.log(response);
-				props.setControl({...props.control, view: "profile"});
-				props.setAlert({open: true, text: "Connected", severity: "success"});
+				user = {...user, ...response.data};
+				axios.get("http://localhost:8000/usuarios").then(function (response) {
+					const id = response.data.find((element: any) => element.email === user.email).id;
+					user = {...user, id: id};
+					console.log(user);
+					props.setAlert({open: true, text: "Connected", severity: "success"});
+					props.setControl({...props.control, view: "profile"});
+				});
 			})
 			.catch(function (error) {
 				props.setAlert({open: true, text: "Login failed (" + error.name + ")", severity: "error"});

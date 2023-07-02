@@ -34,9 +34,9 @@ function UserTableSelector(props: any){
     <Grid item>
       <Tabs value={props.table.tab} onChange={changeTab} indicatorColor={props.table.tab === 3 ? "secondary" : "primary"} textColor={props.table.tab === 3 ? "secondary" : "primary"}>
         <Tab label="Public" />
-        <Tab label={"Favorites (" + props.control.user.favorites.length + ")"} />
+        <Tab label={"Favorites (" + (props.control.user?.favorites?.length ?? 0) + ")"} />
         <Tab label="Recent" />
-        {!props.control.user.admin ? null : <Tab label={"My Forms (" + props.control.user.created.length + ")"} />}
+        {!props.control.user?.admin ? null : <Tab label={"My Forms (" + (props.control.user?.created?.length ?? 0) + ")"} />}
       </Tabs>
     </Grid>
   )
@@ -82,10 +82,10 @@ function UserTableToolbar(props: any){
           <TocIcon />
         </IconButton>
       </Tooltip>
-      <Menu keepMounted anchorEl={props.table.anchorSelect} open={Boolean(props.table.anchorSelect)} onClose={closeSelect}>
-        {props.table.columns.map((column: { id: React.Key | null | undefined; label: any }, i: number) => (
-          <ListItem key={column.id}>
-            <FormControlLabel control={<Checkbox checked={props.table.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />} label={column.label} />
+      <Menu keepMounted anchorEl={props.table?.anchorSelect} open={Boolean(props.table?.anchorSelect)} onClose={closeSelect}>
+        {props?.table.columns.map((column: { id: React.Key | null | undefined; label: any }, i: number) => (
+          <ListItem key={column?.id}>
+            <FormControlLabel control={<Checkbox checked={props.table?.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />} label={column?.label} />
           </ListItem>
         ))}
         {showResetButton() ? null :
@@ -102,11 +102,11 @@ function UserTableHead(props: any){
   return(
     <TableHead>
       <TableRow>
-        {props.table.columns.map((column: {
+        {props.table?.columns.map((column: {
           align: "right" | "left" | "center" | "inherit" | "justify" | undefined; id: any; minWidth: any; label: any;
         }, i: string | number) => {
           if (props.table.selectedColumns[i]) return (
-            <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+            <TableCell key={column?.id} align={column.align} style={{ minWidth: column.minWidth }}>
               <b>{column.label}</b>
             </TableCell>
           )
@@ -150,39 +150,39 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
       // props.setAlert({open: true, text: "Error in fetching rows", severity: "error"})
     }
     const fetchUser = async () => {
-      props.setControl({ ...props.control, user: props.example.users[props.control.user.username] });
+      props.setControl({ ...props.control, user: props.example.users[props.control.user?.username] });
     }
     fetchData();
     fetchUser();
   }, [props.example]);
   function handleFavorite(row: any) {
-    const userFavorites: any = props.control.user.favorites;
-    const index = userFavorites.indexOf(row.id);
+    const userFavorites: any = props.control.user?.favorites ?? null;
+    const index = userFavorites.indexOf(row?.id);
     if (index === -1) {
-      userFavorites.push(row.id)
+      userFavorites.push(row?.id)
     }
     else {
       userFavorites.splice(index, 1)
     }
     const newUsers = props.example.users;
-    newUsers[props.control.user.username].favorites = userFavorites;
+    newUsers[props.control.user?.username].favorites = userFavorites;
     props.setExample({ ...props.example, users: newUsers })
   }
   function selectRows() {
     let rows: any = []
     if (table.tab === 1) {
       rows = table?.rows.filter(function (row: any) {
-        return props.control.user.favorites.indexOf(row.id) !== -1;
+        return props.control.user?.favorites.indexOf(row?.id) !== -1;
       })
     }
     else if (table.tab === 2) {
       rows = table.rows.filter(function (row: any) {
-        return row.id in props.control.user.recents;
+        return row?.id in props.control.user.recents;
       })
     }
     else if (table.tab === 3) {
       rows = table.rows.filter(function (row: any) {
-        return props.control.user.created.indexOf(row.id) !== -1;
+        return props.control.user?.created.indexOf(row?.id) !== -1;
       })
     }
     else {
@@ -191,7 +191,7 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
     if (table.search !== '') {
       rows = rows.filter(function (row: any) {
         for (let i = 0; i < table.columns.length; i++) {
-          if (table.selectedColumns[i] && table.columns[i].id !== 'favorite' && row[table.columns[i].id].toString().toLowerCase().includes(table.search.toLowerCase())) {
+          if (table.selectedColumns[i] && table.columns[i]?.id !== 'favorite' && row[table.columns[i]?.id].toString().toLowerCase().includes(table.search.toLowerCase())) {
             return true
           }
         }
@@ -213,28 +213,28 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
               <TableBody>
                 {selectRows().slice(table.page * table.perPage, table.page * table.perPage + table.perPage).map((row: { [x: string]: any }) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {table.columns.map((column: { id: any; align: "right" | "left" | "center" | "inherit" | "justify" | undefined; }, i: string | number) => {
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row?.id}>
+                      {table?.columns.map((column: { id: any; align: "right" | "left" | "center" | "inherit" | "justify" | undefined; }, i: string | number) => {
                         if (table.selectedColumns[i]) {
-                          if (column.id === 'favorite') {
+                          if (column?.id === 'favorite') {
                             return (
-                              <TableCell key={column.id} align={column.align}>
+                              <TableCell key={column?.id} align={column.align}>
                                 <IconButton onClick={() => handleFavorite(row)}>
-                                  {props.control.user.favorites.indexOf(row.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                  {props.control.user?.favorites.indexOf(row?.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
                               </TableCell>
                             )
                           }
                           else{
                             return (
-                              <TableCell key={column.id} align={column.align}>
+                              <TableCell key={column?.id} align={column.align}>
                                 {
-                                column.id === 'last_updated'?
-                                  new Date(row[column.id]).toISOString().slice(0, 10)
-                                :column.id === 'keywords'?
-                                  row[column.id].join(', ')
+                                column?.id === 'last_updated'?
+                                  new Date(row[column?.id]).toISOString().slice(0, 10)
+                                :column?.id === 'keywords'?
+                                  row[column?.id].join(', ')
                                 :
-                                  row[column.id]
+                                  row[column?.id]
                                 }
                               </TableCell>
                             )
