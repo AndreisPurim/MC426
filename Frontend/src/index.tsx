@@ -96,19 +96,21 @@ function Control() {
         setAlert,
     };
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container maxWidth="md">
-                <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === "light" ? "dark" : "light")} />
-                {returnView()}
-                <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
-                    <Alert elevation={6} variant="filled" severity={alert.severity}>
-                        {alert.text}
-                    </Alert>
-                </Snackbar>
-                <Footer />
-            </Container>
-        </ThemeProvider>
+        <React.StrictMode>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Container maxWidth="md">
+                    <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === "light" ? "dark" : "light")} />
+                    {returnView()}
+                    <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
+                        <Alert elevation={6} variant="filled" severity={alert.severity}>
+                            {alert.text}
+                        </Alert>
+                    </Snackbar>
+                    <Footer />
+                </Container>
+            </ThemeProvider>
+        </React.StrictMode>
     );
 }
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);

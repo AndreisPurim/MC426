@@ -17,6 +17,7 @@ import {FormHelperText} from "@mui/material";
 
 export default function LoginCard(props: any) {
 	const [user, setUser] = React.useState({
+		started_password: false,
 		show: false,
 		email: "",
 		password: "",
@@ -34,7 +35,7 @@ export default function LoginCard(props: any) {
 		setUser({...user, email: event.target.value});
 	};
 	const changePassword = (event: {target: {value: any}}) => {
-		setUser({...user, password: event.target.value});
+		setUser({...user, started_password: true, password: event.target.value});
 	};
 
 	function invalidEmail() {
@@ -60,7 +61,7 @@ export default function LoginCard(props: any) {
 					inputProps={{"data-testid": "email"}}
 					onChange={changeEmail}
 				/>
-				<FormControl fullWidth variant="outlined" error={user.password === ""}>
+				<FormControl fullWidth variant="outlined" error={user.started_password && user.password === ""}>
 					<InputLabel>Password</InputLabel>
 					<OutlinedInput
 						label="Password"
@@ -79,7 +80,7 @@ export default function LoginCard(props: any) {
 							</InputAdornment>
 						}
 					/>
-					{user.password === "" ? <FormHelperText>Missing password</FormHelperText> : null}
+					{user.started_password && user.password === "" ? <FormHelperText>Missing password</FormHelperText> : null}
 				</FormControl>
 			</CardContent>
 			<CardActions
