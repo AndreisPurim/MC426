@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Response
+from fastapi.middleware.cors import CORSMiddleware
 import ormar
 
 from models.formulario import Formulario
@@ -9,6 +10,8 @@ from controllers.utils.get_all_controller import get_all_controller
 from controllers.utils.get_controller import get_controller
 from controllers.utils.patch_controller import patch_controller
 from controllers.utils.post_controller import post_controller
+
+origins = ["*"]
 
 router = APIRouter()
 
