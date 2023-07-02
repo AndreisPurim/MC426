@@ -2,4 +2,4 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 class FormularioUpdate(BaseModel):
-    conteudo: Optional[str] = None
+    conteudo: str

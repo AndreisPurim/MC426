@@ -6,5 +6,8 @@ def test_cria_formulario(client: TestClient) -> None:
     body = create_formulario_valido()
     response = client.post("/formulario/", json=body)
     content = response.json()
-    assert response.status_code == 200
-    assert content["conteudo"] == body["conteudo"]
+    assert response.status_code == 200, f"Erro: resposta {response.status_code}"
+    assert content["conteudo"] == body["conteudo"] , "Corpo inálido na resposta"
+
+
+
