@@ -44,12 +44,10 @@ export default function Authentication(
 			)
 			.then(function (response) {
 				user = {...user, ...response.data};
-				axios.get("http://localhost:8000/usuarios").then(function (response) {
-					const id = response.data.find((element: any) => element.email === user.email).id;
-					user = {...user, id: id};
-					console.log(user);
+				axios.get("http://localhost:8000/usuarios").then(function (res) {
+					const data = res.data.find((element: any) => element.email === user.email);
 					props.setAlert({open: true, text: "Connected", severity: "success"});
-					props.setControl({...props.control, view: "profile"});
+					props.setControl({...props.control, user: {...user, ...data}, view: "profile"});
 				});
 			})
 			.catch(function (error) {

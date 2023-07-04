@@ -15,11 +15,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import {FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
 
-export default function UserCard(props: {
-	control: {
-		user: any;
-	};
-}) {
+export default function UserCard(props: any
+) {
 	const [editing, setEditing] = React.useState(false);
 
 	function getChipIcon(chip: {type: any}) {
@@ -50,6 +47,9 @@ export default function UserCard(props: {
 		if (chip.type === "created") return "secondary";
 		return "primary";
 	}
+
+	console.log(props.control.user)
+
 	return (
 		<Grid item xs={7} style={{width: "100%"}}>
 			<Paper elevation={3} style={{padding: "1rem"}}>
@@ -59,11 +59,11 @@ export default function UserCard(props: {
 							<Avatar
 								variant="rounded"
 								alt="Avatar"
-								src={props.control.user?.avatar ?? "Frontend/public/assets/no-avatar.png"}
+								src={props.control.user?.avatar ?? "https://pic.onlinewebfonts.com/svg/img_568657.png"}
 								style={{width: "100%", height: "100%"}}
 							/>
 						</Grid>
-						<Grid item xs={7}>
+						<Grid item xs={6}>
 							{editing ? (
 								<Grid container flexDirection={"column"} justifyContent={"space-between"} rowGap={1}>
 									<Grid item>
@@ -71,9 +71,9 @@ export default function UserCard(props: {
 											<InputLabel htmlFor="input-with-icon-adornment">Name</InputLabel>
 											<Input
 												id="input-with-icon-adornment"
-												defaultValue={props.control.user?.username}
+												defaultValue={props.control.user?.nome}
 												onChange={(e) => {
-													props.control.user.username = e.target.value;
+													props.control.user.nome = e.target.value;
 												}}
 											/>
 										</FormControl>
@@ -84,7 +84,7 @@ export default function UserCard(props: {
 											<Input
 												type="textarea"
 												id="input-with-icon-adornment"
-												defaultValue={props.control.user.description}
+												defaultValue={props.control.user?.description}
 												onChange={(e) => {
 													props.control.user.description = e.target.value;
 												}}
@@ -94,23 +94,18 @@ export default function UserCard(props: {
 								</Grid>
 							) : (
 								<>
-									<Typography variant="h4">{props.control.user?.username}</Typography>
+									<Typography variant="h4">{props.control.user?.nome}</Typography>
 									<Typography variant="subtitle1">{props.control.user?.description}</Typography>
 								</>
 							)}
 						</Grid>
-						<Grid item xs={2}>
-							<Typography variant="overline" component="h1">
-								{props.control.user?.admin ? "Admin" : "User"}
-							</Typography>
+						<Grid item xs={3}>
 							<Typography variant="caption" component="h1">
-								Signed up in {props.control.user?.joined.substring(0, 4)}
+								Signed up in {new Date().toISOString().slice(0, 10) ?? null}
 							</Typography>
 							<Typography variant="caption" component="h1">
 								Last access{" "}
-								{new Date().toISOString().slice(0, 10) === props.control.user?.last_seen
-									? "today"
-									: props.control.user?.last_seen}
+								{new Date().toISOString().slice(0, 10)}
 							</Typography>
 						</Grid>
 						<Grid item xs={1}>
@@ -135,7 +130,7 @@ export default function UserCard(props: {
 										<InputLabel htmlFor="input-with-icon-adornment">Work</InputLabel>
 										<Input
 											id="input-with-icon-adornment"
-											defaultValue={props.control.user?.chips[0].label}
+											defaultValue={props.control.user?.chips?.length ? props.control.user?.chips[0]?.label : "Work"}
 											onChange={(e) => {
 												props.control.user.chips[0].label = e.target.value;
 											}}
@@ -152,7 +147,7 @@ export default function UserCard(props: {
 										<InputLabel htmlFor="input-with-icon-adornment">School</InputLabel>
 										<Input
 											id="input-with-icon-adornment"
-											defaultValue={props.control.user?.chips[1].label}
+											defaultValue={props.control.user?.chips?.length ? props.control.user?.chips[1]?.label : "School"}
 											onChange={(e) => {
 												props.control.user.chips[1].label = e.target.value;
 											}}
@@ -166,7 +161,7 @@ export default function UserCard(props: {
 								</Grid>
 							</>
 						) : (
-							props.control.user?.chips.map((chip: any) => (
+							props.control.user?.chips?.map((chip: any) => (
 								<Grid key={chip.label} item style={{paddingTop: "1rem"}}>
 									{
 										<Chip

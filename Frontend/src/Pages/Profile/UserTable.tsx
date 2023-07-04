@@ -25,8 +25,10 @@ import TocIcon from '@mui/icons-material/Toc';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import axios from "axios";
 
 import FormCard from './FormCard';
+import { columns } from '../../Source/example';
 
 function UserTableSelector(props: any){
   const changeTab = (event: any, newTab: any) => { props.setTable({ ...props.table, tab: newTab }) };
@@ -69,33 +71,52 @@ function UserTableToolbar(props: any){
       default: return 'All'
     }
   }
-  return(
-    <Toolbar>
-      <Typography variant="h6" id="tableTitle" style={{ flex: '1 1 100%' }}>
-        {textTab()} {props.table.search !== '' ? '(Searching)' : null}
-      </Typography>
-      <Tooltip title="Search">
-        <TextField onChange={changeSearch} InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} placeholder="Search" variant="outlined" />
-      </Tooltip>
-      <Tooltip title="Select Columns">
-        <IconButton onClick={openSelect}>
-          <TocIcon />
-        </IconButton>
-      </Tooltip>
-      <Menu keepMounted anchorEl={props.table?.anchorSelect} open={Boolean(props.table?.anchorSelect)} onClose={closeSelect}>
-        {props?.table.columns.map((column: { id: React.Key | null | undefined; label: any }, i: number) => (
-          <ListItem key={column?.id}>
-            <FormControlLabel control={<Checkbox checked={props.table?.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />} label={column?.label} />
-          </ListItem>
-        ))}
-        {showResetButton() ? null :
-          <MenuItem onClick={resetColumns}>
-            Reset to Default
-          </MenuItem>
-        }
-      </Menu>
-    </Toolbar>
-  )
+  return (
+		<Toolbar sx={{minWidth: "800px"}}>
+			<Grid container flexDirection={"row"} justifyContent={"space-between"} sx={{marginTop: "8px"}}>
+					<Grid item container flexDirection={"row"} justifyContent={"flex-start"} alignItems={"center"} xs={3}>
+						<Typography variant="h5" id="tableTitle">
+							{textTab()} {props.table.search !== "" ? "(Searching)" : null}
+						</Typography>
+					</Grid>
+					<Grid item container flexDirection={"row"} justifyContent={"center"} xs={6}>
+						<Tooltip title="Search">
+							<TextField
+								onChange={changeSearch}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon />
+										</InputAdornment>
+									),
+								}}
+								placeholder="Search"
+								variant="outlined"
+                sx={{paddingTop: "4px"}}
+							/>
+						</Tooltip>
+					</Grid>
+				<Grid container item flexDirection={"row"} justifyContent={"end"} xs>
+						<Tooltip title="Select Columns">
+							<IconButton onClick={openSelect}>
+								<TocIcon />
+							</IconButton>
+						</Tooltip>
+				</Grid>
+			</Grid>
+			<Menu keepMounted anchorEl={props.table?.anchorSelect} open={Boolean(props.table?.anchorSelect)} onClose={closeSelect}>
+				{props?.table.columns.map((column: {id: React.Key | null | undefined; label: any}, i: number) => (
+					<ListItem key={column?.id}>
+						<FormControlLabel
+							control={<Checkbox checked={props?.table?.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />}
+							label={column?.label}
+						/>
+					</ListItem>
+				))}
+				{showResetButton() ? null : <MenuItem onClick={resetColumns}>Reset to Default</MenuItem>}
+			</Menu>
+		</Toolbar>
+  );
 }
 
 function UserTableHead(props: any){
@@ -118,7 +139,7 @@ function UserTableHead(props: any){
   )
 }
 
-export default function UserTable(props: { example: any; setControl: (arg0: any) => void; control: { user: { username: string | number; favorites: { indexOf: (arg0: any) => number; length: string; }; recents: any; created: { indexOf: (arg0: any) => number; length: string; }; admin: any; }; }; setExample: (arg0: any) => void; }) {
+export default function UserTable(props: any) {
   const [table, setTable] = React.useState({
     tab: 0,
     page: 0,
@@ -131,58 +152,71 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
     rows: [],
     favorites: 0
   } as any);
-  
+    
   const changePage = (event: any, newPage: any) => { setTable({ ...table, page: newPage }) };
   const changePerPage = (event: { target: { value: string | number; }; }) => { setTable({ ...table, page: 0, perPage: +event.target.value }) };
 
+
+  const fetchData = async () => {
+		axios.get("http://localhost:8000/formulario").then(
+			(res) => {
+				console.log(res);
+				let rows: any[] = res.data;
+				let favs = 0;
+				for (let i = 0; i < rows.length; i++) {
+					if (rows[i].favorite) {
+						favs++;
+					}
+				}
+				const defaultColumns = columns.filter(function (row: {default: any}) {
+					return row.default;
+				});
+				setTable({
+					...table,
+					columns: columns,
+					selectedColumns: defaultColumns,
+					defaultColumns: defaultColumns,
+					rows: [],
+					favorites: favs,
+				});
+			},
+			(err) => {
+				props.setAlert({open: true, text: `Error in fetching forms (${err})`, severity: "error"});
+			}
+		);
+  };
+
   React.useEffect(() => {
-    const fetchData = async () => {
-      const rows = props.example.rows;
-      const columns = props.example.columns;
-      let favs = 0;
-      for (let i = 0; i < rows.length; i++) {
-        if (rows[i].favorite) {
-          favs++
-        }
-      }
-      const defaultColumns = columns.filter(function (row: { default: any; }) { return row.default })
-      setTable({ ...table, columns: columns, selectedColumns: defaultColumns, defaultColumns: defaultColumns, rows: rows, favorites: favs })
-      // props.setAlert({open: true, text: "Error in fetching rows", severity: "error"})
-    }
-    const fetchUser = async () => {
-      props.setControl({ ...props.control, user: props.example.users[props.control.user?.username] });
-    }
     fetchData();
-    fetchUser();
   }, [props.example]);
+  
   function handleFavorite(row: any) {
-    const userFavorites: any = props.control.user?.favorites ?? null;
-    const index = userFavorites.indexOf(row?.id);
+    const userFavorites: any = props.control.user?.favorites ?? [];
+    const index = userFavorites?.indexOf(row?.id);
     if (index === -1) {
       userFavorites.push(row?.id)
     }
     else {
       userFavorites.splice(index, 1)
     }
-    const newUsers = props.example.users;
-    newUsers[props.control.user?.username].favorites = userFavorites;
-    props.setExample({ ...props.example, users: newUsers })
+    props.setControl({...props.control, user: { ...props.control.user, userFavorites }})
   }
+
   function selectRows() {
     let rows: any = []
     if (table.tab === 1) {
       rows = table?.rows.filter(function (row: any) {
-        return props.control.user?.favorites.indexOf(row?.id) !== -1;
+        return props.control.user?.favorites?.indexOf(row?.id) !== -1;
       })
     }
     else if (table.tab === 2) {
       rows = table.rows.filter(function (row: any) {
-        return row?.id in props.control.user.recents;
+        return props.control?.user?.recents?.filter(row?.id);
       })
     }
     else if (table.tab === 3) {
       rows = table.rows.filter(function (row: any) {
-        return props.control.user?.created.indexOf(row?.id) !== -1;
+        return props.control.user?.created?.indexOf(row?.id) !== -1;
       })
     }
     else {
@@ -220,7 +254,7 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
                             return (
                               <TableCell key={column?.id} align={column.align}>
                                 <IconButton onClick={() => handleFavorite(row)}>
-                                  {props.control.user?.favorites.indexOf(row?.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                  {props.control.user?.favorites?.indexOf(row?.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
                               </TableCell>
                             )

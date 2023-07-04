@@ -29,7 +29,7 @@ const languages = [
     }
 ]
 
-export default function TitleToolbar(props: { setControl: (arg0: { view: string; formID: null; tempData: object; user: any; }) => void; control: { user: { username: any }|null; }; setView: (arg0: string) => void; setAlert: (arg0: { open: boolean; text: string; severity: string; }) => void; changeLightMode: React.MouseEventHandler<HTMLButtonElement> | undefined; theme: string; }) {
+export default function TitleToolbar(props: any) {
     const [openHelp, setOpenHelp] = React.useState(false);
     const [menuAnchor, setMenuAnchor] = React.useState(null);
     const [lang, setLang] = React.useState('🇧🇷');
@@ -44,7 +44,7 @@ export default function TitleToolbar(props: { setControl: (arg0: { view: string;
         else
             return (
                 <React.Fragment>
-                    <Button size="small" variant="outlined" startIcon={<AccountCircleIcon />} onClick={openMenu}>{props.control.user.username}</Button>
+                    <Button size="small" variant="outlined" startIcon={<AccountCircleIcon />} onClick={openMenu}>{props.control.user?.nome}</Button>
                     <Menu open={Boolean(menuAnchor)} onClose={closeMenu} anchorEl={menuAnchor} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} keepMounted transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
                         <MenuItem onClick={goProfile}>Profile</MenuItem>
                         <MenuItem onClick={logout}>Logout</MenuItem>
