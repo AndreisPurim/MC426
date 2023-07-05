@@ -73,17 +73,17 @@ export default function FormCard(props: any){
               <b>Keywords:</b> {props.row?.keywords?.join(', ')}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <b>Questions:</b> {props.row.questions} Questions
+              <b>Questions:</b> {props.row.questions.length} Questions
             </Typography>
             {!props.row.paragraph? null:
-              <React.Fragment>
+              <>
                 <Link component="button" onClick={handleExpandClick}>Read {expanded?'less':'more'}</Link>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                   <Typography paragraph>
                     {props.row.paragraph}
                   </Typography>
                 </Collapse>
-              </React.Fragment>
+              </>
             }
           </CardContent>
           {props.readingQRCode? null:

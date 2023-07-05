@@ -36,7 +36,7 @@ export default function Publish(props: any) {
 				dynamic_image: false,
 				creator_id: props.control.user.id,
 				keywords: "",
-				questions: props.creator.questions.length,
+				questions: props.creator.questions,
 				uses: 0,
 				description: "",
 				paragraph: "",
@@ -188,7 +188,7 @@ export default function Publish(props: any) {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="body2" color="textSecondary" component="p">
-								<b>Questions:</b> {publish.questions} Questions
+								<b>Questions:</b> {publish.questions.length} Questions
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>

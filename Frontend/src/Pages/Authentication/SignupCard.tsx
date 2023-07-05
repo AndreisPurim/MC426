@@ -28,7 +28,6 @@ type User = {
 };
 
 export default function SignupCard(props: {
-	example: {users: any};
 	setAlert: (arg0: {open: boolean; text: string; severity: string}) => void;
 	setView: (arg0: string) => void;
 	onSignup: (arg0: any, arg1: "login" | "signup") => void;

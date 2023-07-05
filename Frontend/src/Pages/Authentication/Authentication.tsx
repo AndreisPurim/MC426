@@ -11,7 +11,6 @@ import axios from "axios";
 export default function Authentication(
 	props: JSX.IntrinsicAttributes & {
 		auth: "login" | "signup";
-		example: {users: {[x: string]: any}};
 		setControl: (arg0: any) => void;
 		setView: (arg0: string) => void;
 		control: any;

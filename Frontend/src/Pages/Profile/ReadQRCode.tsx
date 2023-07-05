@@ -48,7 +48,7 @@ export default function ReadQRCode(props: any){
               onResult={(result:any, error:any) => {
                 if(result) {
                   let qrdata = yaml.load(result.text)
-                  setData({row: props.example.rows[qrdata.formID], answers: qrdata});
+                  setData({row: props.control?.table?.rows[qrdata.formID], answers: qrdata});
                 }
               }}
               containerStyle={{width:'50%', margin:'auto'}}
@@ -56,7 +56,7 @@ export default function ReadQRCode(props: any){
             <Grid item xs={12}>
               <Typography variant="overline" display="block">
                 {!data?null:
-                <React.Fragment>
+                <>
                   <Grid item xs={12}>
                     <TableContainer>
                       <Table>
@@ -98,7 +98,7 @@ export default function ReadQRCode(props: any){
                       Use Answers
                     </Button>
                   </Grid>
-                </React.Fragment>
+                </>
               }
               </Typography>
             </Grid>

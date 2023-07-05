@@ -126,7 +126,7 @@ function Question(props: any) {
               <QuestionHead {...props} />
               <Grid item xs={12} spacing={1} container direction="row" justifyContent="flex-start" alignItems="center" style={{padding:'1rem 0 1rem 0'}}>
                 {props.question.type==='Loop'?
-                  <React.Fragment>
+                  <>
                     <Grid item xs={3}>
                       <FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} />} label={props.question.required?"Variable":"Range"} labelPlacement="end"/>
                     </Grid>
@@ -144,9 +144,9 @@ function Question(props: any) {
                         <Input fullWidth value={props.question.max} name="max" onChange={changeMinMax} type="number" placeholder="Number of times"/>
                       }
                     </Grid>
-                  </React.Fragment>
+                  </>
                 :props.question.type==='Number'?
-                  <React.Fragment>
+                  <>
                     <Grid item xs={3}>
                       <Input fullWidth value={props.question.min} name="min" onChange={changeMinMax} type="number" placeholder="No min"/>
                     </Grid>
@@ -157,7 +157,7 @@ function Question(props: any) {
                     <Grid item xs={6}>
                       <Input fullWidth value={props.question.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} type="number" placeholder="Default"/>
                     </Grid>
-                  </React.Fragment>
+                  </>
                 :props.question.type==='Text'?
                   <Grid item xs={6}>
                     <TextField fullWidth value={props.question.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} placeholder="Default"/>
