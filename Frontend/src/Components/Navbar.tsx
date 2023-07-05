@@ -52,9 +52,14 @@ export default function TitleToolbar(props: any) {
                 </React.Fragment>
             )
     }
+
+    function createForm() {
+        props.setControl({...props.control, tempData: {}, formID: null, view:'creator'})
+    }
+    
     function formButton() {
         if (props.control.user)
-            return <Button size="small" variant="outlined" startIcon={<PostAddIcon />} onClick={() => props.setView('profile')}>Forms</Button>
+            return <Button size="small" variant="outlined" startIcon={<PostAddIcon />} onClick={createForm}>Forms</Button>
     }
     return (
         <Toolbar >

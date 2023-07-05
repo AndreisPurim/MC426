@@ -12,11 +12,12 @@ import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "axios";
 
 export default function Publish(props: any) {
 	const getPublish = () => {
 		if (props.control.tempData && props.control.formID === props.control.tempData.id) {
-			const publishData = props.example.rows.find((row: any) => row.id === props.control.formID);
+			const publishData = props.control?.table?.rows.find((row: any) => row.id === props.control.formID);
 			publishData.last_updated = new Date().toJSON();
 			if (Array.isArray(publishData.keywords)) {
 				publishData.keywords = publishData.keywords.join(",");
@@ -29,7 +30,7 @@ export default function Publish(props: any) {
 				name: "",
 				last_updated: new Date().toJSON(),
 				field: "",
-				creator: props.control.user.username,
+				creator: props.control.user.nome,
 				preview: "",
 				creator_avatar: props.control.user.avatar,
 				dynamic_image: false,
@@ -49,7 +50,7 @@ export default function Publish(props: any) {
 	};
 
 	const savePublish = () => {
-		const newRows = props.example.rows;
+		const newRows = props.control?.table?.rows;
 		const newRow = publish;
 		if (!Array.isArray(newRow.keywords)) {
 			newRow.keywords = [...new Set(newRow.keywords.split(",").map((keyword: any) => keyword.trim()))];
@@ -60,12 +61,7 @@ export default function Publish(props: any) {
 			newRows[newRows.indexOf(currentRow)] = newRow;
 		} else {
 			newRows.push(newRow);
-			const newUsers = props.example.users;
-			newUsers[props.control.user.username].created.push(newRow.id);
 		}
-		props.example.forms[newRow.id] = props.creator;
-		const newForms = props.example.forms;
-		newForms[newRow.id] = props.creator;
 		function formatQuestions(question: any) {
 			if (question.type === "Text") {
 				return {
@@ -105,7 +101,7 @@ export default function Publish(props: any) {
 				};
 			}
 		}
-		newForms[newRow.id].formatted = {
+		newRows[newRow.id] = {
 			questions: props.creator.questions.map((question: any) => formatQuestions(question)),
 			template: props.creator.template,
 			svg: {
@@ -115,8 +111,24 @@ export default function Publish(props: any) {
 				organs: props.creator.svg.parts.map((part: any) => part.valueTrue),
 			},
 		};
-		props.setExample({...props.example, qforms: props.example.qforms + 1, forms: newForms, rows: newRows});
-		props.setControl({...props.control, formID: null, setData: {}, view: "profile"});
+
+		axios.post("http://localhost:8000/formulario", {id: props.control.formID, conteudo: JSON.stringify(newRow)}).then(
+			(response) => {
+				console.log(response);
+				props.setAlert({open: true, text: "Publish Sucessful (ID " + response.data.id + ")", severity: "success"});
+				props.setControl({
+					...props.control,
+					table: {...props.control.table, rows: newRows},
+					setData: {},
+					view: "profile",
+					formID: null,
+				});
+			},
+			(error) => {
+				props.setAlert({open: true, text: "Publish failed (" + error.name + ")", severity: "error"});
+			}
+		);
+
 	};
 	return (
 		<Grid item xs={4}>

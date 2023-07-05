@@ -4,7 +4,6 @@ export function dbExample(): any {
       "rows": [
           {
               "editable": false,
-              "id": 0,
               "name": "Urology",
               "last_updated": "2021-12-17T02:24:00.000Z",
               "field": "Urology",
@@ -16,14 +15,158 @@ export function dbExample(): any {
                   "Urology",
                   "MRI"
               ],
-              "questions": 17,
+              "questions": [
+                {
+                    "isRequired": true,
+                    "name": "identifier",
+                    "title": "Patient ID",
+                    "type": "text"
+                },
+                {
+                    "isRequired": true,
+                    "name": "patient_first_name",
+                    "title": "Patient name",
+                    "type": "text"
+                },
+                {
+                    "isRequired": true,
+                    "name": "patient_name",
+                    "title": "Patient surname",
+                    "type": "text"
+                },
+                {
+                    "isRequired": true,
+                    "name": "patient_birth",
+                    "title": "Patients birthday",
+                    "type": "text"
+                },
+                {
+                    "choices": [
+                        "CT scan",
+                        "Ultrasonography",
+                        "Radiography AND US"
+                    ],
+                    "name": "exam_type",
+                    "title": "Type of examination",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "IV",
+                        "IV late phase",
+                        "Urinary tract injection",
+                        "NA"
+                    ],
+                    "name": "exam_indication",
+                    "title": "Contrast Agent",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "Low dose",
+                        "Standard dose",
+                        "NA"
+                    ],
+                    "name": "condition_contrast",
+                    "title": "Acute phase / clinical crisis at the time of the exam",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "condition_fever",
+                    "title": "Patient febrile at the time of the exam",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Bladder drainage",
+                        "Upper tract drainage",
+                        "NA"
+                    ],
+                    "name": "condition_derivation",
+                    "title": "Urinary tract diversion in place at the time of the exam",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_liver",
+                    "title": "Liver anomaly detected",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_adrenals",
+                    "title": "Adrenals anomaly detected",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_pancreas",
+                    "title": "Pancreas anomaly detected",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_spleen",
+                    "title": "Splenic anomaly detected",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_ovaries",
+                    "title": "Ovarian anomaly detected",
+                    "type": "dropdown"
+                },
+                {
+                    "choices": [
+                        "No",
+                        "Yes",
+                        "Unknown",
+                        "NA"
+                    ],
+                    "name": "abnormal_lymphnode",
+                    "title": "Abnormal lymphnode detected",
+                    "type": "dropdown"
+                }
+            ],
               "uses": 15,
               "description": "This is a complete urology report made in 2020 for all urology based-scans used by the CHU Lille.",
               "paragraph": "This is a complete urology report made in 2020 for all urology based-scans used by the CHU Lille."
           },
           {
               "editable": false,
-              "id": 1,
               "name": "Respiratory",
               "last_updated": "2021-12-15T02:24:00.000Z",
               "field": "Respiratory",
@@ -34,7 +177,80 @@ export function dbExample(): any {
               "keywords": [
                   "Respiratory","System"
               ],
-              "questions": 2,
+              "questions": [
+                {
+                    "questionID": 0,
+                    "dragID": "0",
+                    "type": "Text",
+                    "variable": "this_is_a_text",
+                    "questionLabel": "This is a text",
+                    "required": false,
+                    "default": null,
+                    "min": null,
+                    "max": null,
+                    "loopvar": false,
+                    "others": false,
+                    "qchoices": 0,
+                    "choices": []
+                },
+                {
+                    "questionID": 1,
+                    "dragID": "1",
+                    "type": "Choice",
+                    "variable": "now_with_choices",
+                    "questionLabel": "Now with choices!",
+                    "required": false,
+                    "default": null,
+                    "min": null,
+                    "max": null,
+                    "loopvar": false,
+                    "others": true,
+                    "qchoices": 2,
+                    "choices": [
+                        {
+                            "choiceID": 0,
+                            "dragID": "0",
+                            "text": "Choice 1"
+                        },
+                        {
+                            "choiceID": 1,
+                            "dragID": "1",
+                            "text": "Choice 2"
+                        }
+                    ]
+                },
+                {
+                    "questionID": 2,
+                    "dragID": "2",
+                    "type": "Multiple Choice",
+                    "variable": "multiple_choices",
+                    "questionLabel": "Multiple Choices!",
+                    "required": false,
+                    "default": null,
+                    "min": null,
+                    "max": null,
+                    "loopvar": false,
+                    "others": false,
+                    "qchoices": 3,
+                    "choices": [
+                        {
+                            "choiceID": 0,
+                            "dragID": "0",
+                            "text": "Option 0"
+                        },
+                        {
+                            "choiceID": 1,
+                            "dragID": "1",
+                            "text": "Option 1"
+                        },
+                        {
+                            "choiceID": 2,
+                            "dragID": "2",
+                            "text": "Option 2"
+                        }
+                    ]
+                }
+            ],
               "uses": 1,
               "description": "A public CR created by the CHU Lille for respiratory scans used since 2018. It is release phase"
           },
@@ -181,7 +397,7 @@ export function dbExample(): any {
                     {
                         "isRequired": true,
                         "name": "patient_birth",
-                        "title": "Patient's birthday",
+                        "title": "Patients birthday",
                         "type": "text"
                     },
                     {

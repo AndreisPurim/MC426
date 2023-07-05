@@ -12,7 +12,6 @@ export default function Authentication(
 	props: JSX.IntrinsicAttributes & {
 		auth: "login" | "signup";
 		example: {users: {[x: string]: any}};
-		setExample: (arg0: any) => void;
 		setControl: (arg0: any) => void;
 		setView: (arg0: string) => void;
 		control: any;
@@ -47,7 +46,7 @@ export default function Authentication(
 				axios.get("http://localhost:8000/usuarios").then(function (res) {
 					const data = res.data.find((element: any) => element.email === user.email);
 					props.setAlert({open: true, text: "Connected", severity: "success"});
-					props.setControl({...props.control, user: {...user, ...data}, view: "profile"});
+					props.setControl({...props.control, user: {...user, ...data}, view: "profile", users: res.data});
 				});
 			})
 			.catch(function (error) {

@@ -171,7 +171,6 @@ export default function UserCard(props: any
 											label={getChipLabel(chip)}
 											color={getChipColor(chip)}
 											onClick={() => {
-												console.log("aaa");
 												chip.editing = !chip.editing;
 											}}
 										/>

@@ -22,7 +22,7 @@ export default function Form(props: any){
     const [answers, setAnswers] = React.useState({
       step: 0,
       answers: {...props.control.tempData},
-      questions: props.example.forms[props.control.formID].formatted,
+      questions: props.control?.table?.rows[props.control?.formID],
     });
     const back=()=>{
       if(answers.step){

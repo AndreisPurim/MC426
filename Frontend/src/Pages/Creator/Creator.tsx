@@ -29,9 +29,9 @@ export default function Creator(props: any){
     }
     else{
       return {
-        id: props.example.qforms, card: 0,
+        id: (props.control?.table?.rows?.length + 1) ?? 99, card: 0,
         questions: [],qlength: 0,
-        outputs: [], nodes: [], qnodes: 0, nodesUsedIDs: new Set(), selnode: null,
+        outputs: [], 
         template: '',
         svg: {base: '',parts: [],used_variables: []}
       }

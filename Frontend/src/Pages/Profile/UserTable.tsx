@@ -108,7 +108,7 @@ function UserTableToolbar(props: any){
 				{props?.table.columns.map((column: {id: React.Key | null | undefined; label: any}, i: number) => (
 					<ListItem key={column?.id}>
 						<FormControlLabel
-							control={<Checkbox checked={props?.table?.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />}
+							control={<Checkbox checked={props?.table?.props?.table?.selectedColumns.length ? props?.table?.props?.table?.selectedColumns[i] : false} onChange={() => changeSelectedColumns(i)} />}
 							label={column?.label}
 						/>
 					</ListItem>
@@ -160,8 +160,8 @@ export default function UserTable(props: any) {
   const fetchData = async () => {
 		axios.get("http://localhost:8000/formulario").then(
 			(res) => {
-				console.log(res);
-				let rows: any[] = res.data;
+        const rows = res.data.map((row: {id: string, conteudo: any}) => ( {  id: row?.id, ...JSON.parse(row.conteudo) } ));
+				console.log(rows);
 				let favs = 0;
 				for (let i = 0; i < rows.length; i++) {
 					if (rows[i].favorite) {
@@ -176,7 +176,7 @@ export default function UserTable(props: any) {
 					columns: columns,
 					selectedColumns: defaultColumns,
 					defaultColumns: defaultColumns,
-					rows: [],
+					rows: rows,
 					favorites: favs,
 				});
 			},
@@ -188,7 +188,11 @@ export default function UserTable(props: any) {
 
   React.useEffect(() => {
     fetchData();
-  }, [props.example]);
+  }, []);
+
+  React.useEffect(() => {
+    props.setControl({...props.control, table: table});
+  }, [table]);
   
   function handleFavorite(row: any) {
     const userFavorites: any = props.control.user?.favorites ?? [];
@@ -264,9 +268,9 @@ export default function UserTable(props: any) {
                               <TableCell key={column?.id} align={column.align}>
                                 {
                                 column?.id === 'last_updated'?
-                                  new Date(row[column?.id]).toISOString().slice(0, 10)
-                                :column?.id === 'keywords'?
-                                  row[column?.id].join(', ')
+                                  (new Date().toISOString().slice(0, 10) ?? "")
+                                :column?.id === 'keywords'? 
+                                  (row[column?.id] ? row[column?.id]?.join(', ') : "")
                                 :
                                   row[column?.id]
                                 }

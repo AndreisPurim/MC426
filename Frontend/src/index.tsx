@@ -18,7 +18,6 @@ import Form from "./Pages/Form/Form";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 
-import {dbExample} from "./Source/example.ts";
 import {Theme} from "@emotion/react";
 
 const getComplementaryColor = (color = "") => {
@@ -48,7 +47,6 @@ function Control() {
         tempData: {},
         user: null,
     });
-    const [example, setExample] = React.useState(dbExample());
     const theme: Theme = React.useMemo(
         () =>
             createTheme({
@@ -91,8 +89,6 @@ function Control() {
         control,
         setControl,
         setView,
-        example,
-        setExample,
         setAlert,
     };
     return (

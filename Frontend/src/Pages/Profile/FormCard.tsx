@@ -35,7 +35,7 @@ export default function FormCard(props: any){
     setExpanded(!expanded);
   };
   const editForms=()=>{
-    props.setControl({...props.control, view: 'creator', tempData: props.example.forms[props.row?.id], formID: props.row?.id });
+    props.setControl({...props.control, view: 'creator', tempData: props.row, formID: props.row?.id });
   }
   return (
     <TableCell>
@@ -50,7 +50,7 @@ export default function FormCard(props: any){
             avatar={<Avatar src={props.row?.creator_avatar} />}
             action={<Tooltip title="Options"><IconButton><MoreVertIcon /></IconButton></Tooltip>}
             title={'Created by '+props.row?.creator}
-            subheader={'FormID '+props.row?.id+'. Last update: '+new Date(props.row.last_updated).toISOString().slice(0, 10)}
+            subheader={'FormID '+props.row?.id+'. Last update: '+new Date().toISOString().slice(0, 10)}
           />
           <CardContent>
             <Grid container spacing={1} direction="row" justifyContent="flex-start" alignItems="center">
@@ -70,7 +70,7 @@ export default function FormCard(props: any){
               {props.row.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <b>Keywords:</b> {props.row.keywords.join(', ')}
+              <b>Keywords:</b> {props.row?.keywords?.join(', ')}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               <b>Questions:</b> {props.row.questions} Questions
