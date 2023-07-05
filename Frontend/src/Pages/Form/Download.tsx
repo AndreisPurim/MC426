@@ -29,12 +29,12 @@ export default function Download(props: any){
     const [edit,setEdit]=React.useState(0)
     const [editResult,setEditResult]=React.useState(getTemplate())
     function getOrgans(){
-        return props.answers.questions.svg.organs.map((organ:any)=>organ.length!==1?organ[+(Math.random()<0.5)|0]:organ[0]).join('')
+        return (props.answers?.questions?.svg?.organs?.map((organ:any)=>organ.length!==1?organ[+(Math.random()<0.5)|0]:organ[0]).join('') ?? "")
     }
     const [organs, setOrgans] = React.useState( getOrgans());
-    const svgSource = props.answers.questions.svg.begin + organs + props.answers.questions.svg.end
+    const svgSource = (props.answers?.questions?.svg?.begin ?? "") + organs + (props.answers?.questions?.svg?.end ?? "")
     function generateQRCode(){
-        return YAML.stringify({formID: props.control.formID, user: props.control.user.username, date: new Date().toISOString().slice(0, 10), answers: props.answers.answers})
+        return YAML.stringify({formID: props.control.formID, user: props.control.user.nome, date: new Date().toISOString().slice(0, 10), answers: props.answers.answers})
     }
     function getTemplate(){
         let answers = []
@@ -46,7 +46,7 @@ export default function Download(props: any){
         if(props.control.formID===0){
             return answers.map((answer:any)=>{
                 if(answer[0] in props.answers.questions.template){
-                    let this_template = props.answers.questions.template[answer[0]]
+                    let this_template = props.answers.questions?.template[answer[0]]
                 if(this_template.complete){
                     return '<p>'+this_template.begin+answer[0]+this_template.end+'</p>'
                 }
@@ -62,9 +62,9 @@ export default function Download(props: any){
                 }
             }).join("")
         }
-        let variableschanged = props.answers.questions.template.split("<med-var").map((part:any)=>{
+        let variableschanged = props.answers.questions?.template?.split("<med-var").map((part:any)=>{
             if(part.includes('</med-var>')){
-                let varpart = part.split('</med-var>')
+                let varpart = part?.split('</med-var>')
                 let vari = (varpart[0].substring(varpart[0].indexOf('">')+2))
                 return props.answers.answers[vari]+varpart[1]
             }
@@ -72,9 +72,9 @@ export default function Download(props: any){
                 return part
             }
         }).join("")
-        return variableschanged.split("<img").map((part:any)=>{
+        return variableschanged?.split("<img").map((part:any)=>{
             if(part.includes('qrcode')){
-                let varpart = part.split('">')
+                let varpart = part?.split('">')
                 console.log(varpart)
                 return varpart[1]
             }
@@ -89,7 +89,7 @@ export default function Download(props: any){
           const imgData = canvas.toDataURL('image/png');
           const pdf = new jsPDF();
           pdf.addImage(imgData, 'JPEG', 0, 0);
-          let filename = "FormID_"+props.control.formID+"_by_"+props.control.user.username+"_"+new Date().getTime();
+          let filename = "FormID_"+props.control.formID+"_by_"+props.control?.user?.nome+"_"+new Date().getTime();
           pdf.save(filename);
         });
     }
