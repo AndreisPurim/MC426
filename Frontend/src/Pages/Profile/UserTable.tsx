@@ -35,10 +35,9 @@ function UserTableSelector(props: any){
   return(
     <Grid item>
       <Tabs value={props.table.tab} onChange={changeTab} indicatorColor={props.table.tab === 3 ? "secondary" : "primary"} textColor={props.table.tab === 3 ? "secondary" : "primary"}>
-        <Tab label="Public" />
+        <Tab label="All" />
         <Tab label={"Favorites (" + (props.control.user?.favorites?.length ?? 0) + ")"} />
-        <Tab label="Recent" />
-        {!props.control.user?.admin ? null : <Tab label={"My Forms (" + (props.control.user?.created?.length ?? 0) + ")"} />}
+        <Tab label="My Forms" />
       </Tabs>
     </Grid>
   )
@@ -66,8 +65,7 @@ function UserTableToolbar(props: any){
   function textTab() {
     switch (props.table.tab) {
       case 1: return 'Favorites'
-      case 2: return 'Recent Forms'
-      case 3: return 'My forms'
+      case 2: return 'My Forms'
       default: return 'All'
     }
   }
@@ -108,7 +106,7 @@ function UserTableToolbar(props: any){
 				{props?.table.columns.map((column: {id: React.Key | null | undefined; label: any}, i: number) => (
 					<ListItem key={column?.id}>
 						<FormControlLabel
-							control={<Checkbox checked={props?.table?.props?.table?.selectedColumns.length ? props?.table?.props?.table?.selectedColumns[i] : false} onChange={() => changeSelectedColumns(i)} />}
+							control={<Checkbox checked={props.control?.table?.selectedColumns.length ? (props.control?.table?.selectedColumns[i] ? true : false) : false} onChange={() => changeSelectedColumns(i)} />}
 							label={column?.label}
 						/>
 					</ListItem>
@@ -148,6 +146,7 @@ export default function UserTable(props: any) {
     anchorSelect: null,
     selectedColumns: [],
     defaultColumns: [],
+    createdForms: [],
     columns: [],
     rows: [],
     favorites: 0
@@ -161,7 +160,6 @@ export default function UserTable(props: any) {
 		axios.get("http://localhost:8000/formulario").then(
 			(res) => {
         const rows = res.data.map((row: {id: string, conteudo: any}) => ( {  id: row?.id, ...JSON.parse(row.conteudo) } ));
-				console.log(rows);
 				let favs = 0;
 				for (let i = 0; i < rows.length; i++) {
 					if (rows[i].favorite) {
@@ -176,9 +174,11 @@ export default function UserTable(props: any) {
 					columns: columns,
 					selectedColumns: defaultColumns,
 					defaultColumns: defaultColumns,
+          createdForms: rows.filter((row: any) => row.creator_id === props.control.user?.id),
 					rows: rows,
 					favorites: favs,
 				});
+        console.log(props.control)
 			},
 			(err) => {
 				props.setAlert({open: true, text: `Error in fetching forms (${err})`, severity: "error"});
@@ -196,31 +196,26 @@ export default function UserTable(props: any) {
   
   function handleFavorite(row: any) {
     const userFavorites: any = props.control.user?.favorites ?? [];
-    const index = userFavorites?.indexOf(row?.id);
+    const index = userFavorites?.indexOf(row?.id) ?? -1;
     if (index === -1) {
       userFavorites.push(row?.id)
     }
     else {
       userFavorites.splice(index, 1)
     }
-    props.setControl({...props.control, user: { ...props.control.user, userFavorites }})
+    props.setControl({...props.control, user: { ...props.control.user, favorites: userFavorites }})
   }
 
   function selectRows() {
     let rows: any = []
     if (table.tab === 1) {
       rows = table?.rows.filter(function (row: any) {
-        return props.control.user?.favorites?.indexOf(row?.id) !== -1;
+        return (props.control.user?.favorites?.indexOf(row?.id) ?? -1) !== -1;
       })
     }
     else if (table.tab === 2) {
       rows = table.rows.filter(function (row: any) {
-        return props.control?.user?.recents?.filter(row?.id);
-      })
-    }
-    else if (table.tab === 3) {
-      rows = table.rows.filter(function (row: any) {
-        return props.control.user?.created?.indexOf(row?.id) !== -1;
+        return row.creator_id === props.control.user?.id;
       })
     }
     else {
@@ -258,7 +253,7 @@ export default function UserTable(props: any) {
                             return (
                               <TableCell key={column?.id} align={column.align}>
                                 <IconButton onClick={() => handleFavorite(row)}>
-                                  {props.control.user?.favorites?.indexOf(row?.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                  {(props.control.user?.favorites?.indexOf(row?.id) ?? -1) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
                               </TableCell>
                             )

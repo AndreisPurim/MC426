@@ -34,6 +34,7 @@ export default function Download(props: any){
     const [organs, setOrgans] = React.useState( getOrgans());
     const svgSource = (props.answers?.questions?.svg?.begin ?? "") + organs + (props.answers?.questions?.svg?.end ?? "")
     function generateQRCode(){
+        console.log(props)
         return YAML.stringify({formID: props.control.formID, user: props.control.user.nome, date: new Date().toISOString().slice(0, 10), answers: props.answers.answers})
     }
     function getTemplate(){

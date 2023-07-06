@@ -25,7 +25,8 @@ export default function Publish(props: any) {
 			return publishData;
 		} else {
 			return {
-				id: props.creator.formID,
+				id: props.creator?.id,
+				formID: props.creator?.id,
 				editable: true,
 				name: "",
 				last_updated: new Date().toJSON(),
@@ -36,7 +37,7 @@ export default function Publish(props: any) {
 				dynamic_image: false,
 				creator_id: props.control.user.id,
 				keywords: "",
-				questions: props.creator.questions,
+				questions: props.creator.questions.map((question: any) => formatQuestions(question)),
 				uses: 0,
 				description: "",
 				paragraph: "",
@@ -48,41 +49,32 @@ export default function Publish(props: any) {
 	const changeProperty = (event: any, property: string) => {
 		setPublish({...publish, [property]: event.target.value});
 	};
-
-	const savePublish = () => {
-		const newRows = props.control?.table?.rows;
-		const newRow = publish;
-		if (!Array.isArray(newRow.keywords)) {
-			newRow.keywords = [...new Set(newRow.keywords.split(",").map((keyword: any) => keyword.trim()))];
-		}
-		const currentRow = newRows.find((rows: any) => rows.id === props.creator.id);
-		newRow.id = props.creator.id;
-		if (currentRow) {
-			newRows[newRows.indexOf(currentRow)] = newRow;
-		} else {
-			newRows.push(newRow);
-		}
-		function formatQuestions(question: any) {
-			if (question.type === "Text") {
+	
+	function formatQuestions(question: any) {
+		switch (question.type) {
+			case "Text":
 				return {
+					...question,
 					isRequired: question.required,
-					type: question.type.toLowerCase(),
+					type: question.type,
 					name: question.variable,
 					title: question.questionLabel,
 					defaultAnswer: question.default,
 				};
-			} else if (question.type === "Number") {
+			case "Number":
 				return {
+					...question,
 					isRequired: question.required,
 					// minValue: question.min,
 					// maxValue: question.max,
-					type: "text",
+					type: question.type,
 					name: question.variable,
 					title: question.questionLabel,
-					// defaultAnswer: question.default,
+					defaultAnswer: question.default,
 				};
-			} else if (question.type === "Choice") {
+			case "Choice":
 				return {
+					...question,
 					isRequired: question.required,
 					type: "radiogroup",
 					name: question.variable,
@@ -90,18 +82,33 @@ export default function Publish(props: any) {
 					choices: question.choices.map((choice: any) => choice.text),
 					hasOther: question.others,
 				};
-			} else if (question.type === "Multiple Choice") {
+			case "Multiple Choice":
 				return {
+					...question,
 					isRequired: question.required,
-					type: "checkbox",
+					type: "dropdown",
 					name: question.variable,
 					title: question.questionLabel,
 					choices: question.choices.map((choice: any) => choice.text),
 					hasOther: question.others,
 				};
-			}
+				default:
+					return {
+						...question,
+						isRequired: question.required,
+						type: question.type,
+						name: question.variable,
+						title: question.questionLabel,
+						defaultAnswer: question.default,
+					};
+
 		}
-		newRows[newRow.id] = {
+	}
+
+	const savePublish = () => {
+		const newRows = props.control?.table?.rows;
+		const newRow = {
+			...publish,
 			questions: props.creator.questions.map((question: any) => formatQuestions(question)),
 			template: props.creator.template,
 			svg: {
@@ -111,6 +118,15 @@ export default function Publish(props: any) {
 				organs: props.creator.svg.parts.map((part: any) => part.valueTrue),
 			},
 		};
+		if (!Array.isArray(newRow.keywords)) {
+			newRow.keywords = [...new Set(newRow.keywords.split(",").map((keyword: any) => keyword.trim()))];
+		}
+		const currentRow = newRows.find((rows: any) => rows.id === props.creator.id);
+		if (currentRow) {
+			newRows[newRows.indexOf(currentRow)] = newRow;
+		} else {
+			newRows.push(newRow);
+		}
 
 		axios.post("http://localhost:8000/formulario", {id: props.control.formID, conteudo: JSON.stringify(newRow)}).then(
 			(response) => {

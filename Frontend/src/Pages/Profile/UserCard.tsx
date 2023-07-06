@@ -1,6 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
-import {makeStyles} from "@mui/material/styles";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Paper from "@mui/material/Paper";
 import React from "react";
 import Typography from "@mui/material/Typography";
@@ -48,20 +48,21 @@ export default function UserCard(props: any
 		return "primary";
 	}
 
-	console.log(props.control.user)
-
 	return (
 		<Grid item xs={7} style={{width: "100%"}}>
 			<Paper elevation={3} style={{padding: "1rem"}}>
 				<Grid container direction="column" justifyContent="flex-start" alignItems="stretch">
 					<Grid xs={12} spacing={2} item container direction="row" justifyContent="flex-start" alignItems="stretch">
-						<Grid item xs={2}>
+						<Grid item xs={2} sx={{width: "100%", height: "100%"}}>
+							{props.control.user?.avatar ?
 							<Avatar
-								variant="rounded"
-								alt="Avatar"
-								src={props.control.user?.avatar ?? "https://pic.onlinewebfonts.com/svg/img_568657.png"}
-								style={{width: "100%", height: "100%"}}
-							/>
+							variant="rounded"
+							alt="Avatar"
+							src={props.control.user?.avatar ?? "https://pic.onlinewebfonts.com/svg/img_568657.png"}
+							style={{width: "100%", height: "100%"}}
+						/> :
+						<AccountCircleIcon fontSize={"large"} sx={{width: "100%", height: "100%"}}/>
+							}
 						</Grid>
 						<Grid item xs={6}>
 							{editing ? (
@@ -122,7 +123,7 @@ export default function UserCard(props: any
 							)}
 						</Grid>
 					</Grid>
-					<Grid container flexDirection={"row"} justifyContent={"start"} columnGap={1}>
+					{/* <Grid container flexDirection={"row"} justifyContent={"start"} columnGap={1}>
 						{editing ? (
 							<>
 								<Grid item sx={{padding: "6px"}}>
@@ -178,7 +179,7 @@ export default function UserCard(props: any
 								</Grid>
 							))
 						)}
-					</Grid>
+					</Grid> */}
 				</Grid>
 			</Paper>
 		</Grid>

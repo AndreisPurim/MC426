@@ -27,11 +27,16 @@ export default function ReadQRCode(props: any){
   const [data,setData] = React.useState<any>(null);
   const retry=()=>{setData(null)};
   const back=()=>{props.setView('user')};
+  React.useEffect(()=>{
+    if(data){
+      console.log(data);
+    }
+  },[data])
   const use=()=>{
-    props.setControl({...props.control, formID: data.answers.formID, tempData: data.answers.answers, view:'form'})
+    props.setControl({...props.control, formID: data?.answers?.formID, tempData: data?.answers?.answers, view:'form'})
   }
   return (
-    <Grid container xs={12} spacing={1} style={{textAlign:'center'}}>
+    <Grid container item xs={12} spacing={1} style={{textAlign:'center'}}>
       <Grid item xs={12} style={{margin:"auto"}}>
         <Button style={{margin:"auto"}} variant="outlined" color="primary" onClick={back} startIcon={<ChevronLeftIcon />}>
           Return
@@ -46,6 +51,7 @@ export default function ReadQRCode(props: any){
             <QrReader
               constraints={{facingMode: 'user'}}
               onResult={(result:any, error:any) => {
+                console.log(result);
                 if(result) {
                   let qrdata = yaml.load(result.text)
                   setData({row: props.control?.table?.rows[qrdata.formID], answers: qrdata});
@@ -76,18 +82,18 @@ export default function ReadQRCode(props: any){
                               {data.answers.date}
                             </TableCell>
                             <TableCell>
-                              {data.answers.user}
+                              {data.answers.creator}
                             </TableCell>
                             <TableCell>
-                              {data.row.name}
+                              {data?.row?.name}
                             </TableCell>
                             <TableCell>
-                              {data.answers.formID}
+                              {data?.answers?.formID}
                             </TableCell>
                             <TableCell>
-                              {Object.keys(data.answers.answers).length}/{data.row.questions}
+                              {Object.keys(data?.answers?.answers)?.length}/{data?.row?.questions}
                             </TableCell>
-                            <FormCard {...props} readingQRCode row={data.row}/>
+                            <FormCard {...props} readingQRCode row={data?.row}/>
                           </TableRow>
                         </TableBody>
                       </Table>

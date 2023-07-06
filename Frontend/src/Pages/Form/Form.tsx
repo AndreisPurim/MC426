@@ -69,33 +69,42 @@ export default function Form(props: any) {
 				<Grid item container direction="column" justifyContent="flex-start" alignItems="stretch" spacing={1}>
 					{answers.questions.questions.map((question: any) => (
 						<Grid item key={question.name}>
-							{question.type === "Text" ? (
-								<TextField
-									fullWidth
-									value={answers.answers[question.name]}
-									onChange={(event) => handleChange(question.name, event)}
-									required={question.isRequired}
-									label={question.questionLabel}
-									variant="outlined"
-								/>
-							) : question.type === "dropdown" ? (
-								<FormControl fullWidth>
-									<InputLabel>{question.questionLabel}</InputLabel>
-									<Select
-										label={question.questionLabel}
-										value={answers.answers[question.name]}
-										onChange={(event) => handleChange(question.name, event)}
-									>
-										{question.choices.map((choice: any) => (
-											<MenuItem key={choice} value={choice}>
-												{choice}
-											</MenuItem>
-										))}
-									</Select>
-								</FormControl>
-							) : (
-								JSON.stringify(question)
-							)}
+							{(() => {
+								switch (question.type) {
+									case "Text":
+									case "Number":
+										return (
+											<TextField
+												fullWidth
+												value={answers.answers[question.questionID]}
+												onChange={(event) => handleChange(question.questionID, event)}
+												required={question.isRequired}
+												label={question.questionLabel}
+												variant="outlined"
+												type={question.type === "Text" ? "text" : "number"}
+											/>
+										);
+									case "dropdown":
+										return (
+											<FormControl fullWidth>
+												<InputLabel>{question.questionLabel}</InputLabel>
+												<Select
+													label={question.questionLabel}
+													value={answers.answers[question.name]}
+													onChange={(event) => handleChange(question.name, event)}
+												>
+													{question.choices.map((choice: any) => (
+														<MenuItem key={choice} value={choice}>
+															{choice}
+														</MenuItem>
+													))}
+												</Select>
+											</FormControl>
+										);
+									default:
+										return JSON.stringify(question);
+								}
+							})()}
 						</Grid>
 					))}
 				</Grid>
