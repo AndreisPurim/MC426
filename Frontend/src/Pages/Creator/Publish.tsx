@@ -12,11 +12,12 @@ import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "axios";
 
 export default function Publish(props: any) {
 	const getPublish = () => {
 		if (props.control.tempData && props.control.formID === props.control.tempData.id) {
-			const publishData = props.example.rows.find((row: any) => row.id === props.control.formID);
+			const publishData = props.control?.table?.rows.find((row: any) => row.id === props.control.formID);
 			publishData.last_updated = new Date().toJSON();
 			if (Array.isArray(publishData.keywords)) {
 				publishData.keywords = publishData.keywords.join(",");
@@ -24,18 +25,19 @@ export default function Publish(props: any) {
 			return publishData;
 		} else {
 			return {
-				id: props.creator.formID,
+				id: props.creator?.id,
+				formID: props.creator?.id,
 				editable: true,
 				name: "",
 				last_updated: new Date().toJSON(),
 				field: "",
-				creator: props.control.user.username,
+				creator: props.control.user.nome,
 				preview: "",
 				creator_avatar: props.control.user.avatar,
 				dynamic_image: false,
 				creator_id: props.control.user.id,
 				keywords: "",
-				questions: props.creator.questions.length,
+				questions: props.creator.questions.map((question: any) => formatQuestions(question)),
 				uses: 0,
 				description: "",
 				paragraph: "",
@@ -47,46 +49,32 @@ export default function Publish(props: any) {
 	const changeProperty = (event: any, property: string) => {
 		setPublish({...publish, [property]: event.target.value});
 	};
-
-	const savePublish = () => {
-		const newRows = props.example.rows;
-		const newRow = publish;
-		if (!Array.isArray(newRow.keywords)) {
-			newRow.keywords = [...new Set(newRow.keywords.split(",").map((keyword: any) => keyword.trim()))];
-		}
-		const currentRow = newRows.find((rows: any) => rows.id === props.creator.id);
-		newRow.id = props.creator.id;
-		if (currentRow) {
-			newRows[newRows.indexOf(currentRow)] = newRow;
-		} else {
-			newRows.push(newRow);
-			const newUsers = props.example.users;
-			newUsers[props.control.user.username].created.push(newRow.id);
-		}
-		props.example.forms[newRow.id] = props.creator;
-		const newForms = props.example.forms;
-		newForms[newRow.id] = props.creator;
-		function formatQuestions(question: any) {
-			if (question.type === "Text") {
+	
+	function formatQuestions(question: any) {
+		switch (question.type) {
+			case "Text":
 				return {
+					...question,
 					isRequired: question.required,
-					type: question.type.toLowerCase(),
+					type: question.type,
 					name: question.variable,
 					title: question.questionLabel,
 					defaultAnswer: question.default,
 				};
-			} else if (question.type === "Number") {
+			case "Number":
 				return {
+					...question,
 					isRequired: question.required,
 					// minValue: question.min,
 					// maxValue: question.max,
-					type: "text",
+					type: question.type,
 					name: question.variable,
 					title: question.questionLabel,
-					// defaultAnswer: question.default,
+					defaultAnswer: question.default,
 				};
-			} else if (question.type === "Choice") {
+			case "Choice":
 				return {
+					...question,
 					isRequired: question.required,
 					type: "radiogroup",
 					name: question.variable,
@@ -94,18 +82,33 @@ export default function Publish(props: any) {
 					choices: question.choices.map((choice: any) => choice.text),
 					hasOther: question.others,
 				};
-			} else if (question.type === "Multiple Choice") {
+			case "Multiple Choice":
 				return {
+					...question,
 					isRequired: question.required,
-					type: "checkbox",
+					type: "dropdown",
 					name: question.variable,
 					title: question.questionLabel,
 					choices: question.choices.map((choice: any) => choice.text),
 					hasOther: question.others,
 				};
-			}
+				default:
+					return {
+						...question,
+						isRequired: question.required,
+						type: question.type,
+						name: question.variable,
+						title: question.questionLabel,
+						defaultAnswer: question.default,
+					};
+
 		}
-		newForms[newRow.id].formatted = {
+	}
+
+	const savePublish = () => {
+		const newRows = props.control?.table?.rows;
+		const newRow = {
+			...publish,
 			questions: props.creator.questions.map((question: any) => formatQuestions(question)),
 			template: props.creator.template,
 			svg: {
@@ -115,8 +118,33 @@ export default function Publish(props: any) {
 				organs: props.creator.svg.parts.map((part: any) => part.valueTrue),
 			},
 		};
-		props.setExample({...props.example, qforms: props.example.qforms + 1, forms: newForms, rows: newRows});
-		props.setControl({...props.control, formID: null, setData: {}, view: "profile"});
+		if (!Array.isArray(newRow.keywords)) {
+			newRow.keywords = [...new Set(newRow.keywords.split(",").map((keyword: any) => keyword.trim()))];
+		}
+		const currentRow = newRows.find((rows: any) => rows.id === props.creator.id);
+		if (currentRow) {
+			newRows[newRows.indexOf(currentRow)] = newRow;
+		} else {
+			newRows.push(newRow);
+		}
+
+		axios.post("http://localhost:8000/formulario", {id: props.control.formID, conteudo: JSON.stringify(newRow)}).then(
+			(response) => {
+				console.log(response);
+				props.setAlert({open: true, text: "Publish Sucessful (ID " + response.data.id + ")", severity: "success"});
+				props.setControl({
+					...props.control,
+					table: {...props.control.table, rows: newRows},
+					setData: {},
+					view: "profile",
+					formID: null,
+				});
+			},
+			(error) => {
+				props.setAlert({open: true, text: "Publish failed (" + error.name + ")", severity: "error"});
+			}
+		);
+
 	};
 	return (
 		<Grid item xs={4}>
@@ -176,7 +204,7 @@ export default function Publish(props: any) {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography variant="body2" color="textSecondary" component="p">
-								<b>Questions:</b> {publish.questions} Questions
+								<b>Questions:</b> {publish.questions.length} Questions
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>

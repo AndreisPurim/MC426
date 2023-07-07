@@ -4,7 +4,6 @@ import React from "react";
 import Login from "../Pages/Authentication/Authentication";
 import LoginCard from "../Pages/Authentication/LoginCard";
 import SignupCard from "../Pages/Authentication/SignupCard";
-import {dbExample} from "../Source/example";
 import "@testing-library/jest-dom/extend-expect"
 import '@testing-library/jest-dom'
 
@@ -20,7 +19,6 @@ describe("Login", () => {
                 tempData: {},
                 user: null,
             },
-            example: dbExample(),
             setView: jest.fn(),
             setAlert: jest.fn(() => null),
             changeLightMode: jest.fn(() => null),
@@ -36,7 +34,6 @@ describe("LoginCard", () => {
             auth: "login",
             setControl: jest.fn(() => null),
             setExample: jest.fn(() => null),
-            example: dbExample(),
             control: {
                 view: "Login",
                 formID: null,
@@ -59,7 +56,6 @@ describe("SignupCard", () => {
             setControl: jest.fn(() => null),
             setExample: jest.fn(() => null),
             onSignup: jest.fn(() => null),
-            example: dbExample(),
             control: {
                 view: "Login",
                 formID: null,
@@ -81,7 +77,6 @@ describe("Signup Class Equivalence", () => {
         setControl: jest.fn(() => null),
         setExample: jest.fn(() => null),
         onSignup: jest.fn(() => null),
-        example: dbExample(), 
         control: {
             view: "Login",
             formID: null,
@@ -136,7 +131,6 @@ describe("Signup Decision table", () => {
         setControl: jest.fn(() => null),
         setExample: jest.fn(() => null),
         onSignup: jest.fn(() => null),
-        example: dbExample(), 
         control: {
             view: "Login",
             formID: null,
@@ -251,7 +245,6 @@ describe("Login Class Equivalence", () => {
         setControl: jest.fn(() => null),
         setExample: jest.fn(() => null),
         onSignup: jest.fn(() => null),
-        example: dbExample(), 
         control: {
             view: "Login",
             formID: null,
@@ -306,7 +299,6 @@ describe("Login Decision table", () => {
         setControl: jest.fn(() => null),
         setExample: jest.fn(() => null),
         onSignup: jest.fn(() => null),
-        example: dbExample(), 
         control: {
             view: "Login",
             formID: null,

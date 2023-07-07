@@ -25,18 +25,19 @@ import TocIcon from '@mui/icons-material/Toc';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import axios from "axios";
 
 import FormCard from './FormCard';
+import { columns } from '../../Source/example';
 
 function UserTableSelector(props: any){
   const changeTab = (event: any, newTab: any) => { props.setTable({ ...props.table, tab: newTab }) };
   return(
     <Grid item>
       <Tabs value={props.table.tab} onChange={changeTab} indicatorColor={props.table.tab === 3 ? "secondary" : "primary"} textColor={props.table.tab === 3 ? "secondary" : "primary"}>
-        <Tab label="Public" />
-        <Tab label={"Favorites (" + props.control.user.favorites.length + ")"} />
-        <Tab label="Recent" />
-        {!props.control.user.admin ? null : <Tab label={"My Forms (" + props.control.user.created.length + ")"} />}
+        <Tab label="All" />
+        <Tab label={"Favorites (" + (props.control.user?.favorites?.length ?? 0) + ")"} />
+        <Tab label="My Forms" />
       </Tabs>
     </Grid>
   )
@@ -64,49 +65,67 @@ function UserTableToolbar(props: any){
   function textTab() {
     switch (props.table.tab) {
       case 1: return 'Favorites'
-      case 2: return 'Recent Forms'
-      case 3: return 'My forms'
+      case 2: return 'My Forms'
       default: return 'All'
     }
   }
-  return(
-    <Toolbar>
-      <Typography variant="h6" id="tableTitle" style={{ flex: '1 1 100%' }}>
-        {textTab()} {props.table.search !== '' ? '(Searching)' : null}
-      </Typography>
-      <Tooltip title="Search">
-        <TextField onChange={changeSearch} InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }} placeholder="Search" variant="outlined" />
-      </Tooltip>
-      <Tooltip title="Select Columns">
-        <IconButton onClick={openSelect}>
-          <TocIcon />
-        </IconButton>
-      </Tooltip>
-      <Menu keepMounted anchorEl={props.table.anchorSelect} open={Boolean(props.table.anchorSelect)} onClose={closeSelect}>
-        {props.table.columns.map((column: { id: React.Key | null | undefined; label: any }, i: number) => (
-          <ListItem key={column.id}>
-            <FormControlLabel control={<Checkbox checked={props.table.selectedColumns[i]} onChange={() => changeSelectedColumns(i)} />} label={column.label} />
-          </ListItem>
-        ))}
-        {showResetButton() ? null :
-          <MenuItem onClick={resetColumns}>
-            Reset to Default
-          </MenuItem>
-        }
-      </Menu>
-    </Toolbar>
-  )
+  return (
+		<Toolbar sx={{minWidth: "800px"}}>
+			<Grid container flexDirection={"row"} justifyContent={"space-between"} sx={{marginTop: "8px"}}>
+					<Grid item container flexDirection={"row"} justifyContent={"flex-start"} alignItems={"center"} xs={3}>
+						<Typography variant="h5" id="tableTitle">
+							{textTab()} {props.table.search !== "" ? "(Searching)" : null}
+						</Typography>
+					</Grid>
+					<Grid item container flexDirection={"row"} justifyContent={"center"} xs={6}>
+						<Tooltip title="Search">
+							<TextField
+								onChange={changeSearch}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<SearchIcon />
+										</InputAdornment>
+									),
+								}}
+								placeholder="Search"
+								variant="outlined"
+                sx={{paddingTop: "4px"}}
+							/>
+						</Tooltip>
+					</Grid>
+				<Grid container item flexDirection={"row"} justifyContent={"end"} xs>
+						<Tooltip title="Select Columns">
+							<IconButton onClick={openSelect}>
+								<TocIcon />
+							</IconButton>
+						</Tooltip>
+				</Grid>
+			</Grid>
+			<Menu keepMounted anchorEl={props.table?.anchorSelect} open={Boolean(props.table?.anchorSelect)} onClose={closeSelect}>
+				{props?.table.columns.map((column: {id: React.Key | null | undefined; label: any}, i: number) => (
+					<ListItem key={column?.id}>
+						<FormControlLabel
+							control={<Checkbox checked={props.control?.table?.selectedColumns.length ? (props.control?.table?.selectedColumns[i] ? true : false) : false} onChange={() => changeSelectedColumns(i)} />}
+							label={column?.label}
+						/>
+					</ListItem>
+				))}
+				{showResetButton() ? null : <MenuItem onClick={resetColumns}>Reset to Default</MenuItem>}
+			</Menu>
+		</Toolbar>
+  );
 }
 
 function UserTableHead(props: any){
   return(
     <TableHead>
       <TableRow>
-        {props.table.columns.map((column: {
+        {props.table?.columns.map((column: {
           align: "right" | "left" | "center" | "inherit" | "justify" | undefined; id: any; minWidth: any; label: any;
         }, i: string | number) => {
           if (props.table.selectedColumns[i]) return (
-            <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+            <TableCell key={column?.id} align={column.align} style={{ minWidth: column.minWidth }}>
               <b>{column.label}</b>
             </TableCell>
           )
@@ -118,7 +137,7 @@ function UserTableHead(props: any){
   )
 }
 
-export default function UserTable(props: { example: any; setControl: (arg0: any) => void; control: { user: { username: string | number; favorites: { indexOf: (arg0: any) => number; length: string; }; recents: any; created: { indexOf: (arg0: any) => number; length: string; }; admin: any; }; }; setExample: (arg0: any) => void; }) {
+export default function UserTable(props: any) {
   const [table, setTable] = React.useState({
     tab: 0,
     page: 0,
@@ -127,62 +146,76 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
     anchorSelect: null,
     selectedColumns: [],
     defaultColumns: [],
+    createdForms: [],
     columns: [],
     rows: [],
     favorites: 0
   } as any);
-  
+    
   const changePage = (event: any, newPage: any) => { setTable({ ...table, page: newPage }) };
   const changePerPage = (event: { target: { value: string | number; }; }) => { setTable({ ...table, page: 0, perPage: +event.target.value }) };
 
+
+  const fetchData = async () => {
+		axios.get("http://localhost:8000/formulario").then(
+			(res) => {
+        const rows = res.data.map((row: {id: string, conteudo: any}) => ( {  id: row?.id, ...JSON.parse(row.conteudo) } ));
+				let favs = 0;
+				for (let i = 0; i < rows.length; i++) {
+					if (rows[i].favorite) {
+						favs++;
+					}
+				}
+				const defaultColumns = columns.filter(function (row: {default: any}) {
+					return row.default;
+				});
+				setTable({
+					...table,
+					columns: columns,
+					selectedColumns: defaultColumns,
+					defaultColumns: defaultColumns,
+          createdForms: rows.filter((row: any) => row.creator_id === props.control.user?.id),
+					rows: rows,
+					favorites: favs,
+				});
+        console.log(props.control)
+			},
+			(err) => {
+				props.setAlert({open: true, text: `Error in fetching forms (${err})`, severity: "error"});
+			}
+		);
+  };
+
   React.useEffect(() => {
-    const fetchData = async () => {
-      const rows = props.example.rows;
-      const columns = props.example.columns;
-      let favs = 0;
-      for (let i = 0; i < rows.length; i++) {
-        if (rows[i].favorite) {
-          favs++
-        }
-      }
-      const defaultColumns = columns.filter(function (row: { default: any; }) { return row.default })
-      setTable({ ...table, columns: columns, selectedColumns: defaultColumns, defaultColumns: defaultColumns, rows: rows, favorites: favs })
-      // props.setAlert({open: true, text: "Error in fetching rows", severity: "error"})
-    }
-    const fetchUser = async () => {
-      props.setControl({ ...props.control, user: props.example.users[props.control.user.username] });
-    }
     fetchData();
-    fetchUser();
-  }, [props.example]);
+  }, []);
+
+  React.useEffect(() => {
+    props.setControl({...props.control, table: table});
+  }, [table]);
+  
   function handleFavorite(row: any) {
-    const userFavorites: any = props.control.user.favorites;
-    const index = userFavorites.indexOf(row.id);
+    const userFavorites: any = props.control.user?.favorites ?? [];
+    const index = userFavorites?.indexOf(row?.id) ?? -1;
     if (index === -1) {
-      userFavorites.push(row.id)
+      userFavorites.push(row?.id)
     }
     else {
       userFavorites.splice(index, 1)
     }
-    const newUsers = props.example.users;
-    newUsers[props.control.user.username].favorites = userFavorites;
-    props.setExample({ ...props.example, users: newUsers })
+    props.setControl({...props.control, user: { ...props.control.user, favorites: userFavorites }})
   }
+
   function selectRows() {
     let rows: any = []
     if (table.tab === 1) {
       rows = table?.rows.filter(function (row: any) {
-        return props.control.user.favorites.indexOf(row.id) !== -1;
+        return (props.control.user?.favorites?.indexOf(row?.id) ?? -1) !== -1;
       })
     }
     else if (table.tab === 2) {
       rows = table.rows.filter(function (row: any) {
-        return row.id in props.control.user.recents;
-      })
-    }
-    else if (table.tab === 3) {
-      rows = table.rows.filter(function (row: any) {
-        return props.control.user.created.indexOf(row.id) !== -1;
+        return row.creator_id === props.control.user?.id;
       })
     }
     else {
@@ -191,7 +224,7 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
     if (table.search !== '') {
       rows = rows.filter(function (row: any) {
         for (let i = 0; i < table.columns.length; i++) {
-          if (table.selectedColumns[i] && table.columns[i].id !== 'favorite' && row[table.columns[i].id].toString().toLowerCase().includes(table.search.toLowerCase())) {
+          if (table.selectedColumns[i] && table.columns[i]?.id !== 'favorite' && row[table.columns[i]?.id].toString().toLowerCase().includes(table.search.toLowerCase())) {
             return true
           }
         }
@@ -213,28 +246,28 @@ export default function UserTable(props: { example: any; setControl: (arg0: any)
               <TableBody>
                 {selectRows().slice(table.page * table.perPage, table.page * table.perPage + table.perPage).map((row: { [x: string]: any }) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {table.columns.map((column: { id: any; align: "right" | "left" | "center" | "inherit" | "justify" | undefined; }, i: string | number) => {
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row?.id}>
+                      {table?.columns.map((column: { id: any; align: "right" | "left" | "center" | "inherit" | "justify" | undefined; }, i: string | number) => {
                         if (table.selectedColumns[i]) {
-                          if (column.id === 'favorite') {
+                          if (column?.id === 'favorite') {
                             return (
-                              <TableCell key={column.id} align={column.align}>
+                              <TableCell key={column?.id} align={column.align}>
                                 <IconButton onClick={() => handleFavorite(row)}>
-                                  {props.control.user.favorites.indexOf(row.id) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                  {(props.control.user?.favorites?.indexOf(row?.id) ?? -1) !== -1 ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
                               </TableCell>
                             )
                           }
                           else{
                             return (
-                              <TableCell key={column.id} align={column.align}>
+                              <TableCell key={column?.id} align={column.align}>
                                 {
-                                column.id === 'last_updated'?
-                                  new Date(row[column.id]).toISOString().slice(0, 10)
-                                :column.id === 'keywords'?
-                                  row[column.id].join(', ')
+                                column?.id === 'last_updated'?
+                                  (new Date().toISOString().slice(0, 10) ?? "")
+                                :column?.id === 'keywords'? 
+                                  (row[column?.id] ? row[column?.id]?.join(', ') : "")
                                 :
-                                  row[column.id]
+                                  row[column?.id]
                                 }
                               </TableCell>
                             )

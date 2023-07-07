@@ -29,13 +29,13 @@ export default function FormCard(props: any){
     setOpen(false);
   };
   const useForms = () => {
-    props.setControl({...props.control, view: 'form', tempData:{}, formID: props.row.id})
+    props.setControl({...props.control, view: 'form', tempData:{}, formID: props.row?.id})
   }
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
   const editForms=()=>{
-    props.setControl({...props.control, view: 'creator', tempData: props.example.forms[props.row.id], formID: props.row.id });
+    props.setControl({...props.control, view: 'creator', tempData: props.row, formID: props.row?.id });
   }
   return (
     <TableCell>
@@ -47,10 +47,10 @@ export default function FormCard(props: any){
       <Dialog onClose={handleClose} open={open} fullWidth maxWidth='sm'>
         <Card>
           <CardHeader
-            avatar={<Avatar src={props.row.creator_avatar} />}
+            avatar={<Avatar src={props.row?.creator_avatar} />}
             action={<Tooltip title="Options"><IconButton><MoreVertIcon /></IconButton></Tooltip>}
-            title={'Created by '+props.row.creator}
-            subheader={'FormID '+props.row.id+'. Last update: '+new Date(props.row.last_updated).toISOString().slice(0, 10)}
+            title={'Created by '+props.row?.creator}
+            subheader={'FormID '+props.row?.id+'. Last update: '+new Date().toISOString().slice(0, 10)}
           />
           <CardContent>
             <Grid container spacing={1} direction="row" justifyContent="flex-start" alignItems="center">
@@ -70,25 +70,25 @@ export default function FormCard(props: any){
               {props.row.description}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <b>Keywords:</b> {props.row.keywords.join(', ')}
+              <b>Keywords:</b> {props.row?.keywords?.join(', ')}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              <b>Questions:</b> {props.row.questions} Questions
+              <b>Questions:</b> {props.row.questions.length} Questions
             </Typography>
             {!props.row.paragraph? null:
-              <React.Fragment>
+              <>
                 <Link component="button" onClick={handleExpandClick}>Read {expanded?'less':'more'}</Link>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                   <Typography paragraph>
                     {props.row.paragraph}
                   </Typography>
                 </Collapse>
-              </React.Fragment>
+              </>
             }
           </CardContent>
           {props.readingQRCode? null:
             <DialogActions style={{paddingTop: 0}}>
-              {props.control.user.id!==props.row.creator_id? null:
+              {props.control.user?.id !== props.row?.creator_id? null:
                 <Button disabled={!props.row.editable} onClick={editForms} color="primary">
                   Edit
                 </Button>

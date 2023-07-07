@@ -19,13 +19,11 @@ export default function Profile(props: any){
           Read QRCode
         </Button>
       </Grid>
-      {!props.control.user.admin? null:
         <Grid item={true} xs={12}>
           <Button onClick={goCreate} variant="contained" size="large" color="secondary">
             Create Forms
           </Button>
         </Grid>
-      }
     </Grid>
   )
 }

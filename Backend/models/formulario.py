@@ -11,4 +11,4 @@ class Formulario(ormar.Model):
         tablename = "formularios"
 
     id: int = ormar.Integer(primary_key=True)
-    conteudo: str = ormar.String(max_length=100)
+    conteudo: str = ormar.String(max_length=100000)

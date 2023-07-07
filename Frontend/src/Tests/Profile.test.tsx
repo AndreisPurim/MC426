@@ -4,19 +4,16 @@ import Profile from '../Pages/Profile/Profile';
 import UserCard from '../Pages/Profile/UserCard';
 import UserTable from '../Pages/Profile/UserTable';
 import ReadQRCode from '../Pages/Profile/ReadQRCode';
-import { dbExample } from '../Source/example';
 
 describe('UserCard', () => {
     it('renders User Card', () => {
         const baseProps = {
             setControl: jest.fn(()=>null),
             setExample: jest.fn(()=>null),
-            example: dbExample(),
             control: {
                 view: "Login",
                 formID: null,
                 tempData: {},
-                user: dbExample().users['andreis'],
             },
             setView: jest.fn(),
             setAlert: jest.fn(()=>null),
@@ -34,12 +31,10 @@ describe('UserCard', () => {
         const baseProps = {
             setControl: jest.fn(()=>null),
             setExample: jest.fn(()=>null),
-            example: dbExample(),
             control: {
                 view: "Login",
                 formID: null,
                 tempData: {},
-                user: dbExample().users['andreis'],
             },
             setView: jest.fn(),
             setAlert: jest.fn(()=>null),

@@ -131,7 +131,7 @@ export default function SVG(props: any){
     props.setCreator({...props.creator, svg: newSVG})
   }
   return(
-    <React.Fragment>
+    <>
       {/* <Grid item xs={12}>
         <input accept="image/*" type="file" id='inputSVG' style={{display:'none'}}/>
         <label htmlFor='inputSVG'>
@@ -154,7 +154,7 @@ export default function SVG(props: any){
                 <InlineSVG src={buildSVG()}/>
               </Grid>
               {!tab?
-                <React.Fragment>
+                <>
                   <Grid item xs={12}>
                     <TextField fullWidth value={props.creator.svg.base} multiline onChange={changeBase} label="Base (start with <svg>...)" />
                   </Grid>
@@ -175,7 +175,7 @@ export default function SVG(props: any){
                       </IconButton>
                     </Grid>
                   </DragDropContext>
-                </React.Fragment>
+                </>
               :
               null
                 // props.creator.svg.parts.map(part=>
@@ -190,6 +190,6 @@ export default function SVG(props: any){
           </Paper>
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   )
 }

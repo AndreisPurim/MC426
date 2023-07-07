@@ -18,7 +18,6 @@ import Form from "./Pages/Form/Form";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 
-import {dbExample} from "./Source/example.ts";
 import {Theme} from "@emotion/react";
 
 const getComplementaryColor = (color = "") => {
@@ -48,7 +47,6 @@ function Control() {
         tempData: {},
         user: null,
     });
-    const [example, setExample] = React.useState(dbExample());
     const theme: Theme = React.useMemo(
         () =>
             createTheme({
@@ -91,24 +89,24 @@ function Control() {
         control,
         setControl,
         setView,
-        example,
-        setExample,
         setAlert,
     };
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container maxWidth="md">
-                <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === "light" ? "dark" : "light")} />
-                {returnView()}
-                <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
-                    <Alert elevation={6} variant="filled" severity={alert.severity}>
-                        {alert.text}
-                    </Alert>
-                </Snackbar>
-                <Footer />
-            </Container>
-        </ThemeProvider>
+        <React.StrictMode>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <Container maxWidth="md">
+                    <Navbar {...sendControl} theme={theme} changeLightMode={() => setLightMode(lightMode === "light" ? "dark" : "light")} />
+                    {returnView()}
+                    <Snackbar open={alert.open} autoHideDuration={1000} onClose={closeAlert}>
+                        <Alert elevation={6} variant="filled" severity={alert.severity}>
+                            {alert.text}
+                        </Alert>
+                    </Snackbar>
+                    <Footer />
+                </Container>
+            </ThemeProvider>
+        </React.StrictMode>
     );
 }
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);

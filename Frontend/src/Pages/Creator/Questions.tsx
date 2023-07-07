@@ -126,7 +126,7 @@ function Question(props: any) {
               <QuestionHead {...props} />
               <Grid item xs={12} spacing={1} container direction="row" justifyContent="flex-start" alignItems="center" style={{padding:'1rem 0 1rem 0'}}>
                 {props.question.type==='Loop'?
-                  <React.Fragment>
+                  <>
                     <Grid item xs={3}>
                       <FormControlLabel value="start" control={<Switch color="primary" value={props.question.required} />} label={props.question.required?"Variable":"Range"} labelPlacement="end"/>
                     </Grid>
@@ -135,32 +135,32 @@ function Question(props: any) {
                         <Select fullWidth value={props.question.loopvar} onChange={changeLoopvar}>
                           {props.creator.questions.slice(0,props.creator.questions.indexOf(props.question)).map((question: any)=>
                             question.type!=='Number'? null:
-                              <MenuItem key={question.questionID} value={question.questionID}>
+                              <MenuItem key={question.questionID} value={question?.questionID ?? ""}>
                                 <ListItemText primary={question.variable}/>
                               </MenuItem>
                           )}
                         </Select>
                       :
-                        <Input fullWidth value={props.question.max} name="max" onChange={changeMinMax} type="number" placeholder="Number of times"/>
+                        <Input fullWidth value={props.question?.max ?? ""} name="max" onChange={changeMinMax} type="number" placeholder="Number of times"/>
                       }
                     </Grid>
-                  </React.Fragment>
+                  </>
                 :props.question.type==='Number'?
-                  <React.Fragment>
+                  <>
                     <Grid item xs={3}>
-                      <Input fullWidth value={props.question.min} name="min" onChange={changeMinMax} type="number" placeholder="No min"/>
+                      <Input fullWidth value={props.question?.min ?? ""} name="min" onChange={changeMinMax} type="number" placeholder="No min"/>
                     </Grid>
                     <Grid item xs={3}>
-                      <Input fullWidth value={props.question.max} name="max" onChange={changeMinMax} type="number" placeholder="No max"/>
+                      <Input fullWidth value={props.question?.max ?? ""} name="max" onChange={changeMinMax} type="number" placeholder="No max"/>
                     </Grid>
                     <Grid item xs={6}/>
                     <Grid item xs={6}>
-                      <Input fullWidth value={props.question.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} type="number" placeholder="Default"/>
+                      <Input fullWidth value={props.question?.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} type="number" placeholder="Default"/>
                     </Grid>
-                  </React.Fragment>
+                  </>
                 :props.question.type==='Text'?
                   <Grid item xs={6}>
-                    <TextField fullWidth value={props.question.default} onChange={(event)=>changeDefault(event,props.question.type,-1)} placeholder="Default"/>
+                    <TextField fullWidth value={props.question?.default ?? ""} onChange={(event)=>changeDefault(event,props.question.type,-1)} placeholder="Default"/>
                   </Grid>
                 :props.question.type==='Choice'||props.question.type==='Multiple Choice'?
                   <QuestionChoices {...props} changeDefault={changeDefault}/>
@@ -249,7 +249,7 @@ function QuestionChoices(props: any){
                         </IconButton>
                       }
                     </ListItemIcon>
-                    <ListItemText primary={<TextField value={choice.text} onChange={event=>changeChoice(choice,event)} />} />
+                    <ListItemText primary={<TextField value={choice?.text ?? ""} onChange={event=>changeChoice(choice,event)} />} />
                   </ListItem>
                 )}
               </Draggable>
@@ -320,7 +320,7 @@ function QuestionHead(props: any){
               Input
             </MenuItem>
             {typeOptions.map(type=>
-              <MenuItem key={type.label} value={type.label}>
+              <MenuItem key={type.label} value={type?.label ?? ""}>
                 <ListItemIcon>
                   {type.icon}
                 </ListItemIcon>
@@ -331,7 +331,7 @@ function QuestionHead(props: any){
               Others
             </MenuItem>
             {otherOptions.map(type=>
-              <MenuItem key={type.label} value={type.label}>
+              <MenuItem key={type.label} value={type?.label ?? ""}>
                 <ListItemIcon>
                   {type.icon}
                 </ListItemIcon>
