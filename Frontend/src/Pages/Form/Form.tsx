@@ -39,20 +39,19 @@ export default function Form(props: any) {
 		newAnswers[id] = event.target.value;
 		setAnswers({...answers, answers: newAnswers});
 	}
-	console.log(props.control?.formID);
-	console.log(answers);
 
 	const missingRequired = () => {
-		for (let q in answers.questions.questions) {
-			if (answers.questions.questions[q].isRequired && !(answers.questions.questions[q].name in answers.answers)) {
+		for (const question of answers.questions.questions) {
+			if (question.isRequired && !(answers.answers[question.questionID])) {
 				return true;
 			}
 		}
 		return false;
 	};
 	const sendExtraProps = {...props, answers, setAnswers};
+	console.log(sendExtraProps);
 	return (
-		<Grid container direction="column" justifyContent="center" alignItems="stretch" xs={12} spacing={2} style={{marginTop: "2rem"}}>
+		<Grid container item direction="column" justifyContent="center" alignItems="stretch" xs={12} spacing={2} style={{marginTop: "2rem"}}>
 			<Grid item xs={3} style={{width: "100%", marginLeft: "auto", marginRight: "auto"}}>
 				<Stepper activeStep={answers.step} alternativeLabel style={{backgroundColor: "transparent"}}>
 					<Step>
